@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Tequio</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="CSS/Estilo_1.css">
+        
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script>
+            $(document).ready(function(){
+                $("#0").click(function(){
+                    $("a").removeClass("active");
+                    $("#0").addClass("active");
+                });
+                $("#1").click(function(){
+                    $("a").removeClass("active");
+                    $("#1").addClass("active");
+                });
+                $("#2").click(function(){
+                    $("a").removeClass("active");
+                    $("#2").addClass("active");
+                });
+                $("#3").click(function(){
+                    $("a").removeClass("active");
+                    $("#3").addClass("active");
+                });
+                $("#4").click(function(){
+                    $("a").removeClass("active");
+                    $("#4").addClass("active");
+                });
+                $("#5").click(function(){
+                    $("a").removeClass("active");
+                    $("#5").addClass("active");
+                });
+                $("#6").click(function(){
+                    $("a").removeClass("active");
+                    $("#6").addClass("active");
+                });
+                $("#7").click(function(){
+                    $("a").removeClass("active");
+                    $("#7").addClass("active");
+                });
+                $("#8").click(function(){
+                    $("a").removeClass("active");
+                    $("#8").addClass("active");
+                });
+            });
+        </script>
+        
+    </head>
+    <body>
+        <div class="arriba">
+            <div class="cabeza">
+                <div class="Logo">
+                    <img src="IMG\LOGO WEB.png" height="80">
+                </div>
+                <div class="Buscador">
+                    <input type="search" class="buscar" placeholder="Autor, Titulo, Colección" />
+                    <button class="icon"><i class="fa fa-search"></i></button>
+                </div>
+            </div>
+            <div style="text-align: center">
+                <div class="menu">
+                    <nav id="menu">
+                        <ul class="nav">
+                            <li><a href="cover/cover.jsp" id="0" class="active" target="frame"><i class="fa fa-search"></i></a></li>
+                            <li><a href="">Áreas</a>
+                                <ul>
+                                    <li><a href="prueba.jsp?n=Politica" id="1" target="frame">Política</a></li>
+                                    <li><a href="prueba.jsp?n=Ciencia" id="2" target="frame">Ciencia</a></li>
+                                    <li><a href="prueba.jsp?n=Arte" id="3" target="frame">Arte</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="prueba.jsp?n=Colecciones" id="4" target="frame">Colecciones</a></li>
+                            <li><a href="prueba.jsp?n=Autores" id="5" target="frame">Autores</a></li>
+                            <li><a href="prueba.jsp?n=Titulos" id="6" target="frame">Titulos</a></li>
+                            <li><a href="prueba.jsp?n=Nosotrxs" id="7" target="frame">Nosotrxs</a></li>
+                            <li><a href="prueba.jsp?n=Antologia" id="8" target="frame">Antologías</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <div class="frame">
+            <iframe width=845 height=500 src="cover/cover.jsp" name="frame" frameborder="1" scrolling="auto" style="margin-top: 20%"></iframe>
+        </div>
+    </body>
+</html>
