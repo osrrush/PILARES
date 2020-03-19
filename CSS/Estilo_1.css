@@ -1,0 +1,170 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 15-abr-2018, 19:48:46
+    Author     : Sistema Dell
+*/
+.arriba{
+    background: white;
+    position: fixed;
+    width: 100%;
+    margin-top: 0%;
+}
+.Logo{
+    display: inline-block;
+    margin: 0px 35% 0px 0px;
+    width: 300px;
+}
+.cabeza{
+    text-align: center;
+    margin: 0% 10% 0% 5%;
+}
+.Buscador{
+    display: inline-block;
+    overflow: hidden;
+    width: 300px;
+    white-space: nowrap;
+    
+}
+.Buscador button.icon{
+    -webkit-border-top-right-radius: 5px;
+    -webkit-border-bottom-right-radius: 5px;
+    -moz-border-radius-topright: 5px;
+    -moz-border-radius-bottomright: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+
+    border: none;
+    background: #232833;
+    height: 50px;
+    width: 50px;
+    color:  #ffffff;
+    /*color: #4f5b66;*/
+    opacity: 0;
+    font-size: 10pt;
+
+    -webkit-transition: all .55s ease;
+    -moz-transition: all .55s ease;
+    -ms-transition: all .55s ease;
+    -o-transition: all .55s ease;
+    transition: all .55s ease;
+}
+.Buscador input.buscar{
+    width: 300px;
+    height: 50px;
+    background: #2b303b;
+    border: none;
+    font-size: 10pt;
+    float: left;
+    color: #fff;
+    padding-left: 15px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+.Buscador input.buscar::-webkit-input-placeholder {
+   color: #65737e;
+}
+.Buscador input.buscar:-moz-placeholder { /* Firefox 18- */
+   color: #65737e;  
+}
+.Buscador input.buscar::-moz-placeholder {  /* Firefox 19+ */
+   color: #65737e;  
+}
+.Buscador input.buscar:-ms-input-placeholder {  
+   color: #65737e;  
+}
+.Buscador:hover button.icon, .Buscador:active button.icon, .Buscador:focus button.icon{
+    outline: none;
+    opacity: 1;
+    margin-left: -50px;
+}
+.Buscadorhover button.icon:hover{
+    background: #fff;
+}
+.menu{
+    display: inline-block;
+    margin: 0px 10px 0px 10px;
+    text-align: center;
+} 
+#menu ul {
+ list-style:none;
+ margin:0;
+ padding:0;
+}
+
+/* items del menu */
+
+#menu ul li {
+ background-color:#333;
+}
+
+/* enlaces del menu */
+
+#menu ul a {
+ display:block;
+ color:#fff;
+ text-decoration:none;
+ font-weight:400;
+ font-size:15px;
+ padding:10px;
+ font-family:"HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
+ 
+ letter-spacing:1px;
+}
+
+/* items del menu */
+
+#menu ul li {
+ position:relative;
+ float:left;
+ margin:0;
+ padding:0;
+}
+
+/* efecto al pasar el ratón por los items del menu */
+
+#menu ul li:hover {
+ background: #111;
+}
+/* menu desplegable */
+
+#menu ul ul {
+ display:none;
+ position:absolute;
+ top:100%;
+ left:0;
+ background:#eee;
+ padding:0;
+}
+
+/* items del menu desplegable */
+
+#menu ul ul li {
+ float:none;
+ width:150px
+}
+
+/* enlaces de los items del menu desplegable */
+
+#menu ul ul a {
+ line-height:120%;
+ padding:10px 15px;
+}
+
+/* items del menu desplegable al pasar el ratón */
+
+#menu ul li:hover > ul {
+ display:block;
+}
+.active{
+    background-color: red;
+}
+.frame{
+	width: 845px;
+	margin: 20px auto;
+        overflow: auto ;
+}
