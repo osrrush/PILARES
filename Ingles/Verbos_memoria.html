@@ -1,216 +1,159 @@
-<head>
-	<script language="javascript" type="text/javascript">
-		var ctx, canvas;
-		var primerCarta = true;
-		var cartaPrimera, cartaSegunda;
-		var colorDelante="yellow";
-		var colorAtras="blue";
-		var colorCanvas="green";
-		var inicioX=30;
-		var inicioY=30;
-		var cartaMargen=30;
-		var cartaLon=30;
-		var cartaAncho=cartaLon*4;
-		var cartaAlto=cartaLon*4;
-		var cartas_array=new Array();
-		var iguales=false;
-		var cartas=0;
-		
-		var imagenes=new Array(6);
-		function cargarImagenes(){
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <style>
+            .button {
+              border: none;
+              color: white;
+              text-align: center;
+              text-decoration: none;
+              display: inline-block;
+              font-size: 16px;
+              margin: 4px 2px;
+              cursor: pointer;
+              width:100px; 
+              height:40px
+            }
 
-		}
-		
-		window.onload = cargarImagenes;
-	
-		function cargarImagenes(){
-			imagenes[cartas] = new Image();
-			imagenes[cartas].src = "images/"+cartas+".jpg";
-			cartas++;
-			if(cartas<6){
-				imagenes[cartas-1].onload = cargarImagenes;
-			}else{
-				imagenes[cartas-1].onload = iniciar;
-			}
-		}
-		
-		function iniciar(){
-			cartas=0;
-			canvas=document.getElementById("miCanvas");
-			canvas.width=630;
-			canvas.height=510;
-			if(canvas && canvas.getContext){
-				ctx = canvas.getContext("2d");
-				if(ctx){
-					canvas.removeEventListener("click",iniciar,false);
-					canvas.addEventListener("click",selecciona,false);
-					tablero();
-					barajar();
-					aciertos();
-				}else{
-					document.write("Tu navegador no soporta canvas");
-				}
-			}
-		}
+            .button1 {background-color: #4CAF50;} /* Green */
+            .button2 {background-color: #008CBA;} /* Blue */
+            .button3 {background-color: #99A3A4;}  /* Gris */
+        </style>
+        <script>
+            function sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+            
+            var id_apretado;
+            var b_apretado;
+            var apretado=0;
+            var valor;
+            var correctas = 0;
+            var refresh;
+            async function verifica(id){
+                if(apretado===0){
+                    //console.log("id="+id)
+                    document.getElementById(id).className="button button2";
+                    valor=document.getElementById(id).value;
+                    document.getElementById(id).innerHTML=valor+"";
+                    b_apretado=document.getElementById(id);
+                    id_apretado=id;
+                    document.getElementById(id).disabled = true;
+                    apretado=1;
+                }else{
+                    document.getElementById(id).className="button button2";
+                    document.getElementById(id).innerHTML=document.getElementById(id).value+"";
+                    await sleep(500);
+                    if(!correcto(id_apretado,id)){
+                        b_apretado.className="button button1";
+                        document.getElementById(id).className="button button1";
+                        b_apretado.innerHTML=" ";
+                        document.getElementById(id).innerHTML=" ";
+                        b_apretado.disabled = false;
+                    }else{
+                        b_apretado.className= "button button3";
+                        b_apretado.disabled = true;
+                        document.getElementById(id).className = "button button3";
+                        document.getElementById(id).disabled = true;
+                        correctas ++;
+                        if(correctas===10){
+                            refresh=confirm("¡Felicidades, ganaste!\n ¿Quieres volver a jugar?");
+                            if(refresh){
+                                location.reload();
+                            }
+                        }
+                    }
+                    apretado=0;
+                    b_apretado= null;
+                    id_apretado=0;
+                }
+            }
+            function correcto(id1,id2){
+                if((id1%10)==(id2%10)){
+                    return true;
+                }
+                return false;
+            }
+            function verb_rand(){
+                
+            }
+        </script>
+    </head>
+    <body>
+        <div id="Título">PAIRS (memorama)</div>
+        <div id="t"></div>
+        <div id="Botones"></div>
+        <script>
+            //Cargar verbos
+            var verbos = new Array();
+            var txt = new XMLHttpRequest();
+            const x=5, y=4;
+            var i=0, j=0, u=0, v=0;
+            var valores=[[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]]
+            var o=document.getElementById("Botones");
+            var verb_sel=["Be Ser","Play Jugar","Jump Saltar","Wash Lavar",
+                        "Come Venir","Dance Bailar","Read Leer","Write Escribir",
+                        "Eat Comer","Cook Cocinar"];
+                    
+            txt.onreadystatechange = function() {
+                if (txt.readyState==4 && txt.status==200) {
+                    verbos=txt.responseText.split(",");
+                    verb_sel=verbos.sort(() => (Math.random() > 0.5 ? 1 : -1)).slice(0,10);
+            var verbo=[,,,,,,,,,];    
+                //console.log(verb_sel);
+            for(var k=1;k<11;k++){
+                verbo[k-1]=verb_sel[k-1].split(" ")
+                //console.log(verbo[k-1]);
+                for(var aux=0;aux<2;aux++){
+                    u=Math.floor(5*Math.random());
+                    v=Math.floor(4*Math.random());
+                    if(valores[v][u]===0){
+                        valores[v][u]=10*aux+k;
+                     }else{
+                        for (i=0;i<y;i++){
+                            for(j=1;j<x;j++){
+                                if(valores[(v+i)%4][(u+j)%5]==0){
+                                    valores[(v+i)%4][(u+j)%5]=10*aux+k;
+                                    j=x;
+                                    i=y;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            for (i=0;i<x;i++){
+                for(j=0;j<y;j++){
+                    o.innerHTML +='<button type="button" name="'+(11+j*5+i)+'" id="'+valores[j][i]+'" class="button button1" onclick="verifica('+valores[j][i]+')" value="'+verbo[valores[j][i]%10][Math.floor(valores[j][i]/10)%2]+'" > </button>';
+                    //console.log("(i,j)=("+i+","+j+")="+verbo[valores[j][i]%10][Math.floor(valores[j][i]/10)%2]);
+                }
+                o.innerHTML +='<p></p>';
+            }
+                }
+            }
+            txt.open("GET" , "verbs.txt");
+            txt.send();
+            console.log(txt.statusText);
+            console.log(verbos);
+            // Poner botones
+            
+            
+            console.log(verbos);
 
-		function tablero(){
-			var i, j;
-			var carta;
-			var x=inicioX;
-			var y=inicioY;
-			for(i=0; i<4; i++){
-				for(j=0; j<3; j++){
-					carta=new Carta(x,y,cartaAncho,cartaAlto,i);
-					cartas_array.push(carta);
-					carta.dibuja();
-					
-					y +=inicioY+cartaAlto;
-				}
-				y = inicioY;
-				x+=cartaAncho+cartaMargen;
-			}
-		}
-		
-		function Carta(x,y,ancho,largo,info){
-			this.x=x;
-			this.y=y;
-			this.ancho=ancho;
-			this.largo=largo;
-			this.info=info;
-			this.dibuja=dibujaCarta;
-		}
-		function dibujaCarta(){
-			ctx.fillStyle=colorAtras;
-			ctx.fillRect(this.x,this.y,this.ancho,this.largo);
-		}
-
-		
-		function barajar(){
-			var i,j;
-			var aTemp1= new Array();
-			var aTemp2= new Array();
-			var lon=cartas_array.length/2;
-			for(i=0; i<lon;i++){
-				do{
-					j=Math.floor(Math.random()*lon);
-				}while(aTemp1.indexOf(j)!=-1)
-				aTemp1.push(j);
-				do{
-					j=Math.floor(Math.random()*lon);
-				}while(aTemp2.indexOf(j)!=-1)
-				aTemp2.push(j);	
-			}
-			aTemp1 = aTemp2.concat(aTemp1);
-			for(i=0; i<lon*2; i++){
-				cartas_array[i].info=aTemp1[i];
-			}
-		}
-		
-		function ajusta(xx,yy){
-			var posCanvas = canvas.getBoundingClientRect();
-			var x = xx-posCanvas.left;
-			var y = yy-posCanvas.top;
-			return {x:x,y:y}
-		}
-		function selecciona(e){
-			var pos=ajusta(e.clientX,e.clientY);
-			//alert(pos.x+','+pos.y);
-			
-			for(var i=0; i<cartas_array.length; i++){
-				var carta = cartas_array[i];
-				if(carta.x>0){
-					if( (pos.x>carta.x) && (pos.x<carta.x+carta.ancho) && (pos.y>carta.y) && (pos.y<carta.y+carta.largo)){
-						if((primerCarta) || (i!=cartaPrimera)) {
-							break;
-						}
-					}
-				}
-			}
-			if(i<cartas_array.length){
-				if(primerCarta){
-					cartaPrimera=i;
-					primerCarta=false;
-					pinta(carta);
-				}else{
-					canvas.removeEventListener("click",selecciona,false);
-					cartaSegunda=i;
-					pinta(carta);
-					primerCarta=true;
-					if(cartas_array[cartaPrimera].info==cartas_array[cartaSegunda].info){
-						iguales=true;
-						cartas++;
-						aciertos();
-					}else{
-						iguales=false;
-					}
-					setTimeout(volteaCarta,1000);
-				}
-			}
-		}
-		function pinta(carta){
-			ctx.fillStyle = colorDelante;
-			ctx.fillRect(carta.x,carta.y,carta.ancho,carta.largo);
-			
-			ctx.font="bold 40px comic";
-			ctx.fillStyle = "black";
-			//ctx.fillText(String(carta.info), carta.x+carta.ancho/2-10, carta.y+carta.largo/2+10);
-			ctx.drawImage(imagenes[carta.info],carta.x,carta.y,carta.ancho,carta.largo);
-		}
-		function volteaCarta(){
-			if(!iguales){
-				cartas_array[cartaPrimera].dibuja();
-				cartas_array[cartaSegunda].dibuja();
-			}else{
-				ctx.clearRect(	cartas_array[cartaPrimera].x,
-								cartas_array[cartaPrimera].y,
-								cartas_array[cartaPrimera].ancho,
-								cartas_array[cartaPrimera].largo);
-				
-				ctx.clearRect(	cartas_array[cartaSegunda].x,
-								cartas_array[cartaSegunda].y,
-								cartas_array[cartaSegunda].ancho,
-								cartas_array[cartaSegunda].largo);
-				
-				cartas_array[cartaPrimera].x = -1;
-				cartas_array[cartaSegunda].x = -1;
-			}
-			if(cartas<6){
-				canvas.addEventListener("click",selecciona,false);
-			}else{
-				cartas=0;
-				cartas_array=[];
-				canvas.addEventListener("click",iniciar,false);
-				ctx.fillStyle="white";
-				ctx.fillText("JUEGO TERMINADO",120,canvas.height/2);
-			}
-		}
-		
-		function aciertos(){
-			ctx.save();
-			ctx.clearRect(0,480,canvas.width,canvas.height);
-			ctx.fillStyle="gray"
-			ctx.fillRect(0,480,canvas.width,canvas.height);
-			ctx.font = "bold 40px comic";
-			ctx.fillStyle="black";
-			ctx.fillText("Aciertos: "+String(cartas),canvas.width-220,510);
-			ctx.restore();
-		}
-	</script>
-	<style>
-		body{
-			width: 630px;
-			margin: auto;
-		}
-		h1{
-			text-align:center;
-		}
-		#miCanvas{
-			border:dotted 2px yellow;
-			background:green;
-		}
-	</style>
-</head>
-<body>
-	<h1>Memorama Canvas</h1>
-	<canvas id="miCanvas"></canvas>
-</body>
+            
+            
+        </script>
+        
+    </body>
+</html>
