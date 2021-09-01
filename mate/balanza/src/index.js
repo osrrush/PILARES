@@ -303,8 +303,13 @@ class Pro extends Phaser.Scene{
             
         }
         this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
-            gameObject.x = dragX;
-            gameObject.y = dragY;
+            if(dragX < 1800 && dragX > 50){
+                gameObject.x = dragX;
+            }
+
+            if(dragY < 900){
+                gameObject.y = dragY;
+            }
         });
         this.debug = this.add.graphics();
         //this.cursors = this.input.keyboard.createCursorKeys();
@@ -500,8 +505,13 @@ class Prob extends Phaser.Scene{
             
         }
         this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
-            gameObject.x = dragX;
-            gameObject.y = dragY;
+            if(dragX < 1800 && dragX > 50){
+                gameObject.x = dragX;
+            }
+
+            if(dragY < 900){
+                gameObject.y = dragY;
+            }
         });
         this.debug = this.add.graphics();
         //this.cursors = this.input.keyboard.createCursorKeys();
@@ -737,8 +747,13 @@ class Probl extends Phaser.Scene{
         //console.log("2*this.kg_cant+2*this.xkg_val = "+(2*this.kg_cant+this.xkg_val))
         this.debug = this.add.graphics();
         this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
-            gameObject.x = dragX;
-            gameObject.y = dragY;
+            if(dragX < 1800 && dragX > 50){
+                gameObject.x = dragX;
+            }
+
+            if(dragY < 900){
+                gameObject.y = dragY;
+            }
         });
         
         
