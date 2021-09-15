@@ -13,13 +13,70 @@ and open the template in the editor.
         
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <style>
+             summary::-webkit-details-marker {
+                 color: #00ACF3;
+                 font-size: 125%;
+                 margin-right: 2px;
+                }
+                summary:focus {
+                    outline-style: none;
+                }
+                article > details > summary {
+                    font-size: 28px;
+                    margin-top: 16px;
+                }
+                details > p {
+                    margin-left: 24px;
+                }
+                details details {
+                    margin-left: 36px;
+                }
+                details details summary {
+                    font-size: 16px;
+                }
+            .No{
+		color: #ff0000;  
+		}
+		.casi{
+		background-color: yellow;
+		}
+        </style>
     </head>
     <body>
+        <section>
+            <article>
+                <details>
+                    <summary class="casi">Aritmética</summary>
+                    <details>
+                        <summary class="casi">Fracciones</summary>
+                            <p>Actividades</p>
+                            <p><a href="mate\fracciones\index.html">Fracciones</a></p>
+                  
+                    </details>
+                    <details>
+                        <summary class="casi">Números con signo</summary>
+                            <p>Actividades</p>
+                            <p><a href="mate\Enteros.html">Números Enteros</a></p>
+                  
+                    </details>
+                </details>
+                <details>
+                    <summary class="casi">Álgebra</summary>
+                    <details>
+                        <summary class="casi">Ecuaciones de primer grado</summary>
+                            <p>Actividades</p>
+                            <p><a href="mate\balanza\index.html">Balanza</a></p>
+                  
+                    </details>               
+                </details>
+            </article>
+        </section>
       <ul>
-            <li><a href="mate\Enteros.html">Números Enteros</a></li>
-            <li><a href="mate\balanza\index.html">Balanza</a></li>
+            
+            
             <li><a href="mate\recta_numerica\index.html">Positivos y Negativos</a></li>
-            <li><a href="mate\fracciones\index.html">Fracciones</a></li>
+            
             <!--
             <li><a href="">Fracciones y decimales</a></li>
             <li><a href="">Polinomios</a></li>
