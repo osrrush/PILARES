@@ -97,7 +97,7 @@ class menu extends Phaser.Scene{
 	s1.setInteractive();
 	s1.once('pointerdown', () => this.opcionPulsada('s1'));
 	this.add.graphics().lineStyle(2, 0xff0000).strokeRectShape(s1);
-/*            //medios, cuartos y octavos
+            //medios, cuartos y octavos
         lienzo.fillStyle(0X58B407);
         lienzo.fillRect(600,645,320,90);
         this.add.text(630, 645, 'Suma 2', { color: 'black', fontFamily: 'Arial', fontSize: '70px '});
@@ -107,7 +107,7 @@ class menu extends Phaser.Scene{
 	s2.setInteractive();
 	s2.once('pointerdown', () => this.opcionPulsada('s2'));
 	this.add.graphics().lineStyle(2, 0xff0000).strokeRectShape(s2);
-            //tercios, sextos, novenos
+/*            //tercios, sextos, novenos
         lienzo.fillStyle(0X07B40D);
         lienzo.fillRect(1000,645,320,90);
         this.add.text(1030, 645, 'Suma 3', { color: 'black', fontFamily: 'Arial', fontSize: '70px '});
@@ -209,6 +209,8 @@ class menu extends Phaser.Scene{
             this.scene.start('Eq3');
         } else if (opcion === 's1'){
             this.scene.start('S1');
+        } else  if (opcion === 's2'){
+            this.scene.start('S2');
         } else {
             console.log(opcion);
         }
@@ -402,6 +404,7 @@ class Prob extends Phaser.Scene{
     preload(){
         this.load.image('fondo','./asset/img/background.png');
         this.load.image('inicio','./asset/img/inicio.png');
+        this.load.css('80s', './src/fuente.css');
     }
     create(){
         this.add.image(960,540,'fondo');
@@ -451,9 +454,11 @@ class Prob extends Phaser.Scene{
         
         var boton = document.createElement('button');
         boton.setAttribute('type','button');
-        var element = this.add.dom(1600, 690, boton,'','Corregir');
-        element.addListener('click');
-        element.on('click',() => this.corregir(f[0],f[1],f[2],f[3]));
+        this.element = this.add.dom(1600, 690, boton,'','Corregir');
+        this.element.addListener('click');
+        this.element.on('click',() => this.corregir(f[0],f[1],f[2],f[3]));
+        
+        this.input.keyboard.on('keydown-ENTER',() => this.corregir(f[0],f[1],f[2],f[3]));
         
         this.lienzo2 = this.add.graphics();
         this.lienzo2.fillStyle(0xff0000);
@@ -474,10 +479,10 @@ class Prob extends Phaser.Scene{
     opcionPulsada(opcion) {
         if(opcion === "inicio"){
             this.scene.start('menu');
-        }else if(opcion === ""+this.xkg_val){
-            this.scene.start('Ganar');
+        }else if(opcion === 'otro'){
+            this.scene.start('Prob');
         }else{
-            this.scene.start('Perder');
+            
         }
     }
     corregir(x1,y1,x2,y2){
@@ -487,7 +492,21 @@ class Prob extends Phaser.Scene{
         console.log(x1,y1,x2,y2);
         console.log(r1.value,r2.value);
         if((x1*x2)+"" === r1.value && (y1*y2)+"" === r2.value){
-            this.scene.start('Ganar');
+            this.input.keyboard.off('keydown-ENTER');
+            this.element.visible=false;
+            this.lienzo.fillStyle(0x00ff00);
+            this.lienzo.fillRect(1300,50,300,100);
+            this.opc= this.add.text(1335, 75, '¿OTRO?', { color: 'black', fontFamily: 'Arial', fontSize: '50px '});
+                
+            const otro = this.add.zone(1300, 50, 300,100);
+                otro.setOrigin(0);
+                otro.setInteractive();
+                otro.once('pointerdown', () => this.opcionPulsada('otro'));
+                
+            var h2 = this.add.dom(1100, 500, 'h2', null, 'Ganaste ');
+            h2.setClassName('dreams');
+            h2.setAngle(-15);
+            
         }else{
             this.a=0.75;
         }
@@ -567,6 +586,8 @@ class Probl extends Phaser.Scene{
         this.element.addListener('click');
         this.element.on('click',() => this.corregir(f[0],y1,y2));
         
+        this.input.keyboard.on('keydown-ENTER',() => this.corregir(f[0],y1,y2));
+        
         this.lienzo2 = this.add.graphics();
         this.lienzo2.fillStyle(0xff0000);
         this.lienzo2.setAlpha(this.a);
@@ -616,6 +637,10 @@ class Probl extends Phaser.Scene{
             r1.value="";
             this.element.off('click');
             this.element.on('click',() => this.corregir2(n,y2));
+            
+            this.input.keyboard.off('keydown-ENTER');
+            this.input.keyboard.on('keydown-ENTER',() => this.corregir2(n,y2));
+            
             this.element.y+= 100;
             this.res.y+=100;
         }else{
@@ -642,7 +667,8 @@ class Probl extends Phaser.Scene{
             this.lienzo.lineBetween(680, 740, 750, 740);
             this.element.off('click');
             this.element.on('click',() => this.corregir3((n*r)));
-            
+            this.input.keyboard.off('keydown-ENTER');
+            this.input.keyboard.on('keydown-ENTER',() => this.corregir3(n*r));
         }else{
             this.a=0.75;
         }
@@ -657,6 +683,10 @@ class Probl extends Phaser.Scene{
             this.opc= this.add.text(1335, 75, '¿OTRO?', { color: 'black', fontFamily: 'Arial', fontSize: '50px '});
             this.element.visible=false;
             this.res.visible=false;
+            
+            this.input.keyboard.off('keydown-ENTER');
+            
+            
             this.add.text(1100, 640, r.toString(), { color: 'black', fontFamily: 'Arial', fontSize: '100px '});
             this.lienzo.lineStyle(5, 0x000000, 1);
             this.lienzo.lineBetween(1100, 740, 1170, 740);
@@ -788,6 +818,9 @@ class Eq2 extends Phaser.Scene{
         this.element.addListener('click');
         this.element.on('click',() => this.corregir(f[0],d,r));
         
+       
+        this.input.keyboard.on('keydown-ENTER',() => this.corregir(f[0],d,r));
+        
         this.lienzo2 = this.add.graphics();
         this.lienzo2.fillStyle(0xff0000);
         this.lienzo2.setAlpha(this.a);
@@ -837,6 +870,8 @@ class Eq2 extends Phaser.Scene{
             r1.value="";
             this.element.off('click');
             this.element.on('click',() => this.corregir2(n,r));
+            this.input.keyboard.off('keydown-ENTER');
+            this.input.keyboard.on('keydown-ENTER',() => this.corregir2(n,r));
             this.element.y+= 100;
             this.res.y+=100;
         }else{
@@ -863,6 +898,8 @@ class Eq2 extends Phaser.Scene{
             this.lienzo.lineBetween(630, 740, 750, 740);
             this.element.off('click');
             this.element.on('click',() => this.corregir3((n)));
+            this.input.keyboard.off('keydown-ENTER');
+            this.input.keyboard.on('keydown-ENTER',() => this.corregir3(n));
             
         }else{
             this.a=0.75;
@@ -878,6 +915,8 @@ class Eq2 extends Phaser.Scene{
             this.opc= this.add.text(1335, 75, '¿OTRO?', { color: 'black', fontFamily: 'Arial', fontSize: '50px '});
             this.element.visible=false;
             this.res.visible=false;
+            this.input.keyboard.off('keydown-ENTER');
+            
             this.add.text(1100, 640, r.toString(), { color: 'black', fontFamily: 'Arial', fontSize: '100px '});
             this.lienzo.lineStyle(5, 0x000000, 1);
             this.lienzo.lineBetween(1100, 740, 1170, 740);
@@ -986,6 +1025,18 @@ class Eq3 extends Phaser.Scene{
         this.element[2].on('click',() => this.corregir(2));
         this.element[3].on('click',() => this.corregir(3));
         this.element[4].on('click',() => this.corregir(4));
+        
+        this.input.keyboard.on('keydown-TWO',() => this.corregir(0));
+        this.input.keyboard.on('keydown-THREE',() => this.corregir(1));
+        this.input.keyboard.on('keydown-FIVE',() => this.corregir(2));
+        this.input.keyboard.on('keydown-SEVEN',() => this.corregir(3));
+        this.input.keyboard.on('keydown-ENTER',() => this.corregir(4));
+        
+        this.input.keyboard.on('keydown-NUMPAD_TWO',() => this.corregir(0));
+        this.input.keyboard.on('keydown-NUMPAD_THREE',() => this.corregir(1));
+        this.input.keyboard.on('keydown-NUMPAD_FIVE',() => this.corregir(2));
+        this.input.keyboard.on('keydown-NUMPAD_SEVEN',() => this.corregir(3));
+        this.input.keyboard.on('keydown-ENTER',() => this.corregir(4));
         
         
         
@@ -1132,6 +1183,9 @@ class S1 extends Phaser.Scene{
         this.element.addListener('click');
         this.element.on('click',() => this.corregir());
         
+
+        this.input.keyboard.on('keydown-ENTER',() => this.corregir());
+        
         this.lienzo2 = this.add.graphics();
         this.lienzo2.fillStyle(0xff0000);
         this.lienzo2.setAlpha(this.a);
@@ -1197,6 +1251,19 @@ class S1 extends Phaser.Scene{
                 this.element[3].on('click',() => this.corregir2(3));
                 this.element[4].on('click',() => this.corregir2(4));
                 
+                this.input.keyboard.off('keydown-ENTER');
+                
+                this.input.keyboard.on('keydown-TWO',() => this.corregir2(0));
+                this.input.keyboard.on('keydown-THREE',() => this.corregir2(1));
+                this.input.keyboard.on('keydown-FIVE',() => this.corregir2(2));
+                this.input.keyboard.on('keydown-SEVEN',() => this.corregir2(3));
+                this.input.keyboard.on('keydown-ENTER',() => this.corregir2(4));
+
+                this.input.keyboard.on('keydown-NUMPAD_TWO',() => this.corregir2(0));
+                this.input.keyboard.on('keydown-NUMPAD_THREE',() => this.corregir2(1));
+                this.input.keyboard.on('keydown-NUMPAD_FIVE',() => this.corregir2(2));
+                this.input.keyboard.on('keydown-NUMPAD_SEVEN',() => this.corregir2(3));
+                
                 
         }else{
             this.a=0.75;
@@ -1252,6 +1319,255 @@ class S1 extends Phaser.Scene{
         }
     }
 }
+class S2 extends Phaser.Scene{
+    constructor() {
+        super('S2');
+        this.a = 0;
+        this.primos = [2,3,5,7,-1];
+        this.den=[2,4,8];
+    }
+    preload(){
+        this.load.image('fondo','./asset/img/background.png');
+        this.load.image('inicio','./asset/img/inicio.png');
+    }
+    create(){
+        this.add.image(960,540,'fondo');
+        this.inicio = this.add.image(130,130,'inicio');
+        this.inicio.setScale(0.5);
+        this.lienzo = this.add.graphics();
+        this.lienzo.lineStyle(10, 0x000000, 1);
+           
+        
+        const inicio = this.add.zone(0, 0, 250, 250);
+        inicio.setOrigin(0);
+        inicio.setInteractive();
+        inicio.once('pointerdown', () => this.opcionPulsada('inicio'));
+        
+        this.d = [this.den[Math.floor(Math.random()*3)],this.den[Math.floor(Math.random()*3)]];
+        this.n = [Math.floor(Math.random()*(this.d[0]-1))+1,Math.floor(Math.random()*(this.d[1]-1))+1];
+        
+        var div = document.createElement('h1');
+        div.style = 'width: 1000px; font-size: 80px; ';
+        /*var span = new Array();
+        span.push(document.createElement('span'));
+        span[0].setAttribute("class","fup");
+        span[0].innerText = f[0].toString();
+        */
+        
+        div.innerHTML ='Cuánto es: ';
+        this.add.dom(960, 300, div);
+        
+        this.resp =document.createElement('h1');
+        this.resp.style = 'width: 1000px; font-size: 50px; ';
+        this.resp.innerHTML ='<div class="fraction"><span class="fup">'+this.n[0]+
+                       '</span><span class="bar">/</span><span class="fdn">'+
+                       this.d[0]+'</span></div> &plus; <div class="fraction"><span class="fup">'+this.n[1]+
+                       '</span><span class="bar">/</span><span class="fdn">'+
+                       this.d[1]+'</span></div>';
+        this.add.dom(960, 500, this.resp);
+        /*
+        var respuesta = document.createElement('input');
+        respuesta.setAttribute('type'  ,'number');
+        respuesta.setAttribute('id','respuestaN');
+        this.rn = this.add.dom(1260, 640, respuesta);
+        var respuesta = document.createElement('input');
+        respuesta.setAttribute('type'  ,'number');
+        respuesta.setAttribute('id','respuestaD');
+        this.rd = this.add.dom(1260, 740, respuesta);
+        this.lienzo.lineStyle(10, 0x000000, 1);
+        this.ltext = this.lienzo.lineBetween(1110, 690, 1410, 690);
+        */
+        this.respuesta = document.createElement('input');
+        this.respuesta.setAttribute('type'  ,'number');
+        this.respuesta.setAttribute('id','respuesta');
+        this.rd = this.add.dom(1260, 690, this.respuesta);
+        
+        this.text = this.add.text(300, 650, 'Denominador común =', { color: 'black', fontFamily: 'Arial', fontSize: '80px '});
+        
+        var boton = document.createElement('button');
+        boton.setAttribute('type','button');
+        this.element = this.add.dom(1600, 690, boton,'','Corregir');
+        this.element.addListener('click');
+        this.element.on('click',() => this.corregir0());
+        
+        this.input.keyboard.on('keydown-ENTER',() => this.corregir0());
+        
+        this.lienzo2 = this.add.graphics();
+        this.lienzo2.fillStyle(0xff0000);
+        this.lienzo2.setAlpha(this.a);
+        this.lienzo2.fillRect(0,0,1920,1080);
+    }
+    update(time, delta){
+        if(this.a>0){
+            this.a-=0.5*delta/1000;
+        }else{
+            this.a=0;
+        }
+        this.lienzo2.clear();
+        this.lienzo2.setAlpha(this.a);
+        this.lienzo2.fillStyle(0xff0000);
+        this.lienzo2.fillRect(0,0,1920,1080);
+    }
+    opcionPulsada(opcion) {
+        if(opcion === "inicio"){
+            this.scene.start('menu');
+        }else if(opcion === ""+this.xkg_val){
+            this.scene.start('Ganar');
+        }else{
+            this.scene.start('S1');
+        }
+    }
+    corregir0(){
+        var r=document.getElementById('respuesta').value;
+        if(r===null){
+            this.a=0.75;
+        }else if(r%this.d[0] === 0 && r%this.d[1]===0 && r > 0){
+            
+            this.n[0]=this.n[0]*r/this.d[0];
+            this.n[1]=this.n[1]*r/this.d[1];
+            this.d[0]=r;
+            this.d[1]=r;
+            this.rd.visible=false;
+            this.text.visible=false;
+            this.resp.innerHTML += '=<div class="fraction"><span class="fup">'+(this.n[0])+
+                       '</span><span class="bar">/</span><span class="fdn">'+
+                       r+'</span></div>+<div class="fraction"<span class="fup">'+(this.n[1])+
+                       '</span><span class="bar">/</span><span class="fdn">'+
+                       r+'</span></div>';
+               
+            var respuesta = document.createElement('input');
+            respuesta.setAttribute('type'  ,'number');
+            respuesta.setAttribute('id','respuestaN');
+            this.rn = this.add.dom(1260, 640, respuesta);
+            var respuesta = document.createElement('input');
+            respuesta.setAttribute('type'  ,'number');
+            respuesta.setAttribute('id','respuestaD');
+            this.rd = this.add.dom(1260, 740, respuesta);
+            this.lienzo.lineStyle(10, 0x000000, 1);
+            this.ltext = this.lienzo.lineBetween(1110, 690, 1410, 690);
+
+            this.text = this.add.text(500, 640, 'Respuesta =', { color: 'black', fontFamily: 'Arial', fontSize: '100px '});
+            
+            this.element.off('click');
+            this.element.on('click',() => this.corregir());
+            
+            this.input.keyboard.off('keydown-ENTER');
+            this.input.keyboard.on('keydown-ENTER',() => this.corregir());
+        }else{
+            this.a=0.75;
+        }
+        
+    }
+    corregir(){
+        var r1=document.getElementById('respuestaN');
+        var r2=document.getElementById('respuestaD');
+        this.nr=this.n[0]+this.n[1];
+        //console.log(this.nr);
+        //console.log(this.d[0]);
+        if(this.nr+"" === r1.value && (this.d[0])+"" === r2.value){
+                this.resp.innerHTML += '=<div class="fraction"><span class="fup">'+this.nr+
+                       '</span><span class="bar">/</span><span class="fdn">'+
+                       this.d[0];
+                this.element.visible = false;
+                this.rn.visible = false;
+                this.rd.visible = false;
+                this.text.visible = false;
+                this.ltext.visible = false;
+                this.lienzo.clear();
+                this.lienzo.visible = true;
+                this.r = this.mcm(this.nr,this.d[0]);
+                
+                this.texto = this.add.text(180, 730, '¿Con cuál número simplifico?', { color: 'black', fontFamily: 'Arial', fontSize: '100px '});
+
+                var boton = new Array();
+                this.element = new Array();
+                for(var i=0;i<4;i++){
+                    boton.push(document.createElement('button'));
+                    boton[i].setAttribute('type','button');
+                    
+                    this.element.push(this.add.dom(260+i*300, 885, boton[i],null,this.primos[i].toString())) ; 
+                    this.element[i].addListener('click');
+                }
+                boton.push(document.createElement('button'));
+                boton[4].setAttribute('type','button');
+                boton[4].setAttribute('id',this.primos[4].toString());
+                this.element.push(this.add.dom(260+i*300, 885, boton[4],null,"Ninguno")) ; 
+                this.element[4].addListener('click');
+
+                this.element[0].on('click',() => this.corregir2(0));
+                this.element[1].on('click',() => this.corregir2(1));
+                this.element[2].on('click',() => this.corregir2(2));
+                this.element[3].on('click',() => this.corregir2(3));
+                this.element[4].on('click',() => this.corregir2(4));
+                
+                
+                this.input.keyboard.off('keydown-ENTER');
+                
+                this.input.keyboard.on('keydown-TWO',() => this.corregir2(0));
+                this.input.keyboard.on('keydown-THREE',() => this.corregir2(1));
+                this.input.keyboard.on('keydown-FIVE',() => this.corregir2(2));
+                this.input.keyboard.on('keydown-SEVEN',() => this.corregir2(3));
+                this.input.keyboard.on('keydown-ENTER',() => this.corregir2(4));
+
+                this.input.keyboard.on('keydown-NUMPAD_TWO',() => this.corregir2(0));
+                this.input.keyboard.on('keydown-NUMPAD_THREE',() => this.corregir2(1));
+                this.input.keyboard.on('keydown-NUMPAD_FIVE',() => this.corregir2(2));
+                this.input.keyboard.on('keydown-NUMPAD_SEVEN',() => this.corregir2(3));
+                
+        }else{
+            this.a=0.75;
+        }
+    }
+    mcm(p,q){
+        console.log("mcm("+p+","+q+")");
+        if(p>=q){
+            if(p === q*Math.floor(p/q)){
+                return q;
+            }else{
+                return this.mcm(q,p-q*Math.floor(p/q));
+            }
+        }else{
+            return  this.mcm(q,p);
+        }
+    }
+    corregir2(i){
+        var p=this.primos[i];
+        if(p === -1){
+            if(this.r === 1){
+                this.lienzo.fillStyle(0x00ff00);
+                this.lienzo.fillRect(1300,50,300,100);
+                this.opc= this.add.text(1335, 75, '¿OTRO?', { color: 'black', fontFamily: 'Arial', fontSize: '50px '});
+                for(var j=0;j<5;j++){
+                    this.element[j].visible=false;
+                }
+                const otro = this.add.zone(1300, 50, 300,100);
+                otro.setOrigin(0);
+                otro.setInteractive();
+                otro.once('pointerdown', () => this.opcionPulsada('otro'));
+                
+                var h2 = this.add.dom(1100, 500, 'h2', null, 'Ganaste ');
+                h2.setClassName('dreams');
+                h2.setAngle(-15);
+            }else{
+                this.a=0.75;
+            }
+        }else if((this.r%p)=== 0 ){
+            //this.scene.start('Ganar');
+            
+            this.r /= p;
+            this.nr /= p;
+            this.d[0] /= p;
+            this.resp.innerHTML += '<div class="fraction"><span class="fup">(&divide;'+p+
+                       ')</span><span class="bar">/</span><span class="fdn">(&divide;'+
+                       p+')</span></div>=<div class="fraction"><span class="fup">'+(this.nr)+
+                       '</span><span class="bar">/</span><span class="fdn">'+
+                       (this.d[0])+'</span></div>';
+            
+        }else{
+            this.a=0.75;
+        }
+    }
+}
 const config = {
   type: Phaser.AUTO,
   width: 1920,
@@ -1261,7 +1577,7 @@ const config = {
   dom: {
         createContainer: true
     },
-  scene: [menu, Explora, Pro,Prob,Probl,Ganar,Eq2,Eq3,S1],
+  scene: [menu, Explora, Pro,Prob,Probl,Ganar,Eq2,Eq3,S1,S2],
   scale: {
       mode: Phaser.Scale.Fit
   },
