@@ -12,7 +12,7 @@ class menu extends Phaser.Scene{
         this.load.image('menu','./asset/img/MENU.png');
     }
     create(){
-        this.add.image(960,540,'fondo');
+        //this.add.image(960,540,'fondo');
         this.add.image(960,540,'menu');
         const explorar = this.add.zone(800, 346, 320, 90);
 	explorar.setOrigin(0);
@@ -69,7 +69,7 @@ class Explora extends Phaser.Scene{
         
     }
     create(){
-        this.add.image(960,540,'fondo');
+        //this.add.image(960,540,'fondo');
         this.inicio = this.add.image(130,130,'inicio');
         this.inicio.setScale(0.5);
         this.add.image(960,720,'base');
@@ -201,7 +201,7 @@ class Pro extends Phaser.Scene{
         this.load.image('base','./asset/img/triangulo.png');
     }
     create(){
-        this.add.image(960,540,'fondo');
+        //this.add.image(960,540,'fondo');
         this.pregunta = this.add.image(960,260,'pregunta');
         this.pregunta.setScale(0.5);
         this.inicio = this.add.image(130,130,'inicio');
@@ -410,7 +410,7 @@ class Prob extends Phaser.Scene{
         this.load.image('base','./asset/img/triangulo.png');
     }
     create(){
-        this.add.image(960,540,'fondo');
+        //this.add.image(960,540,'fondo');
         this.pregunta = this.add.image(960,260,'pregunta');
         this.pregunta.setScale(0.5);
         this.inicio = this.add.image(130,130,'inicio');
@@ -614,7 +614,7 @@ class Probl extends Phaser.Scene{
         this.load.image('base','./asset/img/triangulo.png');
     }
     create(){
-        this.add.image(960,540,'fondo');
+        //this.add.image(960,540,'fondo');
         this.pregunta = this.add.image(960,260,'pregunta');
         this.pregunta.setScale(0.5);
         this.inicio = this.add.image(130,130,'inicio');
@@ -918,7 +918,7 @@ const config = {
   type: Phaser.AUTO,
   width: 1920,
   height: 1080,
-  backgroundColor: '#080808',
+  backgroundColor: '#ffffff',
   parent: 'phaser-example',
   dom: {
         createContainer: true
