@@ -12,7 +12,7 @@ class Explora extends Phaser.Scene{
         var px, limx;
     }
     preload(){
-        this.load.image('fondo','./asset/img/background.png');
+        this.load.image('fondo','./asset/img/logo.jpeg');
         this.load.image('inicio','./asset/img/inicio.png');       
         this.load.image('1','./asset/img/1.png');
         this.load.image('2','./asset/img/12.png');
@@ -26,7 +26,7 @@ class Explora extends Phaser.Scene{
         this.load.image('10','./asset/img/110.png');
     }
     create(){
-        this.add.image(960,540,'fondo');
+        this.add.image(0,0,'fondo').setOrigin(0);
                 
         this.fra = new Array();
                        
@@ -90,7 +90,7 @@ const config = {
   type: Phaser.AUTO,
   width: 1920,
   height: 1080,
-  backgroundColor: '#080808',
+  backgroundColor: '#ffffff',
   parent: 'phaser-example',
   dom: {
         createContainer: true
