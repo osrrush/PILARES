@@ -14,7 +14,7 @@ class menu extends Phaser.Scene{
         this.load.css('fuente', './src/fuente.css');
     }
     create(){
-        this.add.image(960,540,'fondo');
+        //this.add.image(960,540,'fondo');
         this.add.image(960,540,'menu');
         
         var h1 = this.add.dom(960, 250, 'h1', null, 'Recta numérica');
@@ -55,7 +55,7 @@ class Prob1 extends Phaser.Scene{
         //this.load.html('respuesta','./assets/respuestas.html');
     }
     create(){
-        this.add.image(960,540, 'fondo');
+        //this.add.image(960,540, 'fondo');
         this.lienzo = this.add.graphics();
         this.lienzo.lineStyle(10, 0x000000, 1);
         
@@ -185,7 +185,7 @@ class Prob2 extends Phaser.Scene{
         //this.load.html('respuesta','./assets/respuestas.html');
     }
     create(){
-        this.add.image(960,540, 'fondo');
+        //this.add.image(960,540, 'fondo');
         this.lienzo = this.add.graphics();
         this.lienzo.lineStyle(10, 0x000000, 1);
         
@@ -350,7 +350,7 @@ const config = {
   type: Phaser.AUTO,
   width: 1920,
   height: 1080,
-  backgroundColor: '#080808',
+  backgroundColor: '#ffffff',
   parent: 'phaser-example',
   dom: {
         createContainer: true
