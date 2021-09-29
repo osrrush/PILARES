@@ -15,10 +15,8 @@ and open the template in the editor.
 }
 .Logo{
     display: inline-block;
-    margin: 0px 0% 0px 0px;
-    width: 409px;
-    position: absolute;
-    left: 0px;
+    margin: 0px 35% 0px 0px;
+    width: 300px;
 }
 .cabeza{
     text-align: center;
@@ -88,9 +86,6 @@ and open the template in the editor.
     background: #fff;
 }
 .menu{
-    position: absolute;
-    bottom: -90px;
-    left: 410px;
     display: inline-block;
     margin: 0px 10px 0px 10px;
     text-align: center;
@@ -169,9 +164,7 @@ and open the template in the editor.
     background-color: red;
 }
 .frame{
-	position: absolute;
-    width: 80%;
-    margin: 0px auto;
-    overflow: auto;
-	
+	width: 845px;
+	margin: 20px auto;
+        overflow: auto ;
 }
