@@ -169,7 +169,9 @@ and open the template in the editor.
     background-color: red;
 }
 .frame{
-	width: 80%;
-	margin: 0px auto;
-        overflow: auto ;
+	position: absolute;
+    width: 80%;
+    margin: 0px auto;
+    overflow: auto;
+	
 }
