@@ -10,13 +10,13 @@ and open the template in the editor.
 .arriba{
     background: white;
     position: fixed;
-    width: 30%;
+    width: 100%;
     margin-top: 0%;
 }
 .Logo{
     display: inline-block;
-    margin: 0px 35% 0px 0px;
-    width: 300px;
+    margin: 0px 0% 0px 0px;
+    width: 409px;
 }
 .cabeza{
     text-align: center;
