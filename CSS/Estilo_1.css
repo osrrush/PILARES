@@ -17,6 +17,8 @@ and open the template in the editor.
     display: inline-block;
     margin: 0px 0% 0px 0px;
     width: 409px;
+    position: absolute;
+    left: 0px;
 }
 .cabeza{
     text-align: center;
