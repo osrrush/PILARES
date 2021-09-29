@@ -86,7 +86,9 @@ and open the template in the editor.
     background: #fff;
 }
 .menu{
-    
+    display: inline-block;
+    margin: 0px 10px 0px 10px;
+    text-align: center;
 } 
 #menu ul {
  list-style:none;
