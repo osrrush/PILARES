@@ -89,7 +89,7 @@ and open the template in the editor.
 }
 .menu{
     position: absolute;
-    bottom: 0px;
+    bottom: -90px;
     right: 30%;
     display: inline-block;
     margin: 0px 10px 0px 10px;
