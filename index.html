@@ -10,9 +10,20 @@ and open the template in the editor.
         <meta charset="UTF-8">
         <meta name="MobileOptimized" content="width" />
         <link rel="stylesheet" type="text/css" href="CSS/Estilo_1.css">
-        <script src="inicio.js"></script>
+        
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script>
+            const fs = require(fs);
+            const archivo = 'prueba.txt';
+
+            var contenido = "Primera linea";
+            fs.writeFile(archivo,contenido);
+            console.log("Contenido escrito");
+
+            fs.appendFile(archivo,"Segunda linea");
+            console.log("Contenido escrito");
+        </script>
         <script>
             $(document).ready(function(){
                 $("#0").click(function(){
