@@ -32,7 +32,7 @@ class alpha extends Phaser.Scene{
         this.graph = this.add.graphics();
         this.graph.fillStyle(0xF1C40F);
         this.graph.fillRect(1600,50,300,90);
-        this.add.text(1750, 50, 'INICIO', { color: 'black', fontFamily: 'Arial', fontSize: '70px '}).setOrigin(0.5,0);
+        this.add.text(1750, 50, 'Home', { color: 'black', fontFamily: 'Arial', fontSize: '70px '}).setOrigin(0.5,0);
         
         const ini = this.add.zone(1600, 50, 300, 90);
 	ini.setOrigin(0);
@@ -164,7 +164,7 @@ class borv extends Phaser.Scene{
         this.graph = this.add.graphics();
         this.graph.fillStyle(0xF1C40F);
         this.graph.fillRect(1600,50,300,90);
-        this.add.text(1750, 50, 'INICIO', { color: 'black', fontFamily: 'Arial', fontSize: '70px '}).setOrigin(0.5,0);
+        this.add.text(1750, 50, 'Home', { color: 'black', fontFamily: 'Arial', fontSize: '70px '}).setOrigin(0.5,0);
         
         const ini = this.add.zone(1600, 50, 300, 90);
 	ini.setOrigin(0);
@@ -296,7 +296,7 @@ class corz extends Phaser.Scene{
         this.graph = this.add.graphics();
         this.graph.fillStyle(0xF1C40F);
         this.graph.fillRect(1600,50,300,90);
-        this.add.text(1750, 50, 'INICIO', { color: 'black', fontFamily: 'Arial', fontSize: '70px '}).setOrigin(0.5,0);
+        this.add.text(1750, 50, 'Home', { color: 'black', fontFamily: 'Arial', fontSize: '70px '}).setOrigin(0.5,0);
         
         const ini = this.add.zone(1600, 50, 300, 90);
 	ini.setOrigin(0);
@@ -431,7 +431,7 @@ class bee extends Phaser.Scene{
         this.graph = this.add.graphics();
         this.graph.fillStyle(0xF1C40F);
         this.graph.fillRect(1600,50,300,90);
-        this.add.text(1750, 50, 'INICIO', { color: 'black', fontFamily: 'Arial', fontSize: '70px '}).setOrigin(0.5,0);
+        this.add.text(1750, 50, 'Home', { color: 'black', fontFamily: 'Arial', fontSize: '70px '}).setOrigin(0.5,0);
         
         const ini = this.add.zone(1600, 50, 300, 90);
 	ini.setOrigin(0);
@@ -584,21 +584,31 @@ class menu extends Phaser.Scene{
         
         var lienzo =this.add.graphics();
         
-        lienzo.fillStyle(0x9B59B6 );
+        lienzo.fillStyle(0xF1C40F );
         lienzo.fillRect(652,346,616,90);
-        this.add.text(960, 350, 'Adivina la letra', { color: 'black', fontFamily: 'Arial', fontSize: '70px '}).setOrigin(0.5,0);
+        this.add.text(960, 350, 'Learn', { color: 'black', fontFamily: 'Arial', fontSize: '70px '}).setOrigin(0.5,0);
         
-        const al = this.add.zone(652, 346, 616, 90);
+        const Ex = this.add.zone(652, 346, 616, 90);
+	Ex.setOrigin(0);
+	Ex.setInteractive();
+	Ex.once('pointerdown', () => this.opcionPulsada('Ex'));
+	this.add.graphics().lineStyle(2, 0xff0000).strokeRectShape(Ex);
+        
+        lienzo.fillStyle(0x9B59B6 );
+        lienzo.fillRect(652,446,616,90);
+        this.add.text(960, 450, 'Adivina la letra', { color: 'black', fontFamily: 'Arial', fontSize: '70px '}).setOrigin(0.5,0);
+        
+        const al = this.add.zone(652, 446, 616, 90);
 	al.setOrigin(0);
 	al.setInteractive();
 	al.once('pointerdown', () => this.opcionPulsada('al'));
 	this.add.graphics().lineStyle(2, 0xff0000).strokeRectShape(al);
         
         lienzo.fillStyle(0x3498DB );
-        lienzo.fillRect(652,446,616,90);
-        this.add.text(960, 450, 'B or V', { color: 'black', fontFamily: 'Arial', fontSize: '70px '}).setOrigin(0.5,0);
+        lienzo.fillRect(652,546,616,90);
+        this.add.text(960, 550, 'B or V', { color: 'black', fontFamily: 'Arial', fontSize: '70px '}).setOrigin(0.5,0);
         
-        const bv = this.add.zone(652, 446, 616, 90);
+        const bv = this.add.zone(652, 546, 616, 90);
 	bv.setOrigin(0);
 	bv.setInteractive();
 	bv.once('pointerdown', () => this.opcionPulsada('bv'));
@@ -606,20 +616,20 @@ class menu extends Phaser.Scene{
         
         
         lienzo.fillStyle(0x2ECC71);
-        lienzo.fillRect(652,546,616,90);
-        this.add.text(960, 550, 'C or Z', { color: 'black', fontFamily: 'Arial', fontSize: '70px '}).setOrigin(0.5,0);
+        lienzo.fillRect(652,646,616,90);
+        this.add.text(960, 650, 'C or Z', { color: 'black', fontFamily: 'Arial', fontSize: '70px '}).setOrigin(0.5,0);
         
-        const cz = this.add.zone(652, 546, 616, 90);
+        const cz = this.add.zone(652, 646, 616, 90);
 	cz.setOrigin(0);
 	cz.setInteractive();
 	cz.once('pointerdown', () => this.opcionPulsada('cz'));
 	this.add.graphics().lineStyle(2, 0xff0000).strokeRectShape(cz);
         
         lienzo.fillStyle(0xF1C40F);
-        lienzo.fillRect(652,646,616,90);
-        this.add.text(960, 650, 'Adivina la palabra', { color: 'black', fontFamily: 'Arial', fontSize: '70px '}).setOrigin(0.5,0);
+        lienzo.fillRect(652,746,616,90);
+        this.add.text(960, 750, 'Adivina la palabra', { color: 'black', fontFamily: 'Arial', fontSize: '70px '}).setOrigin(0.5,0);
         
-        const ap = this.add.zone(652, 646, 616, 90);
+        const ap = this.add.zone(652, 746, 616, 90);
 	ap.setOrigin(0);
 	ap.setInteractive();
 	ap.once('pointerdown', () => this.opcionPulsada('ap'));
@@ -634,9 +644,100 @@ class menu extends Phaser.Scene{
             this.scene.start('corz');
         } else if (opcion === 'ap'){
             this.scene.start('bee');
+        } else if (opcion === 'Ex'){
+            this.scene.start('Explorar');
         } else {
             console.log(opcion);
         }
+    }
+}
+class Explorar extends Phaser.Scene{
+    constructor() {
+		super({key:'Explorar'}); //, active:'true'
+    }
+    preload(){
+        this.load.image('logo','./assets/img/logo.jpeg');
+        for(var i=0;i<letters.length;i++){
+            this.load.audio(letters.charAt(i)+'', './assets/sounds/'+letters.charAt(i)+'.mp3');
+            //console.log(letters.charAt(i)+'.mp3');
+        }
+        this.load.image('blanco','./assets/img/blanco.png');
+        
+    }
+    create(){
+        this.add.image(0,0,'logo').setOrigin(0,0);
+        this.div = document.createElement('h1');
+        this.div.style = 'width: 1000px; font-size: 80px; ';
+        this.div.innerText = 'Touch a Letter.';
+        this.add.dom(1200, 50, this.div).setOrigin(0.5,0.5);
+        
+        this.graph = this.add.graphics();
+        this.graph.fillStyle(0xF1C40F);
+        this.graph.fillRect(1600,50,300,90);
+        this.add.text(1750, 50, 'Home', { color: 'black', fontFamily: 'Arial', fontSize: '70px '}).setOrigin(0.5,0);
+        
+        const ini = this.add.zone(1600, 50, 300, 90);
+	ini.setOrigin(0);
+	ini.setInteractive();
+	ini.once('pointerdown', () => this.opcionPulsada('ini'));
+	this.add.graphics().lineStyle(2, 0xff0000).strokeRectShape(ini);
+        
+        //this.lienzo.setAlpha(0.7);
+        const opc = new Array();
+        fx = new Array();
+        for( var i=0 ; i < letters.length ; i++ ){
+            
+            fx.push(this.sound.add(letters.charAt(i)+"",{loop: false}));
+            
+            var x = 100;
+            var y = 300;
+            
+            
+            var image = this.add.image(x+(i%10)*170 , y+170*Math.floor(i/10) , 'blanco').setInteractive();
+            
+            this.add.text(x+(i%10)*170 , y+170*Math.floor(i/10), letters.charAt(i), { color: 'black', fontFamily: 'Arial', fontSize: '100px '}).setOrigin(0.5,0.5);
+            
+            image.displayWidth = 100;
+            image.displayHeight = 100;
+            
+            image.on('pointerover', this.over, this);
+            
+            image.on('pointerout', this.out, this);
+            
+        }
+        this.lienzo =this.add.graphics();
+        /*        
+        opc[0].once('pointerdown', () => this.opcionPulsada(0));
+        opc[1].once('pointerdown', () => this.opcionPulsada(1));
+        opc[2].once('pointerdown', () => this.opcionPulsada(2));
+        opc[3].once('pointerdown', () => this.opcionPulsada(3));
+        */
+    }
+    over(imagen){
+        
+        var x= Math.floor((imagen.x-20)/170);
+        var y= Math.floor((imagen.y-220)/170);
+        fx[y*10+x].play();
+        
+        this.lienzo.fillStyle(0xff0000);
+        this.lienzo.setAlpha(0.5);
+        this.lienzo.fillRect(20+170*x,220+170*y,170,170);
+        this.div.innerText = letters.charAt(y*10+x);
+    }
+    out(){
+        this.sound.stopAll();
+        this.lienzo.clear();
+        this.lienzo.setAlpha(1);
+        this.div.innerText = 'Choose a Letter.';
+    }
+    opcionPulsada(opcion) {
+        rc=0;
+        if(opcion === 'ini'){
+            this.scene.start('menu');
+        } else{
+            console.log("A dónde voy?");
+        }
+        
     }
 }
 const config = {
@@ -648,7 +749,7 @@ const config = {
   dom: {
         createContainer: true
     },
-  scene: [menu,bee,corz,borv,alpha ],
+  scene: [menu,Explorar,bee,corz,borv,alpha ],
   scale: {
       mode: Phaser.Scale.Fit
   },
@@ -659,3 +760,4 @@ const config = {
 }
 
 var game = new Phaser.Game(config);
+
