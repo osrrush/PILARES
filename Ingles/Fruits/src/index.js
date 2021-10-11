@@ -9,7 +9,7 @@ let animals = ['apple', 'avocado', 'banana', 'cherry', 'coconut', 'cucumber',
     'grapes', 'kiwi', 'lemon', 'lime', 'mango', 'melon', 'orange', 'papaya', 
     'peach', 'pear', 'pineapple', 'strawberry', 'tangerine', 'tomato', 'watermelon'];
 
-const titulo = 'Animals'; //Titulo del juego
+const titulo = 'Fruits'; //Titulo del juego
 const menulabel = [['Vocabulary'],
     ['Read and choose'],
     ['Listen and choose'],
@@ -126,7 +126,7 @@ class Explorar extends Phaser.Scene{
         this.graph = this.add.graphics();
         this.graph.fillStyle(0xF1C40F);
         this.graph.fillRect(1600,50,300,90);
-        this.add.text(1750, 50, 'INICIO', { color: 'black', fontFamily: 'Arial', fontSize: '70px '}).setOrigin(0.5,0);
+        this.add.text(1750, 50, 'Home', { color: 'black', fontFamily: 'Arial', fontSize: '70px '}).setOrigin(0.5,0);
         
         const ini = this.add.zone(1600, 50, 300, 90);
 	ini.setOrigin(0);
@@ -178,7 +178,7 @@ class Explorar extends Phaser.Scene{
         this.sound.stopAll();
         this.lienzo.clear();
         this.lienzo.setAlpha(1);
-        this.div.innerText = 'Elige un animal.';
+        this.div.innerText = 'Elige una fruta.';
     }
     opcionPulsada(opcion) {
         rc=0;
@@ -219,7 +219,7 @@ class RC extends Phaser.Scene{
         this.graph = this.add.graphics();
         this.graph.fillStyle(0xF1C40F);
         this.graph.fillRect(1600,50,300,90);
-        this.add.text(1750, 50, 'INICIO', { color: 'black', fontFamily: 'Arial', fontSize: '70px '}).setOrigin(0.5,0);
+        this.add.text(1750, 50, 'Home', { color: 'black', fontFamily: 'Arial', fontSize: '70px '}).setOrigin(0.5,0);
         
         const ini = this.add.zone(1600, 50, 300, 90);
 	ini.setOrigin(0);
@@ -281,7 +281,7 @@ class RC extends Phaser.Scene{
         
         this.lienzo.clear();
         this.lienzo.setAlpha(1);
-        //this.div.innerText = 'Elige un animal.';
+        //this.div.innerText = 'Elige una fruta.';
     }
     clic(imagen){
         this.sound.stopAll();
@@ -363,7 +363,7 @@ class LC extends Phaser.Scene{
         this.graph = this.add.graphics();
         this.graph.fillStyle(0xF1C40F);
         this.graph.fillRect(1600,50,300,90);
-        this.add.text(1750, 50, 'INICIO', { color: 'black', fontFamily: 'Arial', fontSize: '70px '}).setOrigin(0.5,0);
+        this.add.text(1750, 50, 'Home', { color: 'black', fontFamily: 'Arial', fontSize: '70px '}).setOrigin(0.5,0);
         
         const ini = this.add.zone(1600, 50, 300, 90);
 	ini.setOrigin(0);
@@ -442,7 +442,7 @@ class LC extends Phaser.Scene{
         
         this.lienzo.clear();
         this.lienzo.setAlpha(1);
-        //this.div.innerText = 'Elige un animal.';
+        //this.div.innerText = 'Elige un fruit.';
     }
     clic(imagen){
         this.sound.stopAll();
@@ -702,7 +702,7 @@ class SW extends Phaser.Scene{
         this.graph = this.add.graphics();
         this.graph.fillStyle(0xF1C40F);
         this.graph.fillRect(1600,50,300,90);
-        this.add.text(1750, 50, 'INICIO', { color: 'black', fontFamily: 'Arial', fontSize: '70px '}).setOrigin(0.5,0);
+        this.add.text(1750, 50, 'Home', { color: 'black', fontFamily: 'Arial', fontSize: '70px '}).setOrigin(0.5,0);
         
         const ini = this.add.zone(1600, 50, 300, 90);
 	ini.setOrigin(0);
