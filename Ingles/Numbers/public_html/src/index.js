@@ -4,11 +4,11 @@
  * and open the template in the editor.
  */
 const titulo = 'Numbers'; //Titulo del juego
-const menulabel = ['Escribe el número 1-20','Escribe el número 10-100','Escribe el número 1-100']; //Opciones menú
+const menulabel = ['Learn','Escribe el número 1-20','Escribe el número 10-100','Escribe el número 1-100']; //Opciones menú
 const LargoM = 840; //Largo de boton en menú
 const Colores = [0xd0598f,0x33a099,0xfdcf20,0x2272b4]; // Colore PILARES
 var a=0,b=0; //Alpha a= error b=correcto
-var c,w; //Sonido c=correcto w=equivocado
+var fx, c,w; //Sonido c=correcto w=equivocado
 var rc=0 ; //Contadores rc = respuesta correcta
 var num;
 const respuestas = ['zero','one','two','three','four','five','six','seven','eight',
@@ -47,22 +47,146 @@ class menu extends Phaser.Scene{
         opc[0].once('pointerdown', () => this.opcionPulsada(opc[0].name));
         opc[1].once('pointerdown', () => this.opcionPulsada(opc[1].name));
         opc[2].once('pointerdown', () => this.opcionPulsada(opc[2].name));
-        
+        opc[3].once('pointerdown', () => this.opcionPulsada(opc[3].name));
         
     }
     opcionPulsada(opcion) {
-	if (opcion === "0") {
+	if (opcion === "1") {
                 this.scene.start('ENL1');
-	} else if (opcion === "1") {
-                this.scene.start('ENL2');
 	} else if (opcion === "2") {
+                this.scene.start('ENL2');
+	} else if (opcion === "3") {
                 this.scene.start('ENL3');
+	} else if (opcion === "0") {
+                this.scene.start('Explorar');
 	} else {
             console.log(opcion);
         }
     }
 }
-
+class Explorar extends Phaser.Scene{
+    constructor() {
+		super({key:'Explorar'}); //, active:'true'
+    }
+    preload(){
+        this.load.image('logo','./assets/img/logo.jpeg');
+        
+        for(var i=0;i<21;i++){
+            this.load.audio(i+'', './assets/sounds/'+i+'.mp3');
+            //console.log(letters.charAt(i)+'.mp3');
+        }
+        for(var i=3;i<11;i++){
+            this.load.audio(i*10+'', './assets/sounds/'+i*10+'.mp3');
+            //console.log(letters.charAt(i)+'.mp3');
+        }
+        
+        this.load.image('blanco','./assets/img/blanco.png');
+        
+    }
+    create(){
+        this.add.image(0,0,'logo').setOrigin(0,0);
+        this.div = document.createElement('h1');
+        this.div.style = 'width: 1000px; font-size: 80px; ';
+        this.div.innerText = 'Touch a Number.';
+        this.add.dom(1200, 50, this.div).setOrigin(0.5,0.5);
+        
+        this.graph = this.add.graphics();
+        this.graph.fillStyle(0xF1C40F);
+        this.graph.fillRect(1600,50,300,90);
+        this.add.text(1750, 50, 'Home', { color: 'black', fontFamily: 'Arial', fontSize: '70px '}).setOrigin(0.5,0);
+        
+        const ini = this.add.zone(1600, 50, 300, 90);
+	ini.setOrigin(0);
+	ini.setInteractive();
+	ini.once('pointerdown', () => this.opcionPulsada('ini'));
+	this.add.graphics().lineStyle(2, 0xff0000).strokeRectShape(ini);
+        
+        //this.lienzo.setAlpha(0.7);
+        const opc = new Array();
+        fx = new Array();
+        for( var i=0 ; i < 20 ; i++ ){
+            
+            fx.push(this.sound.add(i+"",{loop: false}));
+            
+            var x = 100;
+            var y = 300;
+            
+            
+            var image = this.add.image(x+(i%10)*170 , y+170*Math.floor(i/10) , 'blanco').setInteractive();
+            
+            this.add.text(x+(i%10)*170 , y+170*Math.floor(i/10), (i)+"", { color: 'black', fontFamily: 'Arial', fontSize: '100px '}).setOrigin(0.5,0.5);
+            
+            image.displayWidth = 100;
+            image.displayHeight = 100;
+            
+            image.on('pointerover', this.over, this);
+            
+            image.on('pointerout', this.out, this);
+            
+        }
+        for( var i=1 ; i < 10 ; i++ ){
+            
+            fx.push(this.sound.add((i+1)*10+"",{loop: false}));
+            
+            var x = 100;
+            var y = 640;
+            
+            
+            var image = this.add.image(x+(i%10)*170 , y+170*Math.floor(i/10) , 'blanco').setInteractive();
+            
+            this.add.text(x+(i%10)*170 , y+170*Math.floor(i/10), (i+1)*10+"", { color: 'black', fontFamily: 'Arial', fontSize: '100px '}).setOrigin(0.5,0.5);
+            
+            image.displayWidth = 100;
+            image.displayHeight = 100;
+            
+            image.on('pointerover', this.over, this);
+            
+            image.on('pointerout', this.out, this);
+            
+        }
+        this.lienzo =this.add.graphics();
+        /*        
+        opc[0].once('pointerdown', () => this.opcionPulsada(0));
+        opc[1].once('pointerdown', () => this.opcionPulsada(1));
+        opc[2].once('pointerdown', () => this.opcionPulsada(2));
+        opc[3].once('pointerdown', () => this.opcionPulsada(3));
+        */
+    }
+    over(imagen){
+        
+        var x= Math.floor((imagen.x-20)/170);
+        var y= Math.floor((imagen.y-220)/170);
+        var n=y*10+x;
+        if(n>20){
+            fx[n-1].play();
+            n=(n-19)*10;
+            
+        }else{
+            fx[n].play();
+        }
+        
+        
+        this.lienzo.fillStyle(0xff0000);
+        this.lienzo.setAlpha(0.5);
+        this.lienzo.fillRect(20+170*x,220+170*y,170,170);
+        this.div.innerText = n;
+    }
+    out(){
+        this.sound.stopAll();
+        this.lienzo.clear();
+        this.lienzo.setAlpha(1);
+        this.div.innerText = 'Choose a Number.';
+    }
+    opcionPulsada(opcion) {
+        rc=0;
+        if(opcion === 'ini'){
+            this.scene.start('menu');
+        } else{
+            console.log("A dónde voy?");
+        }
+        
+    }
+}
 class ENL1 extends Phaser.Scene{ //Escribe el número con Letra
     
     constructor() {
@@ -611,7 +735,7 @@ const config = {
   dom: {
         createContainer: true
     },
-  scene: [menu,ENL1, ENL2,ENL3 ],
+  scene: [menu,Explorar,ENL1, ENL2,ENL3 ],
   scale: {
       mode: Phaser.Scale.Fit
   },
