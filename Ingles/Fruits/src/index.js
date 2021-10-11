@@ -120,7 +120,7 @@ class Explorar extends Phaser.Scene{
         this.add.image(0,0,'logo').setOrigin(0,0);
         this.div = document.createElement('h1');
         this.div.style = 'width: 1000px; font-size: 80px; ';
-        this.div.innerText = 'Elige un animal.';
+        this.div.innerText = 'Elige una fruta.';
         this.add.dom(1200, 50, this.div).setOrigin(0.5,0.5);
         
         this.graph = this.add.graphics();
