@@ -1358,17 +1358,24 @@ class S2D2 extends Phaser.Scene{ //¿Qué número es?
         var respuesta = document.createElement('input');
         respuesta.setAttribute('type'  ,'number');
         respuesta.setAttribute('id','respuestaD');
-        respuesta.setAttribute('style', 'width: 50px; text-align: rigth; background-color: #04b3f3 ;');
+        respuesta.setAttribute('style', 'width: 50px; text-align: right; background-color: #04b3f3; margin: 0;');
         respuesta.setAttribute('max','9');
         respuesta.setAttribute('min','0');
-        this.resD = this.add.dom(1090, 500, respuesta);
+        this.resD = this.add.dom(1080, 500, respuesta);
         var respuesta = document.createElement('input');
         respuesta.setAttribute('type'  ,'number');
         respuesta.setAttribute('id','respuestaU');
-        respuesta.setAttribute('style', 'width: 50px; text-align: rigth;');
+        respuesta.setAttribute('style', 'width: 50px; ');
         respuesta.setAttribute('max','9');
         respuesta.setAttribute('min','0');
         this.resU = this.add.dom(1150, 500, respuesta);
+        
+        var respuesta = document.createElement('input');
+        respuesta.setAttribute('type'  ,'number');
+        respuesta.setAttribute('style', 'width: 50px; text-align: right;');
+        respuesta.setAttribute('max','9');
+        respuesta.setAttribute('min','0');
+        this.add.dom(1090, 200, respuesta);
         
         this.velD = new Array();
         this.velU = new Array();
@@ -1452,7 +1459,7 @@ class S2D2 extends Phaser.Scene{ //¿Qué número es?
             for(var i=0;i<this.diez.length;i++){
                 this.diez[i].x+=this.velD[i][0]*delta/1000;
                 this.diez[i].y+=this.velD[i][1]*delta/1000;
-                if(this.diez[this.diez.length-1].x < (50+(this.diez.length-1)*70) ){
+                if(this.diez[i].x < (50+(i)*70) ){
                     this.velD[i][0]=0;
                     this.velD[i][1]=0;
                     rc=3;
@@ -2370,7 +2377,7 @@ const config = {
   dom: {
         createContainer: true
     },
-  scene: [menu,DHM3,DHM2,DHM,SA,S2D2,S2D,S1D2,Contar,GD10,QNE,S1D ],//
+  scene: [S2D2,menu,DHM3,DHM2,DHM,SA,S2D,S1D2,Contar,GD10,QNE,S1D ],//
   scale: {
       mode: Phaser.Scale.Fit
   },
