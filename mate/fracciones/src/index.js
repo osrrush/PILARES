@@ -4516,7 +4516,7 @@ const config = {
   dom: {
         createContainer: true
     },
-  scene: [M1,R1,S1,C1, menu, Explora, M2,M3,Eq1,Eq2,Eq3,S5,S2,S3,S4,R5,R2,R3,R4,D1,D2,D3,D4],
+  scene: [menu,M1,R1,S1,C1,  Explora, M2,M3,Eq1,Eq2,Eq3,S5,S2,S3,S4,R5,R2,R3,R4,D1,D2,D3,D4],
   scale: {
       mode: Phaser.Scale.Fit
   },
