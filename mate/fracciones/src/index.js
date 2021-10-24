@@ -3,262 +3,147 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+const titulo = 'Fracciones'; //Titulo del juego
+const menulabel = [['Explorar'],
+                ['Contar (1)', 'Sumar(1)', 'Restar(1)', 'Multiplicar (1)'],
+                ['Multiplicar (2)','Multiplicar (3)'],
+                ['Equivalencia (1)','Equivalencia (2)','Equivalencia (3)'],
+                ['Sumar(2)','Sumar(3)','Sumar(4)','Sumar(5)'],
+                ['Restar(2)','Restar(3)','Restar(4)','Restar(5)'],
+                ['Dividir(1)','Dividir(2)','Dividir(3)','Dividir(4)']]; //Opciones menú
+                
+
+//const escenas = [Contar, ENG,s1,s2,s3,r1,r2,r3,m1,m2,m3,d1,d2,d3];
+const LargoM = 400; //Largo de boton en menú
+const Colores = [0xd0598f,0x33a099,0xfdcf20,0x2272b4]; // Colore PILARES
+var a=0,b=0; //Alpha a= error b=correcto
+var c,w; //Sonido c=correcto w=equivocado
+var rc=0 ; //Contadores rc = respuesta correcta
+var num;
+
+
 class menu extends Phaser.Scene{
     constructor() {
-		super('menu');
-	}
+		super({key:'menu'}); //, active:'true'
+    }
     preload(){
-        this.load.image('fondo','./asset/img/logo.jpeg');
-        //this.load.image('menu','./asset/img/MENU.png');
+        this.load.image('logo','./asset/img/logo.jpeg');
         this.load.css('80s','./src/fuente.css');
     }
     create(){
-        this.add.image(0,0,'fondo').setOrigin(0,0);
-        var h1 = this.add.dom(960, 150, 'h1', null, 'Fracciones');
+        this.add.image(205,82,'logo');
+        var h1 = this.add.dom(960, 150, 'h1', null, titulo);
         h1.setClassName('deepshadow');
         var lienzo =this.add.graphics();
-        //this.add.image(960,540,'menu');
         
-        //Explorar
+        const opc = new Array();
         
-        //lienzo.fillStyle(0x6407b4);
-        lienzo.fillStyle(0xB40A28);
-        lienzo.fillRect(800,346,320,90);
-        this.add.text(830, 350, 'Explorar', { color: 'black', fontFamily: 'Arial', fontSize: '70px '});
+        for(var i=0;i<menulabel.length;i++){
+            //console.log("i = "+i);
+            var x = 960 -menulabel[i].length/2*LargoM-10*(menulabel[i].length-1);
+            //console.log("x = "+x);
+            for(var j=0; j<menulabel[i].length;j++){
+                //console.log("j = "+j);
+                var tam = 80*menulabel[i][j].length;
+                //console.log("tam = "+tam);
+                lienzo.fillStyle(Colores[i%4]);
+                lienzo.fillRect(x+(LargoM+20)*j,270+i*100,LargoM,90);
+                
+                if(tam <= 2*LargoM){
+                    this.add.text(x+(LargoM+20)*j+LargoM/2, 270+i*100+45, menulabel[i][j], { color: 'black', fontFamily: 'Arial', fontSize: '80px '}).setOrigin(0.5,0.5);
+                } else {
+                    var f =Math.floor(80*(2*LargoM)/tam);
+                    //console.log("f = "+f);
+                    this.add.text(x+(LargoM+20)*j+LargoM/2, 270+i*100+45, menulabel[i][j], { color: 'black', fontFamily: 'Arial', fontSize: f+'px '}).setOrigin(0.5,0.5);
+                }
+                opc.push(this.add.zone(x+(LargoM+20)*j,270+i*100,LargoM,90));
+                
+                opc[opc.length-1].setOrigin(0);
+                opc[opc.length-1].setInteractive();
+                opc[opc.length-1].name = i+"";
+                this.add.graphics().lineStyle(2, 0xff0000).strokeRectShape(opc[opc.length-1]);
+            }
         
-        const explorar = this.add.zone(800, 346, 320, 90);
-	explorar.setOrigin(0);
-	explorar.setInteractive();
-	explorar.once('pointerdown', () => this.opcionPulsada('explorar'));
-	this.add.graphics().lineStyle(2, 0xff0000).strokeRectShape(explorar);
-        
-        //multiplicación
-        
-        lienzo.fillStyle(0xB407AE);
-        lienzo.fillRect(600,448,320,90);
-        this.add.text(630, 450, 'Mult. 1', { color: 'black', fontFamily: 'Arial', fontSize: '70px '});
-        
-        const m1 = this.add.zone(600, 448, 320, 85);
-	m1.setOrigin(0);
-	m1.setInteractive();
-	m1.once('pointerdown', () => this.opcionPulsada('m1'));
-	this.add.graphics().lineStyle(2, 0xff0000).strokeRectShape(m1);
-        
-        lienzo.fillStyle(0xB40757);
-        lienzo.fillRect(1000,448,320,90);
-        this.add.text(1030, 450, 'Mult. 2', { color: 'black', fontFamily: 'Arial', fontSize: '70px '});
-        
-        const m2 = this.add.zone(1000, 448, 320, 85);
-	m2.setOrigin(0);
-	m2.setInteractive();
-	m2.once('pointerdown', () => this.opcionPulsada('m2'));
-	this.add.graphics().lineStyle(2, 0xff0000).strokeRectShape(m2);
-        
-        //equivalencia
-        
-        lienzo.fillStyle(0x83B407);
-        lienzo.fillRect(420,545,320,90);
-        this.add.text(450, 550, 'Equiv. 1', { color: 'black', fontFamily: 'Arial', fontSize: '70px '});
-        
-        const eq1 = this.add.zone(420, 545, 320, 90);
-	eq1.setOrigin(0);
-	eq1.setInteractive();
-	eq1.once('pointerdown', () => this.opcionPulsada('eq1'));
-	this.add.graphics().lineStyle(2, 0xff0000).strokeRectShape(eq1);
-        
-        lienzo.fillStyle(0x03B40A);
-        lienzo.fillRect(820,545,320,90);
-        this.add.text(850, 550, 'Equiv. 2', { color: 'black', fontFamily: 'Arial', fontSize: '70px '});
-        
-        const eq2 = this.add.zone(820, 545, 320, 90);
-	eq2.setOrigin(0);
-	eq2.setInteractive();
-	eq2.once('pointerdown', () => this.opcionPulsada('eq2'));
-	this.add.graphics().lineStyle(2, 0xff0000).strokeRectShape(eq2);
-        
-        lienzo.fillStyle(0x07B438);
-        lienzo.fillRect(1220,545,320,90);
-        this.add.text(1250, 550, 'Equiv. 3', { color: 'black', fontFamily: 'Arial', fontSize: '70px '});
-        
-        const eq3= this.add.zone(1220, 545, 320, 90);
-	eq3.setOrigin(0);
-	eq3.setInteractive();
-	eq3.once('pointerdown', () => this.opcionPulsada('eq3'));
-	this.add.graphics().lineStyle(2, 0xff0000).strokeRectShape(eq3);
-        
-        //Suma
-            //iguales
-        lienzo.fillStyle(0XAEB407);
-        lienzo.fillRect(200,645,320,90);
-        this.add.text(230, 645, 'Suma 1', { color: 'black', fontFamily: 'Arial', fontSize: '70px '});
-        
-        const s1 = this.add.zone(200, 645, 320, 90);
-	s1.setOrigin(0);
-	s1.setInteractive();
-	s1.once('pointerdown', () => this.opcionPulsada('s1'));
-	this.add.graphics().lineStyle(2, 0xff0000).strokeRectShape(s1);
-            //medios, cuartos y octavos
-        lienzo.fillStyle(0X58B407);
-        lienzo.fillRect(600,645,320,90);
-        this.add.text(630, 645, 'Suma 2', { color: 'black', fontFamily: 'Arial', fontSize: '70px '});
-        
-        const s2 = this.add.zone(600, 645, 320, 90);
-	s2.setOrigin(0);
-	s2.setInteractive();
-	s2.once('pointerdown', () => this.opcionPulsada('s2'));
-	this.add.graphics().lineStyle(2, 0xff0000).strokeRectShape(s2);
-          //tercios, sextos, novenos
-        lienzo.fillStyle(0X07B40D);
-        lienzo.fillRect(1000,645,320,90);
-        this.add.text(1030, 645, 'Suma 3', { color: 'black', fontFamily: 'Arial', fontSize: '70px '});
-        
-        const s3 = this.add.zone(1000, 645, 320, 90);
-	s3.setOrigin(0);
-	s3.setInteractive();
-	s3.once('pointerdown', () => this.opcionPulsada('s3'));
-	this.add.graphics().lineStyle(2, 0xff0000).strokeRectShape(s3);
-              //cuales quiera
-        lienzo.fillStyle(0X07B463);
-        lienzo.fillRect(1400,645,320,90);
-        this.add.text(1430, 645, 'Suma 4', { color: 'black', fontFamily: 'Arial', fontSize: '70px '});
-        
-        const s4 = this.add.zone(1400, 645, 320, 90);
-	s4.setOrigin(0);
-	s4.setInteractive();
-	s4.once('pointerdown', () => this.opcionPulsada('s4'));
-	this.add.graphics().lineStyle(2, 0xff0000).strokeRectShape(s4);
-        
-        //RESTA
-            //iguales
-        lienzo.fillStyle(0XAEB407);
-        lienzo.fillRect(200,745,320,90);
-        this.add.text(230, 745, 'Resta 1', { color: 'black', fontFamily: 'Arial', fontSize: '70px '});
-        
-        const r1 = this.add.zone(200, 745, 320, 90);
-	r1.setOrigin(0);
-	r1.setInteractive();
-	r1.once('pointerdown', () => this.opcionPulsada('r1'));
-	this.add.graphics().lineStyle(2, 0xff0000).strokeRectShape(r1);
-            //medios, cuartos y octavos
-        lienzo.fillStyle(0X58B407);
-        lienzo.fillRect(600,745,320,90);
-        this.add.text(630, 745, 'Resta 2', { color: 'black', fontFamily: 'Arial', fontSize: '70px '});
-        
-        const r2 = this.add.zone(600, 745, 320, 90);
-	r2.setOrigin(0);
-	r2.setInteractive();
-	r2.once('pointerdown', () => this.opcionPulsada('r2'));
-	this.add.graphics().lineStyle(2, 0xff0000).strokeRectShape(r2);
-            //tercios, sextos, novenos
-        lienzo.fillStyle(0X07B40D);
-        lienzo.fillRect(1000,745,320,90);
-        this.add.text(1030, 745, 'Resta 3', { color: 'black', fontFamily: 'Arial', fontSize: '70px '});
-        
-        const r3 = this.add.zone(1000, 745, 320, 90);
-	r3.setOrigin(0);
-	r3.setInteractive();
-	r3.once('pointerdown', () => this.opcionPulsada('r3'));
-	this.add.graphics().lineStyle(2, 0xff0000).strokeRectShape(r3);
-            //cuales quiera
-        lienzo.fillStyle(0X07B463);
-        lienzo.fillRect(1400,745,320,90);
-        this.add.text(1430, 745, 'Resta 4', { color: 'black', fontFamily: 'Arial', fontSize: '70px '});
-        
-        const r4 = this.add.zone(1400, 745, 320, 90);
-	r4.setOrigin(0);
-	r4.setInteractive();
-	r4.once('pointerdown', () => this.opcionPulsada('r4'));
-	this.add.graphics().lineStyle(2, 0xff0000).strokeRectShape(r4);
-      
-        //Division
-        //Múltiplos (mismo denominador) 1/n
-        lienzo.fillStyle(0XAEB407);
-        lienzo.fillRect(200,845,320,90);
-        this.add.text(230, 850, 'Div. 1', { color: 'black', fontFamily: 'Arial', fontSize: '70px '});
-        
-        const d1 = this.add.zone(200, 845, 320, 90);
-	d1.setOrigin(0);
-	d1.setInteractive();
-	d1.once('pointerdown', () => this.opcionPulsada('d1'));
-	this.add.graphics().lineStyle(2, 0xff0000).strokeRectShape(d1);
-        
-         //Múltiplos (mismo denominador)
-        lienzo.fillStyle(0X58B407);
-        lienzo.fillRect(600,845,320,90);
-        this.add.text(630, 850, 'Div. 2', { color: 'black', fontFamily: 'Arial', fontSize: '70px '});
-        
-        const d2 = this.add.zone(600, 845, 320, 90);
-	d2.setOrigin(0);
-	d2.setInteractive();
-	d2.once('pointerdown', () => this.opcionPulsada('d2'));
-	this.add.graphics().lineStyle(2, 0xff0000).strokeRectShape(d2);
-        
-        //mismo denominador
-        lienzo.fillStyle(0X07B40D);
-        lienzo.fillRect(1000,845,320,90);
-        this.add.text(1030, 850, 'Div. 3', { color: 'black', fontFamily: 'Arial', fontSize: '70px '});
-        
-        const d3= this.add.zone(1000, 845, 320, 90);
-	d3.setOrigin(0);
-	d3.setInteractive();
-	d3.once('pointerdown', () => this.opcionPulsada('d3'));
-	this.add.graphics().lineStyle(2, 0xff0000).strokeRectShape(d3);
-        
-        //distinto denominador
-        lienzo.fillStyle(0X07B463);
-        lienzo.fillRect(1400,845,320,90);
-        this.add.text(1430, 850, 'Div. 4', { color: 'black', fontFamily: 'Arial', fontSize: '70px '});
-        
-        const d4= this.add.zone(1400, 845, 320, 90);
-	d4.setOrigin(0);
-	d4.setInteractive();
-	d4.once('pointerdown', () => this.opcionPulsada('d4'));
-	this.add.graphics().lineStyle(2, 0xff0000).strokeRectShape(d4);
-       
+            //
+            //console.log(opc[i]);
+        }
+        opc[0].once('pointerdown', () => this.opcionPulsada(0));
+        opc[1].once('pointerdown', () => this.opcionPulsada(1));
+        opc[2].once('pointerdown', () => this.opcionPulsada(2));
+        opc[3].once('pointerdown', () => this.opcionPulsada(3));
+        opc[4].once('pointerdown', () => this.opcionPulsada(4));
+        opc[5].once('pointerdown', () => this.opcionPulsada(5));
+        opc[6].once('pointerdown', () => this.opcionPulsada(6));
+        opc[7].once('pointerdown', () => this.opcionPulsada(7));
+        opc[8].once('pointerdown', () => this.opcionPulsada(8));
+        opc[9].once('pointerdown', () => this.opcionPulsada(9));
+        opc[10].once('pointerdown', () => this.opcionPulsada(10));
+        opc[11].once('pointerdown', () => this.opcionPulsada(11));
+        opc[12].once('pointerdown', () => this.opcionPulsada(12));
+        opc[13].once('pointerdown', () => this.opcionPulsada(13));
+        opc[14].once('pointerdown', () => this.opcionPulsada(14));
+        opc[15].once('pointerdown', () => this.opcionPulsada(15));
+        opc[16].once('pointerdown', () => this.opcionPulsada(16));
+        opc[17].once('pointerdown', () => this.opcionPulsada(17));
+        opc[18].once('pointerdown', () => this.opcionPulsada(18));
+        opc[19].once('pointerdown', () => this.opcionPulsada(19));
+        opc[20].once('pointerdown', () => this.opcionPulsada(20));
+        opc[21].once('pointerdown', () => this.opcionPulsada(21));
     }
     opcionPulsada(opcion) {
-	if (opcion === 'explorar') {
+        console.log("opcionPulsada("+opcion+")");
+        opcion +='';
+	if (opcion === '0') {
 		this.scene.start('Explora');
-	} else if (opcion === 'm1'){
-		this.scene.start('Pro');
-	} else if (opcion === 'm2'){
-            this.scene.start('Prob');
-        } else if (opcion === 'eq1'){
-            this.scene.start('Probl');
-        } else if (opcion === 'eq2'){
-            this.scene.start('Eq2');
-            //console.log("eq2");
-        } else if (opcion === 'eq3'){
-            this.scene.start('Eq3');
-        } else if (opcion === 's1'){
+	} else if (opcion === '1'){
+		this.scene.start('C1');
+	} else if (opcion === '2'){
             this.scene.start('S1');
-        } else  if (opcion === 's2'){
-            this.scene.start('S2');
-        } else if (opcion === 's3'){
-            this.scene.start('S3');
-        } else if (opcion === 's4'){
-            this.scene.start('S4');
-        } else  if (opcion === 'r1'){
+        } else if (opcion === '3'){
             this.scene.start('R1');
-        } else  if (opcion === 'r2'){
+        } else if (opcion === '4'){
+            this.scene.start('M1');
+            //console.log("eq2");
+        } else if (opcion === '5'){
+            this.scene.start('M2');
+        } else if (opcion === '6'){
+            this.scene.start('M3');
+        } else  if (opcion === '7'){
+            this.scene.start('Eq1');
+        } else if (opcion === '8'){
+            this.scene.start('Eq2');
+        } else if (opcion === '9'){
+            this.scene.start('Eq3');
+        } else  if (opcion === '10'){
+            this.scene.start('S2');
+        } else  if (opcion === '11'){
+            this.scene.start('S3');
+        } else if (opcion === '12'){
+            this.scene.start('S4');
+        } else if (opcion === '13'){
+            this.scene.start('S5');
+        } else if (opcion === '14'){
             this.scene.start('R2');
-        } else if (opcion === 'r3'){
+        } else  if (opcion === '15'){
             this.scene.start('R3');
-        } else if (opcion === 'r4'){
+        } else if (opcion === '16'){
             this.scene.start('R4');
-        } else if (opcion === 'd1'){
+        } else if (opcion === '17'){
+            this.scene.start('R5');
+        } else if (opcion === '18'){
             this.scene.start('D1');
-        } else  if (opcion === 'd2'){
+        } else if (opcion === '19'){
             this.scene.start('D2');
-        } else if (opcion === 'd3'){
+        } else  if (opcion === '20'){
             this.scene.start('D3');
-        } else if (opcion === 'd4'){
+        } else  if (opcion === '21'){
             this.scene.start('D4');
-        } else {
+        } else{
             console.log(opcion);
         }
     }
 }
+
 class Explora extends Phaser.Scene{
     
     constructor() {
@@ -282,7 +167,7 @@ class Explora extends Phaser.Scene{
         this.load.image('10','./asset/img/110.png');
     }
     create(){
-        this.add.image(0,0,'fondo').setOrigin(0,0);
+        //this.add.image(0,0,'fondo').setOrigin(0,0);
         this.inicio = this.add.image(130,130,'inicio');
         this.inicio.setScale(0.5);
         this.add.image(960,720,'base');
@@ -349,10 +234,806 @@ class Explora extends Phaser.Scene{
 	this.scene.start('menu');
     }
 }
-class Pro extends Phaser.Scene{
+
+class C1 extends Phaser.Scene{
     
     constructor() {
-        super('Pro');
+	super('C1');
+        var fra;
+        var px, limx;
+    }
+    preload(){
+        this.load.image('inicio','./asset/img/inicio.png');       
+        this.load.image('1','./asset/img/1.png');
+        this.load.image('P','./asset/img/P.png');
+        this.load.css('80s','./src/fuente.css');
+        this.load.audio('correct', './asset/sounds/correct.mp3');
+        this.load.audio('wrong', './asset/sounds/wrong.mp3');
+     
+    }
+    create(){
+        //this.add.image(0,0,'fondo').setOrigin(0,0);
+        this.inicio = this.add.image(130,130,'inicio');
+        this.inicio.setScale(0.5);
+        this.x1=300,this.x2=1600,this.y1=700,this.y2=700; 
+        
+        
+        const inicio = this.add.zone(0, 0, 250, 250);
+        inicio.setOrigin(0);
+        inicio.setInteractive();
+        inicio.once('pointerdown', () => this.opcionPulsada('ini'));
+        
+        c = this.sound.add('correct',{loop:false});
+        w = this.sound.add('wrong',{loop:false});
+        
+        this.fra = this.add.image(330,300,'1').setOrigin(0, 0);
+        this.fra.displayWidth = 1260;
+        this.fra.displayHeight = 75;
+        
+        var y1 = Math.floor(Math.random()*9)+2;
+        
+        
+        this.f = [Math.floor(Math.random()*(y1-1)+1),y1];
+        
+        this.div = document.createElement('h1');
+        this.div.style = 'width: 1500px; font-size: 80px; ';
+        /*var span = new Array();
+        span.push(document.createElement('span'));
+        span[0].setAttribute("class","fup");
+        span[0].innerText = f[0].toString();
+        */
+        console.log(this.f[0]+"/"+this.f[1]);
+        
+       
+        this.div.innerHTML ='Dibujemos  <div class="fraction"><span class="fup">'+this.f[0]+
+                       '</span><span class="bar">/</span><span class="fdn">'+
+                       this.f[1]+'</span></div> ';
+        
+        this.add.dom(960, 100, this.div);
+        
+        
+        
+         this.input.on('gameobjectup', function (pointer, gameObject)
+        {
+            gameObject.emit('clicked', gameObject);
+        }, this);
+        
+        this.texto = this.add.text(180, 630, '¿En cuántas partes IGUALES hay que dividir la unidad? ', { color: 'black', fontFamily: 'Arial', fontSize: '60px '});
+        this.texto2 = this.add.text(400, 700, "En          partes iguales", { color: 'black', fontFamily: 'Arial', fontSize: '100px '});
+        
+        var respuesta = document.createElement('input');
+        respuesta.setAttribute('type'  ,'number');
+        respuesta.setAttribute('id','respuesta');
+        respuesta.setAttribute('placeholder','Respuesta');
+        this.res = this.add.dom(660, 750, respuesta);
+        
+        
+        var boton = document.createElement('button');
+        boton.setAttribute('type','button');
+        this.element = this.add.dom(1630, 750, boton,'','Corregir');
+        this.element.addListener('click');
+        this.element.on('click',() => this.paso());
+        
+        this.input.keyboard.on('keydown-ENTER',() => this.paso());
+        
+        
+        
+        this.debug = this.add.graphics();
+        //this.cursors = this.input.keyboard.createCursorKeys();
+        this.lienzo = this.add.graphics();
+        this.lienzo2= this.add.graphics();
+        
+    }
+    paso(){
+        var r = document.getElementById('respuesta').value;
+        if(r === this.f[1]+""){
+            this.texto.destroy();
+            this.texto2.destroy();
+            this.res.destroy();
+            this.div.innerHTML = 'Selecciona  <div class="fraction"><span class="fup">'+this.f[0]+
+                       '</span><span class="bar">/</span><span class="fdn">'+
+                       this.f[1]+'</span></div> de la figura';
+             
+            this.dividir(this.f[1]);
+            this.correcto();
+            this.element.off('click');
+            this.input.keyboard.off('keydown-ENTER');
+            
+            
+            console.log(this.texto._text);
+            
+            this.element.on('click',() => this.paso2());
+            
+            this.input.keyboard.on('keydown-ENTER',() => this.paso2());
+        }else{
+            this.falso();
+        }
+        
+    }
+    paso2(){
+        if(this.corregir(this.f[1])){
+            this.lienzo3 = this.add.graphics();
+                this.lienzo3.fillStyle(0x03A9F4);
+                this.lienzo3.fillRect(1600,50,300,90);
+                this.opc= this.add.text(1750, 95, '¿OTRO?', { color: 'black', fontFamily: 'Arial', fontSize: '50px '}).setOrigin(0.5,0.5);
+
+                const otro = this.add.zone(1600, 50, 300,100);
+                    otro.setOrigin(0);
+                    otro.setInteractive();
+                    otro.on('pointerdown', () => this.opcionPulsada('otro'));
+        }
+        
+    }
+    
+    correcto(){
+        b=0.5;
+        c.play();
+    }
+    falso(){
+        a=0.5;
+        w.play();
+        this.cameras.main.shake(200,0.01);
+    }
+    dividir(f1){
+        for(var i=0;i<f1;i++){
+            var imagen = this.add.image(330+1260/f1*i,300,'P').setOrigin(0, 0);
+            imagen.displayWidth = 1260/f1;
+            imagen.displayHeight = 75;
+            imagen.setInteractive();
+            imagen.setData({name: i, tocado:0});
+            imagen.on('clicked', this.down, this);
+        }
+    }
+    corregir(f1){
+        var lista=this.add.displayList.list;
+        console.log(lista);
+        var tocados = 0;
+        for(var i=0;i<f1;i++){
+            tocados +=lista[8+i].getData('tocado');
+            
+        }
+        console.log("tocados = "+tocados);
+        if(tocados === this.f[0]){
+            console.log("Correcto");
+            this.correcto();
+            return true;
+        }else{
+            this.falso();
+            console.log("Incorrecto");
+            return false;
+        }
+    }
+    down(image){
+        
+        if(image.getData('tocado') === 0){
+            image.setTint(Colores[1]);
+        }else{
+            image.clearTint();
+        }
+        image.setData('tocado',1-image.getData('tocado'));
+        
+    }
+    update(time,delta){
+        if(a>0){
+                b=0;
+                a-=0.3*delta/1000;
+                this.lienzo.clear();
+                this.lienzo.setAlpha(a);
+                this.lienzo.fillStyle(0xff0000);
+                this.lienzo.fillRect(0,0,1920,1080);
+                this.lienzo2.clear();
+                this.lienzo2.setAlpha(b);
+                this.lienzo2.fillStyle(0x00ff00);
+                this.lienzo2.fillRect(0,0,1920,1080);
+            }else{
+                a=0;
+
+            }
+            if(b>0){
+                a=0;
+                b-=0.3*delta/1000;
+                this.lienzo.clear();
+                this.lienzo.setAlpha(a);
+                this.lienzo.fillStyle(0xff0000);
+                this.lienzo.fillRect(0,0,1920,1080);
+                this.lienzo2.clear();
+                this.lienzo2.setAlpha(b);
+                this.lienzo2.fillStyle(0x00ff00);
+                this.lienzo2.fillRect(0,0,1920,1080);  
+            }else{
+                b=0;
+
+            }
+    }
+    
+    opcionPulsada(opcion) {
+	if(opcion === 'ini'){
+            this.scene.start('menu');
+        } else if(opcion === 'otro'){
+           this.scene.start(this.scene.key);
+        }else{
+            console.log("A dónde voy?");
+        }
+    }
+}
+class S1 extends Phaser.Scene{
+    
+    constructor() {
+	super('S1');
+        var fra;
+        var px, limx;
+    }
+    preload(){
+        this.load.image('inicio','./asset/img/inicio.png');       
+        this.load.image('1','./asset/img/1.png');
+        this.load.image('P','./asset/img/P.png');
+        this.load.css('80s','./src/fuente.css');
+        this.load.audio('correct', './asset/sounds/correct.mp3');
+        this.load.audio('wrong', './asset/sounds/wrong.mp3');
+     
+    }
+    create(){
+        //this.add.image(0,0,'fondo').setOrigin(0,0);
+        this.inicio = this.add.image(130,130,'inicio');
+        this.inicio.setScale(0.5);
+        this.x1=300,this.x2=1600,this.y1=700,this.y2=700; 
+        
+        
+        const inicio = this.add.zone(0, 0, 250, 250);
+        inicio.setOrigin(0);
+        inicio.setInteractive();
+        inicio.once('pointerdown', () => this.opcionPulsada('ini'));
+        
+        c = this.sound.add('correct',{loop:false});
+        w = this.sound.add('wrong',{loop:false});
+        this.debug = this.add.graphics();
+        
+        
+        
+        var y1 = Math.floor(Math.random()*15)+2;
+        this.dividir(y1);
+        
+        this.f = [Math.floor(Math.random()*Math.floor(y1/2)+1),Math.floor(Math.random()*Math.floor(y1/2)+1),y1];
+        
+        this.div = document.createElement('h1');
+        this.div.style = 'width: 1500px; font-size: 80px; ';
+        /*var span = new Array();
+        span.push(document.createElement('span'));
+        span[0].setAttribute("class","fup");
+        span[0].innerText = f[0].toString();
+        */
+        console.log(this.f[0]+"/"+this.f[1]);
+        
+       
+        this.div.innerHTML ='Cuánto es  <div class="fraction"><span class="fup">'+this.f[0]+
+                       '</span><span class="bar">/</span><span class="fdn">'+
+                       this.f[2]+'</span></div> &plus; <div class="fraction"><span class="fup">'+this.f[1]+
+                       '</span><span class="bar">/</span><span class="fdn">'+
+                       this.f[2]+'</span></div>';
+        
+        this.add.dom(960, 100, this.div);
+        
+        
+        
+         this.input.on('gameobjectup', function (pointer, gameObject)
+        {
+            gameObject.emit('clicked', gameObject);
+        }, this);
+        
+        var respuesta = document.createElement('input');
+        respuesta.setAttribute('type'  ,'number');
+        respuesta.setAttribute('id','respuestaN');
+        this.add.dom(1260, 640, respuesta);
+        var respuesta = document.createElement('input');
+        respuesta.setAttribute('type'  ,'number');
+        respuesta.setAttribute('id','respuestaD');
+        this.add.dom(1260, 740, respuesta);
+        this.debug.lineStyle(10, 0x000000, 1);
+        this.debug.lineBetween(1110, 690, 1410, 690);
+        this.add.text(500, 640, 'Respuesta =', { color: 'black', fontFamily: 'Arial', fontSize: '100px '});
+        
+        var boton = document.createElement('button');
+        boton.setAttribute('type','button');
+        this.element = this.add.dom(1600, 690, boton,'','Corregir');
+        this.element.addListener('click');
+        this.element.on('click',() => this.corregir());
+        
+        this.input.keyboard.on('keydown-ENTER',() => this.corregir());
+        
+        
+        
+        
+        //this.cursors = this.input.keyboard.createCursorKeys();
+        this.lienzo = this.add.graphics();
+        this.lienzo2= this.add.graphics();
+        
+    }
+    
+    
+    correcto(){
+        b=0.5;
+        c.play();
+    }
+    falso(){
+        a=0.5;
+        w.play();
+        this.cameras.main.shake(200,0.01);
+    }
+    dividir(f1){
+        for(var i=0;i<f1;i++){
+            var imagen = this.add.image(330+1260/f1*i,300,'P').setOrigin(0, 0);
+            imagen.displayWidth = 1260/f1;
+            imagen.displayHeight = 75;
+            imagen.setInteractive();
+            imagen.setData({name: i, tocado:0});
+            imagen.on('clicked', this.down, this);
+        }
+    }
+    corregir(){
+        var r1=document.getElementById('respuestaN');
+        var r2=document.getElementById('respuestaD');
+        
+        if((this.f[0]+this.f[1])+"" === r1.value && (this.f[2])+"" === r2.value){
+            this.input.keyboard.off('keydown-ENTER');
+            this.element.visible=false;
+            this.debug.fillStyle(0x03A9F4);
+            this.debug.fillRect(1500,50,300,100);
+            this.opc= this.add.text(1650, 100, '¿OTRO?', { color: 'black', fontFamily: 'Arial', fontSize: '50px '}).setOrigin(0.5,0.5);
+                
+            const otro = this.add.zone(1500, 50, 300,100);
+                otro.setOrigin(0);
+                otro.setInteractive();
+                otro.once('pointerdown', () => this.opcionPulsada('otro'));
+                
+            this.correcto();
+            
+        }else{
+            this.falso();
+        }
+    }
+    down(image){
+        
+        if(image.getData('tocado') === 0){
+            image.setTint(Colores[1]);
+        }else{
+            image.clearTint();
+        }
+        image.setData('tocado',1-image.getData('tocado'));
+        
+    }
+    update(time,delta){
+        if(a>0){
+                b=0;
+                a-=0.3*delta/1000;
+                this.lienzo.clear();
+                this.lienzo.setAlpha(a);
+                this.lienzo.fillStyle(0xff0000);
+                this.lienzo.fillRect(0,0,1920,1080);
+                this.lienzo2.clear();
+                this.lienzo2.setAlpha(b);
+                this.lienzo2.fillStyle(0x00ff00);
+                this.lienzo2.fillRect(0,0,1920,1080);
+            }else{
+                a=0;
+
+            }
+            if(b>0){
+                a=0;
+                b-=0.3*delta/1000;
+                this.lienzo.clear();
+                this.lienzo.setAlpha(a);
+                this.lienzo.fillStyle(0xff0000);
+                this.lienzo.fillRect(0,0,1920,1080);
+                this.lienzo2.clear();
+                this.lienzo2.setAlpha(b);
+                this.lienzo2.fillStyle(0x00ff00);
+                this.lienzo2.fillRect(0,0,1920,1080);  
+            }else{
+                b=0;
+
+            }
+    }
+    
+    opcionPulsada(opcion) {
+	if(opcion === 'ini'){
+            this.scene.start('menu');
+        } else if(opcion === 'otro'){
+           this.scene.start(this.scene.key);
+        }else{
+            console.log("A dónde voy?");
+        }
+    }
+}
+class R1 extends Phaser.Scene{
+    
+    constructor() {
+	super('R1');
+        var fra;
+        var px, limx;
+    }
+    preload(){
+        this.load.image('inicio','./asset/img/inicio.png');       
+        this.load.image('1','./asset/img/1.png');
+        this.load.image('P','./asset/img/P.png');
+        this.load.css('80s','./src/fuente.css');
+        this.load.audio('correct', './asset/sounds/correct.mp3');
+        this.load.audio('wrong', './asset/sounds/wrong.mp3');
+     
+    }
+    create(){
+        //this.add.image(0,0,'fondo').setOrigin(0,0);
+        this.inicio = this.add.image(130,130,'inicio');
+        this.inicio.setScale(0.5);
+        this.x1=300,this.x2=1600,this.y1=700,this.y2=700; 
+        
+        
+        const inicio = this.add.zone(0, 0, 250, 250);
+        inicio.setOrigin(0);
+        inicio.setInteractive();
+        inicio.once('pointerdown', () => this.opcionPulsada('ini'));
+        
+        c = this.sound.add('correct',{loop:false});
+        w = this.sound.add('wrong',{loop:false});
+        this.debug = this.add.graphics();
+        
+        
+        
+        var y1 = Math.floor(Math.random()*15)+2;
+        
+        
+        this.f = [Math.floor(Math.random()*Math.floor(y1/2)+Math.round(y1/2)),0,y1];
+        this.f[1] = Math.floor(Math.random()*(this.f[0]-1)+1);
+        this.dividir(y1,this.f[0]);
+        this.div = document.createElement('h1');
+        this.div.style = 'width: 1500px; font-size: 80px; ';
+        /*var span = new Array();
+        span.push(document.createElement('span'));
+        span[0].setAttribute("class","fup");
+        span[0].innerText = f[0].toString();
+        */
+        console.log(this.f[0]+"/"+this.f[1]);
+        
+       
+        this.div.innerHTML ='Cuánto es  <div class="fraction"><span class="fup">'+this.f[0]+
+                       '</span><span class="bar">/</span><span class="fdn">'+
+                       this.f[2]+'</span></div> &minus; <div class="fraction"><span class="fup">'+this.f[1]+
+                       '</span><span class="bar">/</span><span class="fdn">'+
+                       this.f[2]+'</span></div>';
+        
+        this.add.dom(960, 100, this.div);
+        
+        
+        
+         this.input.on('gameobjectup', function (pointer, gameObject)
+        {
+            gameObject.emit('clicked', gameObject);
+        }, this);
+        
+        var respuesta = document.createElement('input');
+        respuesta.setAttribute('type'  ,'number');
+        respuesta.setAttribute('id','respuestaN');
+        this.add.dom(1260, 640, respuesta);
+        var respuesta = document.createElement('input');
+        respuesta.setAttribute('type'  ,'number');
+        respuesta.setAttribute('id','respuestaD');
+        this.add.dom(1260, 740, respuesta);
+        this.debug.lineStyle(10, 0x000000, 1);
+        this.debug.lineBetween(1110, 690, 1410, 690);
+        this.add.text(500, 640, 'Respuesta =', { color: 'black', fontFamily: 'Arial', fontSize: '100px '});
+        
+        var boton = document.createElement('button');
+        boton.setAttribute('type','button');
+        this.element = this.add.dom(1600, 690, boton,'','Corregir');
+        this.element.addListener('click');
+        this.element.on('click',() => this.corregir());
+        
+        this.input.keyboard.on('keydown-ENTER',() => this.corregir());
+        
+        
+        
+        
+        //this.cursors = this.input.keyboard.createCursorKeys();
+        this.lienzo = this.add.graphics();
+        this.lienzo2= this.add.graphics();
+        
+    }
+    
+    
+    correcto(){
+        b=0.5;
+        c.play();
+    }
+    falso(){
+        a=0.5;
+        w.play();
+        this.cameras.main.shake(200,0.01);
+    }
+    dividir(f1,f2){//f1 denominador, f2 numerador
+        for(var i=0;i<f1;i++){
+            var imagen = this.add.image(330+1260/f1*i,300,'P').setOrigin(0, 0);
+            imagen.displayWidth = 1260/f1;
+            imagen.displayHeight = 75;
+            imagen.setInteractive();
+            if(i<f2){
+                imagen.setData({name: i, tocado:1});
+                imagen.setTint(Colores[1]);
+            }else{
+                imagen.setData({name: i, tocado:0});
+            }
+            
+            imagen.on('clicked', this.down, this);
+        }
+    }
+    corregir(){
+        var r1=document.getElementById('respuestaN');
+        var r2=document.getElementById('respuestaD');
+        
+        if((this.f[0]-this.f[1])+"" === r1.value && (this.f[2])+"" === r2.value){
+            this.input.keyboard.off('keydown-ENTER');
+            this.element.visible=false;
+            this.debug.fillStyle(0x03A9F4);
+            this.debug.fillRect(1500,50,300,100);
+            this.opc= this.add.text(1650, 100, '¿OTRO?', { color: 'black', fontFamily: 'Arial', fontSize: '50px '}).setOrigin(0.5,0.5);
+                
+            const otro = this.add.zone(1500, 50, 300,100);
+                otro.setOrigin(0);
+                otro.setInteractive();
+                otro.once('pointerdown', () => this.opcionPulsada('otro'));
+                
+            this.correcto();
+            
+        }else{
+            this.falso();
+        }
+    }
+    down(image){
+        
+        if(image.getData('tocado') === 0){
+            image.setTint(Colores[1]);
+        }else{
+            image.clearTint();
+        }
+        image.setData('tocado',1-image.getData('tocado'));
+        
+    }
+    update(time,delta){
+        if(a>0){
+                b=0;
+                a-=0.3*delta/1000;
+                this.lienzo.clear();
+                this.lienzo.setAlpha(a);
+                this.lienzo.fillStyle(0xff0000);
+                this.lienzo.fillRect(0,0,1920,1080);
+                this.lienzo2.clear();
+                this.lienzo2.setAlpha(b);
+                this.lienzo2.fillStyle(0x00ff00);
+                this.lienzo2.fillRect(0,0,1920,1080);
+            }else{
+                a=0;
+
+            }
+            if(b>0){
+                a=0;
+                b-=0.3*delta/1000;
+                this.lienzo.clear();
+                this.lienzo.setAlpha(a);
+                this.lienzo.fillStyle(0xff0000);
+                this.lienzo.fillRect(0,0,1920,1080);
+                this.lienzo2.clear();
+                this.lienzo2.setAlpha(b);
+                this.lienzo2.fillStyle(0x00ff00);
+                this.lienzo2.fillRect(0,0,1920,1080);  
+            }else{
+                b=0;
+
+            }
+    }
+    
+    opcionPulsada(opcion) {
+	if(opcion === 'ini'){
+            this.scene.start('menu');
+        } else if(opcion === 'otro'){
+           this.scene.start(this.scene.key);
+        }else{
+            console.log("A dónde voy?");
+        }
+    }
+}
+class M1 extends Phaser.Scene{
+    
+    constructor() {
+	super('M1');
+        var fra;
+        var px, limx;
+    }
+    preload(){
+        this.load.image('inicio','./asset/img/inicio.png');       
+        this.load.image('1','./asset/img/1.png');
+        this.load.image('P','./asset/img/P.png');
+        this.load.css('80s','./src/fuente.css');
+        this.load.audio('correct', './asset/sounds/correct.mp3');
+        this.load.audio('wrong', './asset/sounds/wrong.mp3');
+        this.opc=[8,9,10,12,14,15,16];
+        this.primos = [2,3,5,7];
+     
+    }
+    create(){
+        //this.add.image(0,0,'fondo').setOrigin(0,0);
+        this.inicio = this.add.image(130,130,'inicio');
+        this.inicio.setScale(0.5);
+        
+        
+        
+        const inicio = this.add.zone(0, 0, 250, 250);
+        inicio.setOrigin(0);
+        inicio.setInteractive();
+        inicio.once('pointerdown', () => this.opcionPulsada('ini'));
+        
+        c = this.sound.add('correct',{loop:false});
+        w = this.sound.add('wrong',{loop:false});
+        this.debug = this.add.graphics();
+        
+        
+        
+        var y1 = this.opc[Math.floor(Math.random()*this.opc.length)];
+        this.dividir(y1);
+        
+        this.f = [this.primos[Math.floor(Math.random()*this.primos.length)],0,y1];
+        this.f[1]=Math.floor(Math.random()*Math.floor(this.f[2]/this.f[0])+1);
+        
+        this.div = document.createElement('h1');
+        this.div.style = 'width: 1500px; font-size: 80px; ';
+        /*var span = new Array();
+        span.push(document.createElement('span'));
+        span[0].setAttribute("class","fup");
+        span[0].innerText = f[0].toString();
+        */
+        console.log(this.f[0]+"/"+this.f[1]);
+        
+       
+        this.div.innerHTML ='Cuánto es '+this.f[0]+
+                       ' &times; <div class="fraction"><span class="fup">'+this.f[1]+
+                       '</span><span class="bar">/</span><span class="fdn">'+
+                       this.f[2]+'</span></div>';
+        
+        this.add.dom(960, 100, this.div);
+        
+        
+        
+         this.input.on('gameobjectup', function (pointer, gameObject)
+        {
+            gameObject.emit('clicked', gameObject);
+        }, this);
+        
+        var respuesta = document.createElement('input');
+        respuesta.setAttribute('type'  ,'number');
+        respuesta.setAttribute('id','respuestaN');
+        this.add.dom(1260, 640, respuesta);
+        var respuesta = document.createElement('input');
+        respuesta.setAttribute('type'  ,'number');
+        respuesta.setAttribute('id','respuestaD');
+        this.add.dom(1260, 740, respuesta);
+        this.debug.lineStyle(10, 0x000000, 1);
+        this.debug.lineBetween(1110, 690, 1410, 690);
+        this.add.text(500, 640, 'Respuesta =', { color: 'black', fontFamily: 'Arial', fontSize: '100px '});
+        
+        var boton = document.createElement('button');
+        boton.setAttribute('type','button');
+        this.element = this.add.dom(1600, 690, boton,'','Corregir');
+        this.element.addListener('click');
+        this.element.on('click',() => this.corregir());
+        
+        this.input.keyboard.on('keydown-ENTER',() => this.corregir());
+        
+        
+        
+        
+        //this.cursors = this.input.keyboard.createCursorKeys();
+        this.lienzo = this.add.graphics();
+        this.lienzo2= this.add.graphics();
+        
+    }
+    
+    
+    correcto(){
+        b=0.5;
+        c.play();
+    }
+    falso(){
+        a=0.5;
+        w.play();
+        this.cameras.main.shake(200,0.01);
+    }
+    dividir(f1){
+        for(var i=0;i<f1;i++){
+            var imagen = this.add.image(330+1260/f1*i,300,'P').setOrigin(0, 0);
+            imagen.displayWidth = 1260/f1;
+            imagen.displayHeight = 75;
+            imagen.setInteractive();
+            imagen.setData({name: i, tocado:0});
+            imagen.on('clicked', this.down, this, this.pointer);
+        }
+    }
+    corregir(){
+        var r1=document.getElementById('respuestaN');
+        var r2=document.getElementById('respuestaD');
+        
+        if((this.f[0]*this.f[1])+"" === r1.value && (this.f[2])+"" === r2.value){
+            this.input.keyboard.off('keydown-ENTER');
+            this.element.visible=false;
+            this.debug.fillStyle(0x03A9F4);
+            this.debug.fillRect(1500,50,300,100);
+            this.opc= this.add.text(1650, 100, '¿OTRO?', { color: 'black', fontFamily: 'Arial', fontSize: '50px '}).setOrigin(0.5,0.5);
+                
+            const otro = this.add.zone(1500, 50, 300,100);
+                otro.setOrigin(0);
+                otro.setInteractive();
+                otro.once('pointerdown', () => this.opcionPulsada('otro'));
+                
+            this.correcto();
+            
+        }else{
+            this.falso();
+        }
+    }
+    down(image, pointer){
+        console.log(pointer);
+        if(image.getData('tocado') === 0){
+            image.setTint(Colores[1]);
+        }else{
+            image.clearTint();
+        }
+        image.setData('tocado',1-image.getData('tocado'));
+        
+    }
+    update(time,delta){
+        if(a>0){
+                b=0;
+                a-=0.3*delta/1000;
+                this.lienzo.clear();
+                this.lienzo.setAlpha(a);
+                this.lienzo.fillStyle(0xff0000);
+                this.lienzo.fillRect(0,0,1920,1080);
+                this.lienzo2.clear();
+                this.lienzo2.setAlpha(b);
+                this.lienzo2.fillStyle(0x00ff00);
+                this.lienzo2.fillRect(0,0,1920,1080);
+            }else{
+                a=0;
+
+            }
+            if(b>0){
+                a=0;
+                b-=0.3*delta/1000;
+                this.lienzo.clear();
+                this.lienzo.setAlpha(a);
+                this.lienzo.fillStyle(0xff0000);
+                this.lienzo.fillRect(0,0,1920,1080);
+                this.lienzo2.clear();
+                this.lienzo2.setAlpha(b);
+                this.lienzo2.fillStyle(0x00ff00);
+                this.lienzo2.fillRect(0,0,1920,1080);  
+            }else{
+                b=0;
+
+            }
+    }
+    
+    opcionPulsada(opcion) {
+	if(opcion === 'ini'){
+            this.scene.start('menu');
+        } else if(opcion === 'otro'){
+           this.scene.start(this.scene.key);
+        }else{
+            console.log("A dónde voy?");
+        }
+    }
+}
+
+class M2 extends Phaser.Scene{
+    
+    constructor() {
+        super('M2');
         this.a = 0;
     }
     preload(){
@@ -440,9 +1121,9 @@ class Pro extends Phaser.Scene{
         }
     }
 }
-class Prob extends Phaser.Scene{
+class M3 extends Phaser.Scene{
     constructor() {
-        super('Prob');
+        super('M3');
         this.a = 0;
     }
     preload(){
@@ -556,9 +1237,9 @@ class Prob extends Phaser.Scene{
         }
     }
 }
-class Probl extends Phaser.Scene{
+class Eq1 extends Phaser.Scene{
     constructor() {
-            super('Probl');
+            super('Eq1');
             this.a = 0;
             
 	}
@@ -749,49 +1430,6 @@ class Probl extends Phaser.Scene{
             this.a=0.75;
         }
     }
-}
-class Ganar extends Phaser.Scene{
-    constructor() {
-		super('Ganar');
-	}
-    preload(){
-        this.load.image('fondo','./asset/img/background.png');
-        this.load.image('inicio','./asset/img/inicio.png');
-        this.load.css('80s', './src/fuente.css');
-        
-        
-    }
-    create(){
-        //this.add.image(960,540,'fondo');
-        this.inicio = this.add.image(130,130,'inicio');
-        this.inicio.setScale(0.5);
-        const inicio = this.add.zone(0, 0, 250, 250);
-	inicio.setOrigin(0);
-	inicio.setInteractive();
-	inicio.once('pointerdown', () => this.opcionPulsada('inicio'));
-        
-        var h1 = this.add.dom(960, 200, 'h1', null, 'Correcto');
-
-        h1.setClassName('chrome');
-
-        var h2 = this.add.dom(1100, 350, 'h2', null, 'Ganaste');
-
-        h2.setClassName('dreams');
-        h2.setAngle(-15);
-
-        this.tweens.add({
-            targets: [ h1, h2 ],
-            y: 800,
-            duration: 3000,
-            ease: 'Sine.easeInOut',
-            loop: -1,
-            yoyo: true
-        });
-    }
-    opcionPulsada(opcion) {
-        this.scene.start('menu');
-    }
-    
 }
 class Eq2 extends Phaser.Scene{
     constructor() {
@@ -1158,9 +1796,9 @@ class Eq3 extends Phaser.Scene{
         }
     }
 }
-class S1 extends Phaser.Scene{
+class S2 extends Phaser.Scene{
     constructor() {
-        super('S1');
+        super('S2');
         this.a = 0;
         this.primos = [2,3,5,7,-1];
     }
@@ -1360,9 +1998,9 @@ class S1 extends Phaser.Scene{
         }
     }
 }
-class S2 extends Phaser.Scene{
+class S3 extends Phaser.Scene{
     constructor() {
-        super('S2');
+        super('S3');
         this.a = 0;
         this.primos = [2,3,5,7,-1];
         this.den=[2,4,8];
@@ -1609,9 +2247,9 @@ class S2 extends Phaser.Scene{
         }
     }
 }
-class S3 extends Phaser.Scene{
+class S4 extends Phaser.Scene{
     constructor() {
-        super('S3');
+        super('S4');
         this.a = 0;
         this.primos = [2,3,5,7,-1];
         this.den=[3,6,9];
@@ -1858,9 +2496,9 @@ class S3 extends Phaser.Scene{
         }
     }
 }
-class S4 extends Phaser.Scene{
+class S5 extends Phaser.Scene{
     constructor() {
-        super('S4');
+        super('S5');
         this.a = 0;
         this.primos = [2,3,5,7,-1];
         this.den=[2,3,4,5,6,7,8,9,10];
@@ -2107,9 +2745,9 @@ class S4 extends Phaser.Scene{
         }
     }
 }
-class R1 extends Phaser.Scene{
+class R2 extends Phaser.Scene{
     constructor() {
-        super('R1');
+        super('R2');
         this.a = 0;
         this.primos = [2,3,5,7,-1];
     }
@@ -2311,9 +2949,9 @@ class R1 extends Phaser.Scene{
         }
     }
 }
-class R2 extends Phaser.Scene{
+class R3 extends Phaser.Scene{
     constructor() {
-        super('R2');
+        super('R3');
         this.a = 0;
         this.primos = [2,3,5,7,-1];
         this.den=[2,4,8];
@@ -2570,9 +3208,9 @@ class R2 extends Phaser.Scene{
         }
     }
 }
-class R3 extends Phaser.Scene{
+class R4 extends Phaser.Scene{
     constructor() {
-        super('R3');
+        super('R4');
         this.a = 0;
         this.primos = [2,3,5,7,-1];
         this.den=[3,6,9];
@@ -2828,9 +3466,9 @@ class R3 extends Phaser.Scene{
         }
     }
 }
-class R4 extends Phaser.Scene{
+class R5 extends Phaser.Scene{
     constructor() {
-        super('R4');
+        super('R5');
         this.a = 0;
         this.primos = [2,3,5,7,-1];
         this.den=[2,3,4,5,6,7,8,9,10];
@@ -3868,6 +4506,7 @@ class D4 extends Phaser.Scene{
         }
     }
 }
+
 const config = {
   type: Phaser.AUTO,
   width: 1920,
@@ -3877,7 +4516,7 @@ const config = {
   dom: {
         createContainer: true
     },
-  scene: [menu, Explora, Pro,Prob,Probl,Ganar,Eq2,Eq3,S1,S2,S3,S4,R1,R2,R3,R4,D1,D2,D3,D4],
+  scene: [M1,R1,S1,C1, menu, Explora, M2,M3,Eq1,Eq2,Eq3,S5,S2,S3,S4,R5,R2,R3,R4,D1,D2,D3,D4],
   scale: {
       mode: Phaser.Scale.Fit
   },
