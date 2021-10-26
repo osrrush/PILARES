@@ -1871,7 +1871,7 @@ const config = {
   dom: {
         createContainer: true
     },
-  scene: [R2,R,RN2,RN,menu,Q2,Q,CF2,CF ],//
+  scene: [menu,R2,R,RN2,RN,Q2,Q,CF2,CF ],//
   scale: {
       mode: Phaser.Scale.Fit
   },
