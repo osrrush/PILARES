@@ -78,7 +78,7 @@ class menu extends Phaser.Scene{
         opc[5].once('pointerdown', () => this.opcionPulsada(5));
         opc[6].once('pointerdown', () => this.opcionPulsada(6));
         opc[7].once('pointerdown', () => this.opcionPulsada(7));
-        opc[8].once('pointerdown', () => this.opcionPulsada(8));
+        //opc[8].once('pointerdown', () => this.opcionPulsada(8));
         //opc[9].once('pointerdown', () => this.opcionPulsada(9));
         //opc[10].once('pointerdown', () => this.opcionPulsada(10));
         
