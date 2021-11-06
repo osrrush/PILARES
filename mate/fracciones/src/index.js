@@ -873,7 +873,7 @@ class M1 extends Phaser.Scene{
         w = this.sound.add('wrong',{loop:false});
         this.debug = this.add.graphics();
         
-        
+        this.tintados=0;
         
         var y1 = this.opc[Math.floor(Math.random()*this.opc.length)];
         this.dividir(y1);
@@ -951,7 +951,7 @@ class M1 extends Phaser.Scene{
             imagen.displayHeight = 75;
             imagen.setInteractive();
             imagen.setData({name: i, tocado:0});
-            imagen.on('clicked', this.down, this, this.pointer);
+            imagen.on('clicked', this.down, this);
         }
     }
     corregir(){
@@ -977,12 +977,18 @@ class M1 extends Phaser.Scene{
         }
     }
     down(image, pointer){
-        console.log(pointer);
+        
+        var color=Math.floor(this.tintados/this.f[1])%Colores.length;
+        console.log("color = "+color);
+        console.log("tintados = "+this.tintados);
         if(image.getData('tocado') === 0){
-            image.setTint(Colores[1]);
+            image.setTint(Colores[color]);
+            this.tintados++;
         }else{
             image.clearTint();
+            this.tintados--;
         }
+        
         image.setData('tocado',1-image.getData('tocado'));
         
     }
@@ -1040,7 +1046,9 @@ class M2 extends Phaser.Scene{
         this.load.image('fondo','./asset/img/background.png');
         this.load.image('inicio','./asset/img/inicio.png');
         this.etiq = ['uno', 'la mitad', 'un tercio', 'un cuarto', 'un quinto', 'un sexto', 'un séptimo',
-                    'un octavo', 'un noveno', 'un décimo'];        
+                    'un octavo', 'un noveno', 'un décimo'];
+        this.load.audio('correct', './asset/sounds/correct.mp3');
+        this.load.audio('wrong', './asset/sounds/wrong.mp3');
     }
     create(){
         //this.add.image(960,540,'fondo');
@@ -1051,6 +1059,8 @@ class M2 extends Phaser.Scene{
         this.lienzo2.fillStyle(0xff0000);
         this.lienzo2.setAlpha(this.a);
         this.lienzo2.fillRect(0,0,1920,1080);
+        c = this.sound.add('correct',{loop:false});
+        w = this.sound.add('wrong',{loop:false});
         
         const inicio = this.add.zone(0, 0, 250, 250);
         inicio.setOrigin(0);
@@ -1093,32 +1103,76 @@ class M2 extends Phaser.Scene{
         element[7].on('click',() => this.corregir( x,y,8));
         element[8].on('click',() => this.corregir( x,y,9));
         element[9].on('click',() => this.corregir( x,y,10));
+         this.lienzo = this.add.graphics();
+          this.lienzo3 = this.add.graphics();
     }
     update(time,delta){
-        if(this.a>0){
-            this.a-=0.5*delta/1000;
-        }else{
-            this.a=0;
-        }
-        this.lienzo2.clear();
-        this.lienzo2.setAlpha(this.a);
-        this.lienzo2.fillStyle(0xff0000);
-        this.lienzo2.fillRect(0,0,1920,1080);
-        
+        if(a>0){
+                b=0;
+                a-=0.3*delta/1000;
+                this.lienzo.clear();
+                this.lienzo.setAlpha(a);
+                this.lienzo.fillStyle(0xff0000);
+                this.lienzo.fillRect(0,0,1920,1080);
+                this.lienzo2.clear();
+                this.lienzo2.setAlpha(b);
+                this.lienzo2.fillStyle(0x00ff00);
+                this.lienzo2.fillRect(0,0,1920,1080);
+            }else{
+                a=0;
+
+            }
+            if(b>0){
+                a=0;
+                b-=0.3*delta/1000;
+                this.lienzo.clear();
+                this.lienzo.setAlpha(a);
+                this.lienzo.fillStyle(0xff0000);
+                this.lienzo.fillRect(0,0,1920,1080);
+                this.lienzo2.clear();
+                this.lienzo2.setAlpha(b);
+                this.lienzo2.fillStyle(0x00ff00);
+                this.lienzo2.fillRect(0,0,1920,1080);  
+            }else{
+                b=0;
+
+            }
     }
     opcionPulsada(opcion) {
         if(opcion === "inicio"){
             this.scene.start('menu');
         }else if(opcion === "ayuda"){
             window.open('ayuda.html','Ayuda',"width=960, height=540");
+        }if(opcion === "otro"){
+            this.scene.start(this.scene.key);
+        }else{
+            console.log("A dónde voy?");
         }
     }
     corregir(x,y,i){
         if((x*y) === i){
-            this.scene.start('Ganar');
+           this.correcto();
         }else{
-            this.a=0.75;
+            this.falso();
         }
+    }
+    correcto(){
+        b=0.5;
+        c.play();
+        this.lienzo3 = this.add.graphics();
+                this.lienzo3.fillStyle(0x03A9F4);
+                this.lienzo3.fillRect(1600,50,300,90);
+                this.opc= this.add.text(1750, 95, '¿OTRO?', { color: 'black', fontFamily: 'Arial', fontSize: '50px '}).setOrigin(0.5,0.5);
+
+                const otro = this.add.zone(1600, 50, 300,100);
+                    otro.setOrigin(0);
+                    otro.setInteractive();
+                    otro.on('pointerdown', () => this.opcionPulsada('otro'));
+    }
+    falso(){
+        a=0.5;
+        w.play();
+        this.cameras.main.shake(200,0.01);
     }
 }
 class M3 extends Phaser.Scene{
