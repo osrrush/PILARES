@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-const titulo = 'Contar y sumar.'; //Titulo del juego
+const titulo = 'Restar.'; //Titulo del juego
 const menulabel = [['¿Cuánto falta?(1)','¿Cuánto falta?(2)'],
     ['Quitar (1)','Quitar (2)'],
     ['Recta numérica (1)', 'Recta numérica (2)'],
