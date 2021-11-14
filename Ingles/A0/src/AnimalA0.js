@@ -264,14 +264,14 @@ class RC extends Phaser.Scene {
         this.lienzo = this.add.graphics();
 
 
-        this.lienzo = this.add.graphics();
-        this.lienzo.fillStyle(0xff0000);
-        this.lienzo.setAlpha(a);
-        this.lienzo.fillRect(0, 0, 1920, 1080);
+        this.lienzo3 = this.add.graphics();
+        this.lienzo3.fillStyle(0xff0000);
+        this.lienzo3.setAlpha(a);
+        this.lienzo3.fillRect(0, 0, 1920, 1080);
 
         this.lienzo2 = this.add.graphics();
         this.lienzo2.fillStyle(0x00ff00);
-        this.lienzo2.setAlpha(a);
+        this.lienzo2.setAlpha(b);
         this.lienzo2.fillRect(0, 0, 1920, 1080);
     }
     over(imagen) {
@@ -328,10 +328,10 @@ class RC extends Phaser.Scene {
         if (a > 0) {
             a -= 0.5 * delta / 1000;
             b -= 0.5 * delta / 1000;
-            this.lienzo.clear();
-            this.lienzo.setAlpha(a);
-            this.lienzo.fillStyle(0xff0000);
-            this.lienzo.fillRect(0, 0, 1920, 1080);
+            this.lienzo3.clear();
+            this.lienzo3.setAlpha(a);
+            this.lienzo3.fillStyle(0xff0000);
+            this.lienzo3.fillRect(0, 0, 1920, 1080);
 
         } else {
             a = 0;
@@ -340,10 +340,10 @@ class RC extends Phaser.Scene {
         if (b > 0) {
 
             b -= 0.5 * delta / 1000;
-            this.lienzo.clear();
-            this.lienzo.setAlpha(b);
-            this.lienzo.fillStyle(0x00ff00);
-            this.lienzo.fillRect(0, 0, 1920, 1080);
+            this.lienzo2.clear();
+            this.lienzo2.setAlpha(b);
+            this.lienzo2.fillStyle(0x00ff00);
+            this.lienzo2.fillRect(0, 0, 1920, 1080);
 
         } else {
             b = 0;
@@ -429,14 +429,14 @@ class LC extends Phaser.Scene {
         this.lienzo = this.add.graphics();
 
 
-        this.lienzo = this.add.graphics();
-        this.lienzo.fillStyle(0xff0000);
-        this.lienzo.setAlpha(a);
-        this.lienzo.fillRect(0, 0, 1920, 1080);
+        this.lienzo3 = this.add.graphics();
+        this.lienzo3.fillStyle(0xff0000);
+        this.lienzo3.setAlpha(a);
+        this.lienzo3.fillRect(0, 0, 1920, 1080);
 
         this.lienzo2 = this.add.graphics();
         this.lienzo2.fillStyle(0x00ff00);
-        this.lienzo2.setAlpha(a);
+        this.lienzo2.setAlpha(b);
         this.lienzo2.fillRect(0, 0, 1920, 1080);
     }
     reproducir() {
@@ -453,7 +453,7 @@ class LC extends Phaser.Scene {
         this.lienzo.fillStyle(0xff0000);
         this.lienzo.setAlpha(0.5);
         this.lienzo.fillRect(0 + (tam+10) * x, 200 + (tam+10) * y, tam, tam);
-        this.div.innerText = vocabulary[y * fila + x];
+        //this.div.innerText = vocabulary[y * fila + x];
         //this.div.innerText = vocabulary[y*10+x];
     }
     out() {
@@ -475,7 +475,7 @@ class LC extends Phaser.Scene {
                 this.vocabulary2.sort(() => (Math.random() > 0.5 ? 1 : -1));
             }
             
-            this.div.innerText = this.vocabulary2[rc];
+            //this.div.innerText = this.vocabulary2[rc];
         } else {
             a = 0.5;
             this.cameras.main.shake(200, 0.01);
@@ -496,10 +496,10 @@ class LC extends Phaser.Scene {
         if (a > 0) {
             a -= 0.5 * delta / 1000;
             b -= 0.5 * delta / 1000;
-            this.lienzo.clear();
-            this.lienzo.setAlpha(a);
-            this.lienzo.fillStyle(0xff0000);
-            this.lienzo.fillRect(0, 0, 1920, 1080);
+            this.lienzo3.clear();
+            this.lienzo3.setAlpha(a);
+            this.lienzo3.fillStyle(0xff0000);
+            this.lienzo3.fillRect(0, 0, 1920, 1080);
 
         } else {
             a = 0;
@@ -508,10 +508,10 @@ class LC extends Phaser.Scene {
         if (b > 0) {
 
             b -= 0.5 * delta / 1000;
-            this.lienzo.clear();
-            this.lienzo.setAlpha(b);
-            this.lienzo.fillStyle(0x00ff00);
-            this.lienzo.fillRect(0, 0, 1920, 1080);
+            this.lienzo2.clear();
+            this.lienzo2.setAlpha(b);
+            this.lienzo2.fillStyle(0x00ff00);
+            this.lienzo2.fillRect(0, 0, 1920, 1080);
 
         } else {
             b = 0;
@@ -529,7 +529,7 @@ class LW extends Phaser.Scene {
         this.load.image('play', './assets/img/play.png');
 
         for (var i = 0; i < vocabulary.length; i++) {
-            this.load.audio(vocabulary[i], './assets/sounds/' + vocabulary[i] + '.mp3');
+            this.load.audio(vocabulary[i], './assets/sounds/vocabulary/' + vocabulary[i] + '.mp3');
         }
         this.vocabulary2 = vocabulary.slice();
         this.vocabulary2.sort(() => (Math.random() > 0.5 ? 1 : -1));
@@ -709,7 +709,7 @@ class SW extends Phaser.Scene {
 
 
         for (var i = 0; i < vocabulary.length; i++) {
-            this.load.image(vocabulary[i], './assets/img/' + vocabulary[i] + '.png');
+            this.load.image(vocabulary[i], './assets/img/vocabulary/' + vocabulary[i] + '.png');
         }
         this.vocabulary2 = vocabulary.slice();
         this.vocabulary2.sort(() => (Math.random() > 0.5 ? 1 : -1));
