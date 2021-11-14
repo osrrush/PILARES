@@ -634,7 +634,7 @@ class LW extends Phaser.Scene {
         //console.log(rempl);
         //console.log(resp);
         for (var i = 0; i < resp.length; i++) {
-            if (r === resp[i]) {
+            if (r === resp[i].toLowerCase()) {
                 //console.log("Correcto");
                 b = 0.25;
                 rc++;
@@ -801,7 +801,7 @@ class SW extends Phaser.Scene {
         //console.log(rempl);
         //console.log(resp);
         for (var i = 0; i < resp.length; i++) {
-            if (r === resp[i]) {
+            if (r === resp[i].toLowerCase()) {
                 //console.log("Correcto");
                 b = 0.25;
                 rc++;
