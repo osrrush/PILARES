@@ -1259,7 +1259,7 @@ class M3 extends Phaser.Scene{
         if(opcion === "inicio"){
             this.scene.start('menu');
         }else if(opcion === 'otro'){
-            this.scene.start('Prob');
+            this.scene.start('M3');
         }else{
             
         }
