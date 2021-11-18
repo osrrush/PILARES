@@ -1390,7 +1390,7 @@ class Eq1 extends Phaser.Scene{
         }else if(opcion === "ayuda"){
             window.open('ayuda.html','Ayuda',"width=960, height=540");
         }else{
-            this.scene.start('Probl');
+            this.scene.start('Eq1');
         }
     }
     corregir(n,y1,y2){//n=numerador  y1=denominador y2= cambio
