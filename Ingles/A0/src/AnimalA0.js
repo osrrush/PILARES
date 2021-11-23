@@ -208,20 +208,23 @@ class RC extends Phaser.Scene {
             this.load.image(vocabulary[i], './assets/img/vocabulary/' + vocabulary[i] + '.png');
         }
 
-        this.vocabulary2 = vocabulary.slice();
-        this.vocabulary2.sort(() => (Math.random() > 0.5 ? 1 : -1));
-
+        indices = new Array();
+        for(var i=0;i<vocabulary.length;i++){
+            indices.push(i);
+        }
+        indices.sort(() => (Math.random() > 0.5 ? 1 : -1));
+        
         this.load.audio('correct', './assets/sounds/' + 'correct' + '.mp3');
         this.load.audio('wrong', './assets/sounds/' + 'wrong' + '.mp3');
     }
     create() {
 
-        console.log(vocabulary);
-        console.log(this.vocabulary2);
+        //console.log(vocabulary);
+        
         this.add.image(0, 0, 'logo').setOrigin(0, 0);
         this.div = document.createElement('h1');
         this.div.style = 'width: 1000px; font-size: 80px; ';
-        this.div.innerText = 'click on ' + this.vocabulary2[rc];
+        this.div.innerText = 'click on ' + vocabulary[indices[rc]];
         this.add.dom(1200, 50, this.div).setOrigin(0.5, 0.5);
 
         this.graph = this.add.graphics();
@@ -299,15 +302,15 @@ class RC extends Phaser.Scene {
         this.sound.stopAll();
         var x = Math.floor((imagen.x - 0) / (tam+10));
         var y = Math.floor((imagen.y - 200) / (tam+10));
-        if (vocabulary[fila * y + x] === this.vocabulary2[rc]) {
+        if (vocabulary[fila * y + x] === vocabulary[indices[rc]]) {
             b = 0.5;
             c.play();
             rc++;
             if(rc === vocabulary.length){
                 rc = 0;
-                this.vocabulary2.sort(() => (Math.random() > 0.5 ? 1 : -1));
+                indices.sort(() => (Math.random() > 0.5 ? 1 : -1));
             }
-            this.div.innerText = this.vocabulary2[rc];
+            this.div.innerText = vocabulary[indices[rc]];
         } else {
             a = 0.5;
             this.cameras.main.shake(200, 0.01);
@@ -366,8 +369,11 @@ class LC extends Phaser.Scene {
         for (var i = 0; i < vocabulary.length; i++) {
             this.load.audio(vocabulary[i], './assets/sounds/vocabulary/' + vocabulary[i] + '.mp3');
         }
-        this.vocabulary2 = vocabulary.slice();
-        this.vocabulary2.sort(() => (Math.random() > 0.5 ? 1 : -1));
+        indices = new Array();
+        for(var i=0;i<vocabulary.length;i++){
+            indices.push(i);
+        }
+        indices.sort(() => (Math.random() > 0.5 ? 1 : -1));
 
         this.load.audio('correct', './assets/sounds/' + 'correct' + '.mp3');
         this.load.audio('wrong', './assets/sounds/' + 'wrong' + '.mp3');
@@ -395,7 +401,7 @@ class LC extends Phaser.Scene {
         fx = new Array();
         for (var i = 0; i < vocabulary.length; i++) {
 
-            fx.push(this.sound.add(this.vocabulary2[i], {loop: false}));
+            fx.push(this.sound.add(vocabulary[i], {loop: false}));
 
             var x = 100;
             var y = 300;
@@ -441,7 +447,7 @@ class LC extends Phaser.Scene {
     }
     reproducir() {
         this.sound.stopAll();
-        fx[rc].play();
+        fx[indices[rc]].play();
     }
     over(imagen) {
 
@@ -466,13 +472,15 @@ class LC extends Phaser.Scene {
         this.sound.stopAll();
         var x = Math.floor((imagen.x - 0) / (tam+10));
         var y = Math.floor((imagen.y - 200) / (tam+10));
-        if (vocabulary[fila * y + x] === this.vocabulary2[rc]) {
+        //console.log("rc = "+rc);
+        //console.log(vocabulary[indices[rc]]);
+        if (vocabulary[fila * y + x] === vocabulary[indices[rc]]) {
             b = 0.5;
             c.play();
             rc++;
-            if(rc === vocabulary.length){
-                rc = 0;
-                this.vocabulary2.sort(() => (Math.random() > 0.5 ? 1 : -1));
+            if(rc===vocabulary.length){
+                    rc=0;
+                    indices.sort(() => (Math.random() > 0.5 ? 1 : -1));
             }
             
             //this.div.innerText = this.vocabulary2[rc];
@@ -531,8 +539,11 @@ class LW extends Phaser.Scene {
         for (var i = 0; i < vocabulary.length; i++) {
             this.load.audio(vocabulary[i], './assets/sounds/vocabulary/' + vocabulary[i] + '.mp3');
         }
-        this.vocabulary2 = vocabulary.slice();
-        this.vocabulary2.sort(() => (Math.random() > 0.5 ? 1 : -1));
+        indices = new Array();
+        for(var i=0;i<vocabulary.length;i++){
+            indices.push(i);
+        }
+        indices.sort(() => (Math.random() > 0.5 ? 1 : -1));
 
         this.load.audio('correct', './assets/sounds/' + 'correct' + '.mp3');
         this.load.audio('wrong', './assets/sounds/' + 'wrong' + '.mp3');
@@ -560,7 +571,7 @@ class LW extends Phaser.Scene {
         fx = new Array();
         for (var i = 0; i < vocabulary.length; i++) {
 
-            fx.push(this.sound.add(this.vocabulary2[i], {loop: false}));
+            fx.push(this.sound.add(vocabulary[i], {loop: false}));
 
             var x = 100;
             var y = 300;
@@ -609,7 +620,7 @@ class LW extends Phaser.Scene {
     }
     reproducir() {
         this.sound.stopAll();
-        fx[rc].play();
+        fx[indices[rc]].play();
     }
 
     opcionPulsada(opcion) {
@@ -624,7 +635,7 @@ class LW extends Phaser.Scene {
     corregir() {
 
         var r = document.getElementById('respuesta').value;
-        var resp = this.vocabulary2[rc];
+        var resp = vocabulary[indices[rc]];
         var rempl = resp.split('/');
         var resp = resp.split('/')
 
@@ -639,7 +650,12 @@ class LW extends Phaser.Scene {
                 b = 0.25;
                 rc++;
                 c.play();
-                rc = rc % vocabulary.length;
+                if(rc===vocabulary.length){
+                    rc=0;
+                    indices.sort(() => (Math.random() > 0.5 ? 1 : -1));
+                }
+                
+                
                 document.getElementById('respuesta').value = "";
                 break;
             } else {
@@ -711,8 +727,11 @@ class SW extends Phaser.Scene {
         for (var i = 0; i < vocabulary.length; i++) {
             this.load.image(vocabulary[i], './assets/img/vocabulary/' + vocabulary[i] + '.png');
         }
-        this.vocabulary2 = vocabulary.slice();
-        this.vocabulary2.sort(() => (Math.random() > 0.5 ? 1 : -1));
+        indices = new Array();
+        for(var i=0;i<vocabulary.length;i++){
+            indices.push(i);
+        }
+        indices.sort(() => (Math.random() > 0.5 ? 1 : -1));
 
         this.load.audio('correct', './assets/sounds/' + 'correct' + '.mp3');
         this.load.audio('wrong', './assets/sounds/' + 'wrong' + '.mp3');
@@ -739,7 +758,7 @@ class SW extends Phaser.Scene {
         //this.lienzo.setAlpha(0.7);
         const opc = new Array();
         fx = new Array();
-        this.image = this.add.image(1200, 300, this.vocabulary2[rc]);
+        this.image = this.add.image(1200, 300, vocabulary[indices[rc]]);
         this.image.displayWidth = 160;
         this.image.displayHeight = 160;
 
@@ -791,7 +810,8 @@ class SW extends Phaser.Scene {
     corregir() {
 
         var r = document.getElementById('respuesta').value;
-        var resp = this.vocabulary2[rc % vocabulary.length];
+        var resp = vocabulary[indices[rc]].toLowerCase();
+        
         var rempl = resp.split('/');
         var resp = resp.split('/')
 
@@ -807,7 +827,11 @@ class SW extends Phaser.Scene {
                 rc++;
                 c.play();
                 this.image.destroy();
-                this.image = this.add.image(1200, 300, this.vocabulary2[rc % vocabulary.length]);
+                if(rc===vocabulary.length){
+                    rc=0;
+                    indices.sort(() => (Math.random() > 0.5 ? 1 : -1));
+                }
+                this.image = this.add.image(1200, 300, vocabulary[indices[rc]]);
                 this.image.displayWidth = 160;
                 this.image.displayHeight = 160;
                 document.getElementById('respuesta').value = "";
