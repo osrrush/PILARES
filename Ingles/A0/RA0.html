@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <style>
+            .button {
+              border: none;
+              color: white;
+              text-align: center;
+              text-decoration: none;
+              display: inline-block;
+              font-size: 18px;
+              margin: 4px 2px;
+              cursor: pointer;
+              width:180px; 
+              height:50px
+            }
+
+            .button1 {background-color: #4CAF50;} /* Green */
+            .button2 {background-color: #008CBA;} /* Blue */
+            .button3 {background-color: #99A3A4;}  /* Gris */
+        </style>
+        
+            
+            
+        <script>
+            function sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+            
+            var id_apretado;
+            var b_apretado;
+            var apretado=0;
+            var valor;
+            var correctas = 0;
+            var refresh;
+            async function verifica(id){
+                if(apretado===0){
+                    //console.log("id="+id)
+                    document.getElementById(id).className="button button2";
+                    valor=document.getElementById(id).value;
+                    document.getElementById(id).innerHTML=valor+"";
+                    b_apretado=document.getElementById(id);
+                    id_apretado=id;
+                    document.getElementById(id).disabled = true;
+                    apretado=1;
+                }else{
+                    document.getElementById(id).className="button button2";
+                    document.getElementById(id).innerHTML=document.getElementById(id).value+"";
+                    await sleep(500);
+                    if(!correcto(id_apretado,id)){
+                        b_apretado.className="button button1";
+                        document.getElementById(id).className="button button1";
+                        b_apretado.innerHTML=" ";
+                        document.getElementById(id).innerHTML=" ";
+                        b_apretado.disabled = false;
+                    }else{
+                        b_apretado.className= "button button3";
+                        b_apretado.disabled = true;
+                        document.getElementById(id).className = "button button3";
+                        document.getElementById(id).disabled = true;
+                        correctas ++;
+                        if(correctas===10){
+                            refresh=confirm("¡Felicidades, ganaste!\n ¿Quieres volver a jugar?");
+                            if(refresh){
+                                location.reload();
+                            }
+                        }
+                    }
+                    apretado=0;
+                    b_apretado= null;
+                    id_apretado=0;
+                }
+            }
+            function correcto(id1,id2){
+                if((id1%10)===(id2%10)){
+                    return true;
+                }
+                return false;
+            }
+            
+        </script>
+    </head>
+    <body onload="startDB();">
+        <div id="Título">PAIRS (memorama)</div>
+        <div id="t"></div>
+        <div id="Botones"></div>
+        <script>
+            //Cargar verbos
+           
+            
+            var verbos = new Array();
+            var txt = new XMLHttpRequest();
+            var txt2 = new XMLHttpRequest();
+            const x=5, y=4;
+            var i=0, j=0, u=0, v=0;
+            var valores=[[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]]
+            var o=document.getElementById("Botones");
+            var verb_sel=["Be Ser","Play Jugar","Jump Saltar","Wash Lavar",
+                        "Come Venir","Dance Bailar","Read Leer","Write Escribir",
+                        "Eat Comer","Cook Cocinar"];
+                    
+            txt.onreadystatechange = function() {
+                if (txt.readyState===4 && txt.status===200) {
+                    verbos=txt.responseText.split(",");
+                    verb_sel=verbos.sort(() => (Math.random() > 0.5 ? 1 : -1)).slice(0,10);
+            var verbo=[,,,,,,,,,];    
+                //console.log(verb_sel);
+            for(var k=1;k<11;k++){
+                verbo[k-1]=verb_sel[k-1].split(" ")
+                //console.log(verbo[k-1]);
+                for(var aux=0;aux<2;aux++){
+                    u=Math.floor(5*Math.random());
+                    v=Math.floor(4*Math.random());
+                    if(valores[v][u]===0){
+                        valores[v][u]=10*aux+k;
+                     }else{
+                        for (i=0;i<y;i++){
+                            for(j=1;j<x;j++){
+                                if(valores[(v+i)%4][(u+j)%5]===0){
+                                    valores[(v+i)%4][(u+j)%5]=10*aux+k;
+                                    j=x;
+                                    i=y;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            for (i=0;i<x;i++){
+                for(j=0;j<y;j++){
+                    o.innerHTML +='<button type="button" name="'+(11+j*5+i)+'" id="'+valores[j][i]+'" class="button button1" onclick="verifica('+valores[j][i]+')" value="'+verbo[valores[j][i]%10][Math.floor(valores[j][i]/10)%2]+'" > </button>';
+                    //console.log("(i,j)=("+i+","+j+")="+verbo[valores[j][i]%10][Math.floor(valores[j][i]/10)%2]);
+                }
+                o.innerHTML +='<p></p>';
+            }
+                }
+            }
+            txt.open("GET" , "RA0.txt");
+            txt.send();
+            console.log(txt.statusText);
+            console.log(verbos);
+            // Poner botones
+            
+            
+            console.log(verbos);
+            
+            
+            //Escribir
+            
+            
+        </script>
+        
+    </body>
+</html>
