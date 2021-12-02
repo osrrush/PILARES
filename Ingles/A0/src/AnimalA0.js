@@ -34,6 +34,7 @@ var rc = 0; //Contadores rc = respuesta correcta
 var num;
 var fila = 9;
 var tam = 200; //tamaño de las imágenes <200
+var indices;
 
 class menu extends Phaser.Scene {
     constructor() {
