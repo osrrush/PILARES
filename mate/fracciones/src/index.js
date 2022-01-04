@@ -1179,11 +1179,13 @@ class M3 extends Phaser.Scene{
     constructor() {
         super('M3');
         this.a = 0;
+        b=0;
     }
     preload(){
-        this.load.image('fondo','./asset/img/background.png');
+        
         this.load.image('inicio','./asset/img/inicio.png');
-        this.load.css('80s', './src/fuente.css');
+        this.load.audio('correct', './asset/sounds/correct.mp3');
+        this.load.audio('wrong', './asset/sounds/wrong.mp3');
     }
     create(){
         //this.add.image(960,540,'fondo');
@@ -1191,7 +1193,9 @@ class M3 extends Phaser.Scene{
         this.inicio.setScale(0.5);
         this.lienzo = this.add.graphics();
         this.lienzo.lineStyle(10, 0x000000, 1);
-           
+        
+        c = this.sound.add('correct',{loop:false});
+        w = this.sound.add('wrong',{loop:false});
         
         const inicio = this.add.zone(0, 0, 250, 250);
         inicio.setOrigin(0);
@@ -1243,6 +1247,11 @@ class M3 extends Phaser.Scene{
         this.lienzo2.fillStyle(0xff0000);
         this.lienzo2.setAlpha(this.a);
         this.lienzo2.fillRect(0,0,1920,1080);
+        
+        this.lienzo3 = this.add.graphics();
+        this.lienzo3.fillStyle(0x00ff00);
+        this.lienzo3.setAlpha(b);
+        this.lienzo3.fillRect(0,0,1920,1080);
     }
     update(time, delta){
         if(this.a>0){
@@ -1250,10 +1259,20 @@ class M3 extends Phaser.Scene{
         }else{
             this.a=0;
         }
+        
         this.lienzo2.clear();
         this.lienzo2.setAlpha(this.a);
         this.lienzo2.fillStyle(0xff0000);
         this.lienzo2.fillRect(0,0,1920,1080);
+         if(b>0){
+            b-=0.5*delta/1000;
+        }else{
+            b=0;
+        }
+        this.lienzo3.clear();
+        this.lienzo3.setAlpha(b);
+        this.lienzo3.fillStyle(0x00ff00);
+        this.lienzo3.fillRect(0,0,1920,1080);
     }
     opcionPulsada(opcion) {
         if(opcion === "inicio"){
@@ -1281,13 +1300,13 @@ class M3 extends Phaser.Scene{
                 otro.setOrigin(0);
                 otro.setInteractive();
                 otro.once('pointerdown', () => this.opcionPulsada('otro'));
-                
-            var h2 = this.add.dom(1100, 500, 'h2', null, 'Ganaste ');
-            h2.setClassName('dreams');
-            h2.setAngle(-15);
+            b=0.75;    
+            c.play();
             
         }else{
             this.a=0.75;
+            w.play();
+            this.cameras.main.shake(200,0.01);
         }
     }
 }
@@ -1295,14 +1314,16 @@ class Eq1 extends Phaser.Scene{
     constructor() {
             super('Eq1');
             this.a = 0;
-            
+            b=0;
 	}
     preload(){
         this.load.image('fondo','./asset/img/background.png');
         this.load.image('inicio','./asset/img/inicio.png');
-        this.load.css('80s', './src/fuente.css');
+        
         this.etiq = ['uno', 'medios', 'tercios', 'cuartos', 'quintos', 'sextos',
                     'séptimos', 'octavos', 'novenos', 'décimos'];
+        this.load.audio('correct', './asset/sounds/correct.mp3');
+        this.load.audio('wrong', './asset/sounds/wrong.mp3');
     }
     create(){
         //this.add.image(960,540,'fondo');
@@ -1311,6 +1332,8 @@ class Eq1 extends Phaser.Scene{
         this.lienzo = this.add.graphics();
         this.lienzo.lineStyle(10, 0x000000, 1);
            
+        c = this.sound.add('correct',{loop:false});
+        w = this.sound.add('wrong',{loop:false});
         
         const inicio = this.add.zone(0, 0, 250, 250);
         inicio.setOrigin(0);
@@ -1371,7 +1394,10 @@ class Eq1 extends Phaser.Scene{
         this.lienzo2.setAlpha(this.a);
         this.lienzo2.fillRect(0,0,1920,1080);
         
-        
+        this.lienzo3 = this.add.graphics();
+        this.lienzo3.fillStyle(0x00ff00);
+        this.lienzo3.setAlpha(b);
+        this.lienzo3.fillRect(0,0,1920,1080);
     }
     update(time,delta){
         if(this.a>0){
@@ -1383,6 +1409,15 @@ class Eq1 extends Phaser.Scene{
         this.lienzo2.setAlpha(this.a);
         this.lienzo2.fillStyle(0xff0000);
         this.lienzo2.fillRect(0,0,1920,1080);
+         if(b>0){
+            b-=0.5*delta/1000;
+        }else{
+            b=0;
+        }
+        this.lienzo3.clear();
+        this.lienzo3.setAlpha(b);
+        this.lienzo3.fillStyle(0x00ff00);
+        this.lienzo3.fillRect(0,0,1920,1080);
     }
     opcionPulsada(opcion) {
         if(opcion === "inicio"){
@@ -1421,8 +1456,12 @@ class Eq1 extends Phaser.Scene{
             
             this.element.y+= 100;
             this.res.y+=100;
+            c.play();
+            b=0.75;
         }else{
             this.a=0.75;
+            this.cameras.main.shake(200,0.01);
+            w.play();
         }
     }
     corregir2(n,r){//n=numerador  d=denominador r= cambio
@@ -1447,8 +1486,12 @@ class Eq1 extends Phaser.Scene{
             this.element.on('click',() => this.corregir3((n*r)));
             this.input.keyboard.off('keydown-ENTER');
             this.input.keyboard.on('keydown-ENTER',() => this.corregir3(n*r));
+            c.play();
+            b=0.75;
         }else{
             this.a=0.75;
+            this.cameras.main.shake(200,0.01);
+            w.play();
         }
     }
     corregir3(r){//r=respuesta
@@ -1479,20 +1522,26 @@ class Eq1 extends Phaser.Scene{
             h2.setClassName('dreams');
             h2.setAngle(-15);
 
-            
+            c.play();
+            b=0.75;
         }else{
             this.a=0.75;
+            this.cameras.main.shake(200,0.01);
+            w.play();
         }
     }
 }
 class Eq2 extends Phaser.Scene{
     constructor() {
 		super('Eq2');
+                b=0;
     }
     preload(){
         this.load.image('fondo','./asset/img/background.png');
         this.load.image('inicio','./asset/img/inicio.png');
-        this.load.css('80s', './src/fuente.css');
+        this.load.audio('correct', './asset/sounds/correct.mp3');
+        this.load.audio('wrong', './asset/sounds/wrong.mp3');
+        
         this.etiq = ['uno', 'medios', 'tercios', 'cuartos', 'quintos', 'sextos',
                     'séptimos', 'octavos', 'novenos', 'décimos'];
     }
@@ -1503,6 +1552,8 @@ class Eq2 extends Phaser.Scene{
         this.lienzo = this.add.graphics();
         this.lienzo.lineStyle(10, 0x000000, 1);
            
+        c = this.sound.add('correct',{loop:false});
+        w = this.sound.add('wrong',{loop:false});
         
         const inicio = this.add.zone(0, 0, 250, 250);
         inicio.setOrigin(0);
@@ -1560,7 +1611,10 @@ class Eq2 extends Phaser.Scene{
         this.lienzo2.setAlpha(this.a);
         this.lienzo2.fillRect(0,0,1920,1080);
         
-        
+        this.lienzo3 = this.add.graphics();
+        this.lienzo3.fillStyle(0x00ff00);
+        this.lienzo3.setAlpha(b);
+        this.lienzo3.fillRect(0,0,1920,1080);
     }
     update(time,delta){
         if(this.a>0){
@@ -1568,6 +1622,15 @@ class Eq2 extends Phaser.Scene{
         }else{
             this.a=0;
         }
+         if(b>0){
+            b-=0.5*delta/1000;
+        }else{
+            b=0;
+        }
+        this.lienzo3.clear();
+        this.lienzo3.setAlpha(b);
+        this.lienzo3.fillStyle(0x00ff00);
+        this.lienzo3.fillRect(0,0,1920,1080);
         this.lienzo2.clear();
         this.lienzo2.setAlpha(this.a);
         this.lienzo2.fillStyle(0xff0000);
@@ -1608,8 +1671,13 @@ class Eq2 extends Phaser.Scene{
             this.input.keyboard.on('keydown-ENTER',() => this.corregir2(n,r));
             this.element.y+= 100;
             this.res.y+=100;
+            
+            c.play();
+            b=0.75;
         }else{
             this.a=0.75;
+            this.cameras.main.shake(200,0.01);
+            w.play();
         }
     }
     corregir2(n,r){//n=numerador  d=denominador r= cambio
@@ -1635,8 +1703,12 @@ class Eq2 extends Phaser.Scene{
             this.input.keyboard.off('keydown-ENTER');
             this.input.keyboard.on('keydown-ENTER',() => this.corregir3(n));
             
+            c.play();
+            b=0.75;
         }else{
             this.a=0.75;
+            this.cameras.main.shake(200,0.01);
+            w.play();
         }
     }
     corregir3(r){//r=respuesta
@@ -1664,10 +1736,14 @@ class Eq2 extends Phaser.Scene{
 
             h2.setClassName('dreams');
             h2.setAngle(-15);
-
+            
+            c.play();
+            b=0.75;
             
         }else{
             this.a=0.75;
+            this.cameras.main.shake(200,0.01);
+            w.play();
         }
     }
 }
@@ -1679,9 +1755,12 @@ class Eq3 extends Phaser.Scene{
         this.load.image('fondo','./asset/img/background.png');
         this.load.image('inicio','./asset/img/inicio.png');
         this.load.css('80s', './src/fuente.css');
+        this.load.audio('correct', './asset/sounds/correct.mp3');
+        this.load.audio('wrong', './asset/sounds/wrong.mp3');
         //this.etiq = ['uno', 'medios', 'tercios', 'cuartos', 'quintos', 'sextos',
         //            'séptimos', 'octavos', 'novenos', 'décimos'];
         this.primos = [2,3,5,7,-1];
+        b=0;
     }
     create(){
         //this.add.image(0,0,'fondo').setOrigin(0,0);
@@ -1690,6 +1769,8 @@ class Eq3 extends Phaser.Scene{
         this.lienzo = this.add.graphics();
         this.lienzo.lineStyle(10, 0x000000, 1);
            
+        c = this.sound.add('correct',{loop:false});
+        w = this.sound.add('wrong',{loop:false});
         
         const inicio = this.add.zone(0, 0, 250, 250);
         inicio.setOrigin(0);
@@ -1778,6 +1859,10 @@ class Eq3 extends Phaser.Scene{
         this.lienzo2.setAlpha(this.a);
         this.lienzo2.fillRect(0,0,1920,1080);
         
+        this.lienzo3 = this.add.graphics();
+        this.lienzo3.fillStyle(0x00ff00);
+        this.lienzo3.setAlpha(b);
+        this.lienzo3.fillRect(0,0,1920,1080);
         
     }
     update(time,delta){
@@ -1790,6 +1875,15 @@ class Eq3 extends Phaser.Scene{
         this.lienzo2.setAlpha(this.a);
         this.lienzo2.fillStyle(0xff0000);
         this.lienzo2.fillRect(0,0,1920,1080);
+         if(b>0){
+            b-=0.5*delta/1000;
+        }else{
+            b=0;
+        }
+        this.lienzo3.clear();
+        this.lienzo3.setAlpha(b);
+        this.lienzo3.fillStyle(0x00ff00);
+        this.lienzo3.fillRect(0,0,1920,1080);
     }
     mcm(p,q){
         //console.log("mcm("+p+","+q+")");
@@ -1830,8 +1924,12 @@ class Eq3 extends Phaser.Scene{
                 var h2 = this.add.dom(1100, 500, 'h2', null, 'Ganaste ');
                 h2.setClassName('dreams');
                 h2.setAngle(-15);
+                c.play();
+                b=0.75;
             }else{
                 this.a=0.75;
+                this.cameras.main.shake(200,0.01);
+                w.play();
             }
         }else if((this.r%p)=== 0 ){
             //this.scene.start('Ganar');
@@ -1844,9 +1942,13 @@ class Eq3 extends Phaser.Scene{
                        p+')</span></div>=<div class="fraction"><span class="fup">'+(this.f[0])+
                        '</span><span class="bar">/</span><span class="fdn">'+
                        (this.f[1])+'</span></div>';
-            
+            c.play();
+            b=0.75;
         }else{
             this.a=0.75;
+            this.cameras.main.shake(200,0.01);
+            w.play();
+            
         }
     }
 }
@@ -1941,7 +2043,7 @@ class S2 extends Phaser.Scene{
         }else if(opcion === ""+this.xkg_val){
             this.scene.start('Ganar');
         }else{
-            this.scene.start('S1');
+            this.scene.start('S2');
         }
     }
     corregir(){
@@ -2145,9 +2247,9 @@ class S3 extends Phaser.Scene{
         if(opcion === "inicio"){
             this.scene.start('menu');
         }else if(opcion === "otro"){
-            this.scene.start('S2');
+            this.scene.start('S3');
         }else{
-            console.log("A dónde voy?")
+            console.log("A dónde voy?");
         }
     }
     corregir0(){
@@ -2394,7 +2496,7 @@ class S4 extends Phaser.Scene{
         if(opcion === "inicio"){
             this.scene.start('menu');
         }else if(opcion === "otro"){
-            this.scene.start('S3');
+            this.scene.start('S4');
         }else{
             console.log("A dónde voy?");
         }
@@ -2643,7 +2745,7 @@ class S5 extends Phaser.Scene{
         if(opcion === "inicio"){
             this.scene.start('menu');
         }else if(opcion === "otro"){
-            this.scene.start('S4');
+            this.scene.start('S5');
         }else{
             console.log("A dónde voy?");
         }
@@ -2890,7 +2992,7 @@ class R2 extends Phaser.Scene{
         }else if(opcion === ""+this.xkg_val){
             this.scene.start('Ganar');
         }else{
-            this.scene.start('R1');
+            this.scene.start('R2');
         }
     }
     corregir(){
@@ -3104,9 +3206,9 @@ class R3 extends Phaser.Scene{
         if(opcion === "inicio"){
             this.scene.start('menu');
         }else if(opcion === "otro"){
-            this.scene.start('R2');
+            this.scene.start('R3');
         }else{
-            console.log("A dónde voy?")
+            console.log("A dónde voy?");
         }
     }
     corregir0(){
@@ -3362,7 +3464,7 @@ class R4 extends Phaser.Scene{
         if(opcion === "inicio"){
             this.scene.start('menu');
         }else if(opcion === "otro"){
-            this.scene.start('R3');
+            this.scene.start('R4');
         }else{
             console.log("A dónde voy?");
         }
@@ -3613,7 +3715,7 @@ class R5 extends Phaser.Scene{
         if(opcion === "inicio"){
             this.scene.start('menu');
         }else if(opcion === "otro"){
-            this.scene.start('R4');
+            this.scene.start('R5');
         }else{
             console.log("A dónde voy?");
         }
@@ -4397,7 +4499,7 @@ class D4 extends Phaser.Scene{
         if(opcion === "inicio"){
             this.scene.start('menu');
         }else if(opcion === "otro"){
-            this.scene.start('D3');
+            this.scene.start('D4');
         }else if(opcion ==="ayuda"){
             window.open('ayuda.html','Ayuda',"width=960, height=540");
         }else {
