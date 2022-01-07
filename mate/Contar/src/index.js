@@ -2377,7 +2377,7 @@ const config = {
   dom: {
         createContainer: true
     },
-  scene: [S2D2,menu,DHM3,DHM2,DHM,SA,S2D,S1D2,Contar,GD10,QNE,S1D ],//
+  scene: [menu,S2D2,DHM3,DHM2,DHM,SA,S2D,S1D2,Contar,GD10,QNE,S1D ],//
   scale: {
       mode: Phaser.Scale.Fit
   },
