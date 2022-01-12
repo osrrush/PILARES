@@ -17,7 +17,7 @@ var level=1;
 var s;
 var val;
 var r=0;
-var t=0;
+var t=0, t2=0;
 var min,max;
 var tmax;
 var continuar=true;
@@ -75,6 +75,7 @@ class menu extends Phaser.Scene {
             }
             
         }
+        
     }
     verifica (i){
         var boton = i.target.id;
@@ -123,23 +124,24 @@ class suma extends Phaser.Scene {
         }
         
         val.sort(() => (Math.random() > 0.5 ? 1 : -1));
-        console.log(val);
+        
         for(var i=0;val.length<10;i++){
             val.push(i);
         }
         val.sort(() => (Math.random() > 0.5 ? 1 : -1));
-        console.log(val);
+        
         this.load.audio('correct', './asset/sounds/correct.mp3');
         this.load.audio('wrong', './asset/sounds/wrong.mp3');
     }
     create() {
+        continuar=true;
         this.inicio = this.add.image(130,130,'inicio');
         this.inicio.setScale(0.5);
         
         c = this.sound.add('correct',{loop:false});
         w = this.sound.add('wrong',{loop:false});
         t=0;
-        
+        tmax=2000*val.length;
         
         
         
@@ -187,10 +189,15 @@ class suma extends Phaser.Scene {
         this.crono.fillRect(300,100,1500,60);
         const cronos = this.add.zone(300,100,1500,60);
         this.add.graphics().lineStyle(5, 0x000000).strokeRectShape(cronos);
+        t=0;
+        t2=0;
         
     }
     corregir(){
         var resp = document.getElementById('respuesta').value;
+        console.log("t = "+t);
+        console.log("t2 = "+t2);
+        console.log("tmax = "+tmax);
         //console.log(this.zonas);
         if(r<val.length){
             if(resp===(val[r%val.length]+s)+""){
@@ -201,6 +208,7 @@ class suma extends Phaser.Scene {
                     val.sort(() => (Math.random() > 0.5 ? 1 : -1));
                 }
                 this.div.innerHTML = val[r%val.length]+"+"+s+"=";
+                t-=1000;
             }else{
                 this.falso();
                 document.getElementById('respuesta').value="";
@@ -210,16 +218,16 @@ class suma extends Phaser.Scene {
             this.element.setVisible(false);
             this.res.setVisible(false);
             continuar=false;
-            this.div.innerHTML = "Terminado en "+Math.round(t/10)/100+"s";
+            this.div.innerHTML = "Terminado en "+Math.round(t2/10)/100+"s";
             this.d.x-=200;
-            if(t/1000<2*val.length){
+            if(t/1000<val.length){
                 this.div.innerHTML += "<p>Pasa al siguiente nivel</p>";
             }else{
                 this.div.innerHTML += "<p>Trata de mejorar tu tiempo</p>";
             }
             
         }
-        
+        document.getElementById('respuesta').focus();
     }
     correcto(){
         b=0.5;
@@ -231,14 +239,19 @@ class suma extends Phaser.Scene {
         this.cameras.main.shake(200,0.01);
     }
     update(time,delta){
+        t2+=delta;
         if(continuar){
             t+=delta;
         }
         if(tmax>t){
-            console.log(1500*(1-t/tmax));
             this.crono.clear();
             this.crono.fillStyle(0xAB47BC);
-            this.crono.fillRect(300,100,1500*(1-t/tmax),60);
+            if(t>0){
+                this.crono.fillRect(300,100,1500*(1-t/tmax),60);
+            }else{
+                this.crono.fillRect(300,100,1500,60);
+            }
+            
         }else{
             this.crono.clear();
         }
@@ -307,31 +320,33 @@ class suma2 extends Phaser.Scene {
         if(s>=7){
             max=27;
         }
-        console.log(val);
+        
         for(var i=0;i<val.length;i++){
             this.n.push(val[i][0]);
         }
         
         for(var i=0;i<s-val.length && i<3;i++){
-            console.log("m = "+this.m);
-            console.log("i = "+i);
+            
             this.m.push(Math.floor(Math.random()*(9-val[i][0])));
         }
         for(var i=0;i<s-6;i++){
             this.o.push(Math.floor(Math.random()*8)+1);
         }
+        tmax=this.n.length*3000+this.o.length*300;
         this.load.audio('correct', './asset/sounds/correct.mp3');
         this.load.audio('wrong', './asset/sounds/wrong.mp3');
     }
     create() {
+        continuar=true;
         this.inicio = this.add.image(130,130,'inicio');
         this.inicio.setScale(0.5);
-        
+        this.res=new Array();
         c = this.sound.add('correct',{loop:false});
         w = this.sound.add('wrong',{loop:false});
         t=0;
         
          this.debug = this.add.graphics();
+         this.debug2 = this.add.graphics();
         for(var i=0;i<=max;i++){
             this.debug.fillStyle(0xFF5722);
             this.debug.fillRect(50+i*60,250,60,60);
@@ -354,10 +369,23 @@ class suma2 extends Phaser.Scene {
             if(imp){
                 
                 this.div.innerHTML = this.n[i];
-                this.d.push(this.add.dom(900+i*70+(3-this.n.length)*60, 400, this.div).setOrigin(0.5,0.5));
+                this.d.push(this.add.dom(900+i*70+(3-this.n.length)*70, 400, this.div).setOrigin(0.5,0.5));
+                
+            
+                
+               
             }else{
                 this.div.innerHTML = " ";
-                this.d.push(this.add.dom(875+i*70+(3-this.n.length)*60, 345, this.div).setOrigin(0.5,0.5));
+                this.d.push(this.add.dom(875+i*70+(3-this.n.length)*70, 345, this.div).setOrigin(0.5,0.5));
+            }
+            if(i!==this.n.length-1){
+                this.respuesta = document.createElement('input');
+                this.respuesta.setAttribute('type'  ,'number');
+                this.respuesta.setAttribute('id','acarreo'+i);
+                this.respuesta.setAttribute('min','0');
+                this.respuesta.setAttribute('min','9');
+                this.respuesta.setAttribute('placeholder','0');
+                this.res.push(this.add.dom(900+i*70+(3-this.n.length)*70, 400, this.respuesta).setOrigin(0.5,0.5));
             }
                 
         }
@@ -372,10 +400,10 @@ class suma2 extends Phaser.Scene {
             if(imp){
                 
                 this.div.innerHTML = this.m[i];
-                this.d.push(this.add.dom(900+i*70+(3-this.m.length)*60, 500, this.div).setOrigin(0.5,0.5));
+                this.d.push(this.add.dom(900+i*70+(3-this.m.length)*70, 500, this.div).setOrigin(0.5,0.5));
             }else{
                 this.div.innerHTML = " ";
-                this.d.push(this.add.dom(875+i*70+(3-this.n.length)*60, 445, this.div).setOrigin(0.5,0.5));
+                this.d.push(this.add.dom(875+i*70+(3-this.n.length)*70, 445, this.div).setOrigin(0.5,0.5));
             }
                 
         }
@@ -383,20 +411,27 @@ class suma2 extends Phaser.Scene {
         for(var i=0;i<this.o.length;i++){
             this.div = document.createElement('h1');
             this.div.style = 'font-size: 100px; ';
-            if(this.m[i]!==0 || i===(this.m.length-1)){
+            if(this.o[i]!==0 || i===(this.o.length-1)){
                 imp = imp || true;
             }
             if(imp){
-                
                 this.div.innerHTML = this.o[i];
-                this.d.push(this.add.dom(900+i*70+(3-this.o.length)*60, 600, this.div).setOrigin(0.5,0.5));
+                this.d.push(this.add.dom(900+i*70+(3-this.o.length)*70, 600, this.div).setOrigin(0.5,0.5));
             }else{
                 this.div.innerHTML = " ";
-                this.d.push(this.add.dom(875+i*70+(3-this.n.length)*60, 545, this.div).setOrigin(0.5,0.5));
+                this.d.push(this.add.dom(875+i*70+(3-this.n.length)*70, 545, this.div).setOrigin(0.5,0.5));
             }
                 
         }
-        for(var i=0;i<=this.n.length;i++){
+        if(this.o.length>0){
+            this.debug2.lineStyle(5, 0x000000, 1);
+            this.debug2.lineBetween(800, 700, 1100, 700);
+        }else{
+            this.debug2.lineStyle(5, 0x000000, 1);
+            this.debug2.lineBetween(800, 600, 1100, 600);
+        }
+        
+        for(var i=this.n.length;i>=0;i--){
             
                 this.respuesta = document.createElement('input');
                 this.respuesta.setAttribute('type'  ,'number');
@@ -406,7 +441,7 @@ class suma2 extends Phaser.Scene {
                 this.respuesta.setAttribute('min','9');
                 this.respuesta.setAttribute('placeholder','0');
                 this.respuesta.setAttribute('autofocus','autofocus');
-                this.res = this.add.dom(900+i*70+(2-this.n.length)*60, this.o.length>0?780:680, this.respuesta).setOrigin(0.5,0.5);
+                this.res.push(this.add.dom(900+i*70+(2-this.n.length)*60, this.o.length>0?780:680, this.respuesta).setOrigin(0.5,0.5));
                 
         }
         
@@ -430,12 +465,21 @@ class suma2 extends Phaser.Scene {
         
         this.lienzo = this.add.graphics();
         this.lienzo2= this.add.graphics();
-        console.log(this.d);
+        
+        
+        this.crono = this.add.graphics();
+        this.crono.fillStyle(0xAB47BC);
+        this.crono.fillRect(300,100,1500,60);
+        const cronos = this.add.zone(300,100,1500,60);
+        this.add.graphics().lineStyle(5, 0x000000).strokeRectShape(cronos);
+        
+        t=0;
+        t2=0;
     }
     corregir(){
         var resp=0;
         for(var i=0;i<=this.n.length;i++){
-            console.log(document.getElementById('respuesta'+i).value);
+            
             resp=resp*10+parseInt(0+document.getElementById('respuesta'+i).value);
         }
         console.log(resp);
@@ -472,13 +516,19 @@ class suma2 extends Phaser.Scene {
                     this.o[i]=Math.floor(Math.random()*(9));
                     this.d[i+6].node.innerHTML=this.o[i];
                 }
+                t-=2000*this.n.length;
             }else{
                 this.falso();
             }
             for(var i=0;i<=this.n.length;i++){
                 document.getElementById('respuesta'+i).value="";
             }
-        }else if(r<10){
+            for(var i=0;i<this.n.length-1;i++){
+                
+                document.getElementById('acarreo'+i).value="";
+            }
+            document.getElementById('respuesta'+this.n.length).focus();
+        }else if(r<val[0].length-1){
             if(resp===(n+m+o)){
                 this.correcto();
                 r++;
@@ -494,24 +544,33 @@ class suma2 extends Phaser.Scene {
                     this.o[i]=Math.floor(Math.random()*(9));
                     this.d[i+6].node.innerHTML=this.o[i];
                 }
+                t-=2000*this.n.length;
             }else{
                 this.falso();
             }
             for(var i=0;i<=this.n.length;i++){
                 document.getElementById('respuesta'+i).value="";
             }
+            document.getElementById('respuesta'+this.n.length).focus();
         }else {
+            continuar=false;
             this.element.setVisible(false);
-            this.res.setVisible(false);
+            for(var i=0;i<this.d.length;i++){
+                this.d[i].setVisible(false);
+            }
+            for(var i=0;i<this.res.length;i++){
+                this.res[i].setVisible(false);
+            }
             
-            this.div.innerHTML = "Terminado en "+Math.round(t/10)/100+"s";
+            this.debug2.clear();
+            this.div.innerHTML = "Terminado en "+Math.round(t2/10)/100+"s";
             this.d.x-=200;
-            if(t/1000<2*val.length){
+            if(t<tmax){
                 this.div.innerHTML += "<p>Pasa al siguiente nivel</p>";
             }else{
                 this.div.innerHTML += "<p>Trata de mejorar tu tiempo</p>";
             }
-            console.log(this.div);
+            
         }
         
     }
@@ -525,7 +584,24 @@ class suma2 extends Phaser.Scene {
         this.cameras.main.shake(200,0.01);
     }
     update(time,delta){
-        t+=delta;
+       
+        t2+=delta;
+        if(continuar){
+            t+=delta;
+        }
+        if(tmax>t){
+            
+            this.crono.clear();
+            this.crono.fillStyle(0xAB47BC);
+            if(t>0){
+                this.crono.fillRect(300,100,1500*(1-t/tmax),60);
+            }else{
+                this.crono.fillRect(300,100,1500,60);
+            }
+            
+        }else{
+            this.crono.clear();
+        }
         if(a>0){
                 b=0;
                 a-=0.3*delta/1000;
