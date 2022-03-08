@@ -87,8 +87,11 @@
 			  
 			  <details>
 				  <summary> Ejercicios</summary>
-				  <h2>¿Qué números dividen a <span id="divisibilidad"> 7 </span>?</h2>
-				  
+				  <h2>¿Qué números dividen a <span id="divisibilidad" onload="divisibilidad"> 7 </span>?</h2>
+				  <script>
+					  var n =Math.floor(Math.random()*49+1);
+					  document.getElementById("divisibilidad").innerHTML = ""+n;
+				  </script>
 				  <form action="/action_page.php" method="get">
 					  <input type="checkbox" name="divisibilidad1" value="2">
 					  <label for="divisibilidad1"> 2 </label><br>
