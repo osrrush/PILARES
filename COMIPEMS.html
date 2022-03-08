@@ -93,13 +93,13 @@
 					  document.getElementById("divisibilidad").innerHTML = ""+n;
 				  </script>
 				  <form action="/action_page.php" method="get">
-					  <input type="checkbox" name="divisibilidad1" value="2">
+					  <input type="checkbox" id="divisibilidad1" value="2">
 					  <label for="divisibilidad1"> 2 </label><br>
-					  <input type="checkbox" name="divisibilidad2" value="3">
+					  <input type="checkbox" id="divisibilidad2" value="3">
 					  <label for="divisibilidad2"> 3 </label><br>
-					  <input type="checkbox" name="divisibilidad3" value="5" >
+					  <input type="checkbox" id="divisibilidad3" value="5" >
 					  <label for="divisibilidad3"> 5 </label><br>
-					  <input type="checkbox" name="divisibilidad4" value="Ninguno" >
+					  <input type="checkbox" id="divisibilidad4" value="Ninguno" >
 					  <label for="divisibilidad4"> Ninguno </label><br>
 					  <input type="button" value="Verificar" onClick="verificar()">
 					  <input type="button" value="Otro" onClick="otro()">
@@ -111,6 +111,10 @@
 						  var n5 = document.getElementById("divisibilidad3");
 						  var nN = document.getElementById("divisibilidad4");
 						  console.log(n2);
+						  console.log(n3);
+						  console.log(n5);
+						  console.log(nN);
+						  
 					  }
 					  
 				  </script>
