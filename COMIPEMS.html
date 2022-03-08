@@ -107,6 +107,7 @@
 				  <h2 id="divisibilidadR"></h2>
 				  <script>
 					  function verificar(){
+						  var n={false,false,false,false};
 						  var n=document.getElementById("divisibilidad").textContent;
 						  var n2 = document.getElementById("divisibilidad1").checked;
 						  var n3 = document.getElementById("divisibilidad2").checked;
@@ -117,8 +118,25 @@
 						  console.log(n3);
 						  console.log(n5);
 						  console.log(nN);
-						  if(n2){
-							  
+						  if(n2 ===(n%2===0)){
+							  n[0]=true;
+						  }else {
+							console.log("falso2");  
+						  }
+						  if(n3 ===(n%3===0)){
+							  n[1]=true;
+						  }else {
+							console.log("falso3");  
+						  }
+						  if(n5 ===(n%5===0)){
+							  n[2]=true;
+						  }else {
+							console.log("falso5");  
+						  }
+						  if(n[0] === true && n[1] === true && n[2] === true &&){
+							  n[3]=true;
+						  }else {
+							console.log("falsoN");  
 						  }
 					  }
 					  function otro(){
