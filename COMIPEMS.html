@@ -106,17 +106,21 @@
 				  </form>
 				  <script>
 					  function verificar(){
-						  var n=document.getElementById("divisibilidad");
-						  var n2 = document.getElementById("divisibilidad1");
-						  var n3 = document.getElementById("divisibilidad2");
-						  var n5 = document.getElementById("divisibilidad3");
-						  var nN = document.getElementById("divisibilidad4");
+						  var n=document.getElementById("divisibilidad").text;
+						  var n2 = document.getElementById("divisibilidad1").checked;
+						  var n3 = document.getElementById("divisibilidad2").checked;
+						  var n5 = document.getElementById("divisibilidad3").checked;
+						  var nN = document.getElementById("divisibilidad4").checked;
 						  console.log(n);
 						  console.log(n2);
 						  console.log(n3);
 						  console.log(n5);
 						  console.log(nN);
 						  
+					  }
+					  function otro(){
+					  	var n =Math.floor(Math.random()*49+1);
+					  	document.getElementById("divisibilidad").innerHTML = ""+n;
 					  }
 					  
 				  </script>
