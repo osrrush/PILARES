@@ -47,6 +47,19 @@
 		.casi{
 		background-color: yellow;
 		}
+            .fraction {
+                display: inline-block;
+                vertical-align: middle; 
+                margin: 0 0.2em 0.4ex;
+                text-align: center;
+                font-size: 18px;
+            }
+            .fraction > span {
+                display: block;
+                padding-top: 0.15em;
+            }
+            .fraction span.fdn {border-top: thin solid black;}
+            .fraction span.bar {display: none;}
         </style>
     </head>
     <body>
@@ -87,12 +100,14 @@
 			  
 			  <details>
 				  <summary> Ejercicios</summary>
-				  <h2>¿Qué números dividen a <span id="divisibilidad" onload="divisibilidad"> 7 </span>?</h2>
+				  <h2>¿Qué números dividen a <span id="divisibilidad" > 7 </span>?</h2>
 				  <script>
-					  var n =Math.floor(Math.random()*49+1);
+                                      
+					  var n =Math.floor(Math.random()*48+2);
 					  document.getElementById("divisibilidad").innerHTML = ""+n;
+                                      
 				  </script>
-				  <form action="/action_page.php" method="get">
+				  <form>
 					  <input type="checkbox" id="divisibilidad1" value="2">
 					  <label for="divisibilidad1"> 2 </label><br>
 					  <input type="checkbox" id="divisibilidad2" value="3">
@@ -104,53 +119,41 @@
 					  <input type="button" value="Verificar" onClick="verificar()">
 					  <input type="button" value="Otro" onClick="otro()">
 				  </form>
-				  <h2 id="divisibilidadR"></h2>
+				  <h2 id="divisibilidadR"> </h2>
 				  <script>
 					  function verificar(){
-						  var n={false,false,false,false};
+						  var v=[false,false,false,false];
+                                                  var r=document.getElementById("divisibilidadR");
 						  var n=document.getElementById("divisibilidad").textContent;
 						  var n2 = document.getElementById("divisibilidad1").checked;
 						  var n3 = document.getElementById("divisibilidad2").checked;
 						  var n5 = document.getElementById("divisibilidad3").checked;
 						  var nN = document.getElementById("divisibilidad4").checked;
-						  console.log(n);
-						  console.log(n2);
-						  console.log(n3);
-						  console.log(n5);
-						  console.log(nN);
+						  
 						  if(n2 ===(n%2===0)){
-							  n[0]=true;
-						  }else {
-							console.log("falso2");  
+							  v[0]=true;
 						  }
 						  if(n3 ===(n%3===0)){
-							  n[1]=true;
-						  }else {
-							console.log("falso3");  
+							  v[1]=true;
 						  }
 						  if(n5 ===(n%5===0)){
-							  n[2]=true;
-						  }else {
-							console.log("falso5");  
+							  v[2]=true;
 						  }
-						  if(n%2!=0 && n%3!=0 && n%5!=0){
+						  if(n%2!==0 && n%3!==0 && n%5!==0){
 							  if(nN){
-							  	n[3]=true;
-							  }else{
-								console.log("falsoN");    
+							  	v[3]=true;
 							  }
 						  			
 						  }else{
 							  if(!nN){
-							  	n[3]=true;
-							  }else{
-								console.log("falsoN");    
+							  	v[3]=true;
 							  }
 						  }
-						  if(n[0] && n[1] && n[2]&&n[3]){
-							  console.log("Correcto");
+                                                  //console.log(v);
+						  if(v[0] && v[1] && v[2]&&v[3]){
+							  r.innerText="Correcto";
 						  }else{
-							  conole.log("Incorrecto");
+							  r.innerText="Incorrecto";
 						  }
 						  
 					  }
@@ -163,17 +166,278 @@
 			  </details>
 			  
 		  </details>
-		  
-		  	
-		  
-		  <h1>Mínimo Común Múltiplo</h1>
-		  <p>		 	
-		  <h1>Fracciones equivalentes</h1>
-		  <h1>Suma y resta de fracciones</h1>
+		  <details>
+			  <summary> Mínimo Común Múltiplo</summary>
+			  <details>
+				  <summary> Teoría </summary>
+				  Los múltiplos de un número x es el resultado de multiplicar x con otronúmero.
+                                  <p>Por ejemplo los múltiplos de 4 son todos los de su tabla 4,8,12,16,20,24,28,32,36,40,44,48,52,58,62,66,70,74,78...</p>
+                                  <p>Los múltiplos de 6 son 6,12,18,24,30,36,42,48,54,60,66,72,78... </p>
+                                  <p>Los múltiplos comunes de 2 y 3 son los múltiplos que comparten 12,24,36,48,60,72,...</p>
+                                  <p>El mínimo sería 12, el más pequeño de la lista</p><br>
+                                  <p>Para encontrar el  mínimo necesitamos sacar los primos que componen al número</p>
+                                  <P>Saquemos el MCM de 12 y 18</P>
+                                  <center>
+                                    <TABLE style="border-collapse: collapse; border: none; font-size: 20px"  rules="groups">
+                                      <COLGROUP align="center" span="3">
+                                      <COLGROUP align="left">
+                                      
+                                      <TR>
+                                      <TH>12</TH>
+                                      <th>  </th>
+                                      <TH>18</TH>
+                                      <TH>2</TH>
+                                      </TR>
+                                      <TFOOT>
+                                          <TR><td>6<td><td>9<td>2</TR>
+                                          <TR><td>3<td><td>9<td>3</TR>
+                                          <TR><td>1<td><td>3<td>3</TR>
+                                          <TR><td> <td><td>1<td></TR>
+                                    </TABLE>
+                                  </center>
+                                  <p>Y multiplicamos la columna de la derecha en este caso 2&times;2&times;3&times;3=36</p>
+			  </details>
+			  
+			  <details>
+				  <summary> Video </summary>
+			  </details>
+			  
+			  <details>
+				  <summary> Ejercicios</summary>
+                                  <h1>Encuentra el MCM de <span id="mcm1"></span> y <span id="mcm2"></span></h1>
+                                  <script>
+                                      
+					  var n =Math.floor(Math.random()*10+1)*Math.pow(2,Math.floor(Math.random()*3))*Math.pow(3,Math.floor(Math.random()*3))*Math.pow(5,Math.floor(Math.random()*2));
+					  document.getElementById("mcm1").innerHTML = ""+n;
+                                          n =Math.floor(Math.random()*10+1)*Math.pow(2,Math.floor(Math.random()*3))*Math.pow(3,Math.floor(Math.random()*3))*Math.pow(5,Math.floor(Math.random()*2));
+                                          
+                                          while(document.getElementById("mcm1").textContent===n){
+                                            n =Math.floor(Math.random()*10+1)*Math.pow(2,Math.floor(Math.random()*3))*Math.pow(3,Math.floor(Math.random()*3))*Math.pow(5,Math.floor(Math.random()*2));
+                                          }
+					  document.getElementById("mcm2").innerHTML = ""+n;
+                                          
+				  </script>
+                                  <form >
+                                      Respuesta = <input type="number" id="mcm">
+					  <input type="button" value="Verificar" onClick="verificarmcm()">
+					  <input type="button" value="Otro" onClick="otromcm()">
+				  </form>
+                                  <h2 id="mcmR"> </h2>
+				  <script>
+					  function verificarmcm(){
+                                              var p=document.getElementById("mcm1").textContent;						  
+                                              var q=document.getElementById("mcm2").textContent;
+                                              var r=p%q;
+                                              while(r!==0){
+                                                  p=q;
+                                                  q=r;
+                                                  r=p%q;
+                                              }
+                                              var mcm=document.getElementById("mcm1").textContent*document.getElementById("mcm2").textContent/q;
+                                              
+                                              if(mcm+"" === document.getElementById("mcm").value){
+                                                  document.getElementById("mcmR").innerHTML = "Correcto";
+                                              }else{
+                                                  document.getElementById("mcmR").innerHTML = "Incorrecto";
+                                              }
+					  }
+					  function otromcm(){
+					  	var n =Math.floor(Math.random()*10+1)*Math.pow(2,Math.floor(Math.random()*3))*Math.pow(3,Math.floor(Math.random()*3))*Math.pow(5,Math.floor(Math.random()*2));
+                                                document.getElementById("mcm1").innerHTML = ""+n;
+                                                n =Math.floor(Math.random()*10+1)*Math.pow(2,Math.floor(Math.random()*3))*Math.pow(3,Math.floor(Math.random()*3))*Math.pow(5,Math.floor(Math.random()*2));
+                                                while(document.getElementById("mcm1").textContent===n){
+                                                  n =Math.floor(Math.random()*10+1)*Math.pow(2,Math.floor(Math.random()*3))*Math.pow(3,Math.floor(Math.random()*3))*Math.pow(5,Math.floor(Math.random()*2));
+                                                }
+                                                document.getElementById("mcm2").innerHTML = ""+n;
+					  }
+					  
+				  </script>
+			  </details>
+			  
+		  </details>
+                    <details>
+                        <summary> Fracciones equivalentes</summary>
+                        <details>
+                                <summary> Teoría </summary>
+                                Dos fracciones son equivalentes si representan lo mismo, por ejemplo:
+                                <div class="fraction">
+                                    <span class="fup">2</span>
+                                    <span class="bar">/</span>
+                                    <span class="fdn">3</span>
+                                    
+                                </div>=
+                                <div class="fraction">
+                                    
+                                    <span class="fup">4</span>
+                                    <span class="bar"></span>
+                                    <span class="fdn">6</span>
+                                </div>
+                                <p>Para encontrar fracciones equivalentes debemos multiplicar por el mismo número arriba o abajo</p>
+                                Si <div class="fraction">
+                                    <span class="fup">2</span>
+                                    <span class="bar">/</span>
+                                    <span class="fdn">3</span>
+                                    
+                                </div>la multiplicamos por 4 arriba y abajo, obtenemos 
+                                <div class="fraction">
+                                    <span class="fup">2&times;4</span>
+                                    <span class="bar">/</span>
+                                    <span class="fdn">3&times;4</span>
+                                </div>
+                                =
+                                <div class="fraction">
+                                    <span class="fup">8</span>
+                                    <span class="bar">/</span>
+                                    <span class="fdn">12</span>
+                                </div><br>
+                                También podemos dividir entre el mismo número arriba y abajo. <br>
+                                Si <div class="fraction">
+                                    <span class="fup">10</span>
+                                    <span class="bar">/</span>
+                                    <span class="fdn">15</span>
+                                    
+                                </div>la dividimos entre 5 arriba y abajo, obtenemos 
+                                <div class="fraction">
+                                    <span class="fup">10&divide;5</span>
+                                    <span class="bar">/</span>
+                                    <span class="fdn">15&divide;5</span>
+                                </div>
+                                =
+                                <div class="fraction">
+                                    <span class="fup">2</span>
+                                    <span class="bar">/</span>
+                                    <span class="fdn">3</span>
+                                </div><br>
+                                
+                        </details>
+
+                        <details>
+                                <summary> Video </summary>
+                        </details>
+
+                        <details>
+                                <summary> Ejercicios</summary>
+                                <h1>¿Cual de las siguientes fracciones es mayor?</h1>
+                                <form>
+                                    <input type="radio" name="fe" id="fe1" value="1"><span id="fee1"><sup>2</sup>/<sub>3</sub></span>
+                                    <br>
+                                    <input type="radio" name="fe" id="fe2" value="0"><span id="fee2"><sup>1</sup>/<sub>3</sub></span>
+                                    <br>
+                                    <input type="radio" name="fe" id="fe3" value="0"><span id="fee3"><sup>2</sup>/<sub>4</sub></span><br>
+                                    <input type="button" value="Verificar" onClick="verificarfe()">
+                                    <input type="button" value="Otro" onClick="otrofe()">
+                                </form>
+                                <h1 id="fer"></h1>
+                                <script>
+                                    var n=[[1,1],[1,1],[1,1]];
+                                    var pos=[0,0,0];
+                                    n[0][1]=Math.floor(Math.random()*5+5);
+                                    n[1][1]=Math.floor(Math.random()*5+5);
+                                    n[2][1]=Math.floor(Math.random()*5+5);
+                                    
+                                    n[0][0]=Math.floor(Math.random()*(n[0][1]-1)+1);
+                                    n[1][0]=Math.floor(Math.random()*(n[1][1]-1)+1);
+                                    n[2][0]=Math.floor(Math.random()*(n[2][1]-1)+1);
+                                    while(n[0][1]*n[1][0]===n[1][1]*n[0][0]){
+                                        n[1][0]=Math.floor(Math.random()*n[1][1]+1);
+                                    }
+                                    while(n[0][1]*n[2][0]===n[2][1]*n[0][0] || n[1][1]*n[2][0]===n[2][1]*n[1][0]){
+                                        n[2][0]=Math.floor(Math.random()*n[2][1]+1);
+                                    }
+                                    document.getElementById("fee1").innerHTML = "<sup>"+n[0][0]+"</sup>/<sub>"+n[0][1]+"</sub>";
+                                    document.getElementById("fee2").innerHTML = "<sup>"+n[1][0]+"</sup>/<sub>"+n[1][1]+"</sub>";
+                                    document.getElementById("fee3").innerHTML = "<sup>"+n[2][0]+"</sup>/<sub>"+n[2][1]+"</sub>";
+                                    if(n[0][0]*n[1][1]>n[1][0]*n[0][1]){
+                                        if(n[0][0]*n[2][1]>n[2][0]*n[0][1]){
+                                            pos[0]=1;
+                                        }else{
+                                            pos[2]=1;
+                                        }
+                                    }else{
+                                        if(n[1][0]*n[2][1]>n[2][0]*n[1][1]){
+                                            pos[1]=1;
+                                        }else{
+                                            pos[2]=1;
+                                        }
+                                    }
+                                    
+                                    document.getElementById("fe1").value = pos[0];
+                                    document.getElementById("fe2").value = pos[1];
+                                    document.getElementById("fe3").value = pos[2];
+                                    
+                                    document.getElementById("fe1").checked = false;
+                                    document.getElementById("fe2").checked = false;
+                                    document.getElementById("fe3").checked = false;
+                                    
+				</script>
+                                <script>
+                                    function otrofe(){
+                                        var n=[[1,1],[1,1],[1,1]];
+                                        var pos=[0,0,0];
+                                        n[0][1]=Math.floor(Math.random()*5+5);
+                                        n[1][1]=Math.floor(Math.random()*5+5);
+                                        n[2][1]=Math.floor(Math.random()*5+5);
+                                        
+                                        n[0][0]=Math.floor(Math.random()*(n[0][1]-1)+1);
+                                        n[1][0]=Math.floor(Math.random()*(n[1][1]-1)+1);
+                                        n[2][0]=Math.floor(Math.random()*(n[2][1]-1)+1);
+                                        while(n[0][1]*n[1][0]===n[1][1]*n[0][0]){
+                                            n[1][0]=Math.floor(Math.random()*n[1][1]+1);
+                                        }
+                                        while(n[0][1]*n[2][0]===n[2][1]*n[0][0] || n[1][1]*n[2][0]===n[2][1]*n[1][0]){
+                                            n[2][0]=Math.floor(Math.random()*n[2][1]+1);
+                                        }
+                                        document.getElementById("fee1").innerHTML = "<sup>"+n[0][0]+"</sup>/<sub>"+n[0][1]+"</sub>";
+                                        document.getElementById("fee2").innerHTML = "<sup>"+n[1][0]+"</sup>/<sub>"+n[1][1]+"</sub>";
+                                        document.getElementById("fee3").innerHTML = "<sup>"+n[2][0]+"</sup>/<sub>"+n[2][1]+"</sub>";
+                                        if(n[0][0]*n[1][1]>n[1][0]*n[0][1]){
+                                            if(n[0][0]*n[2][1]>n[2][0]*n[0][1]){
+                                                pos[0]=1;
+                                            }else{
+                                                pos[2]=1;
+                                            }
+                                        }else{
+                                            if(n[1][0]*n[2][1]>n[2][0]*n[1][1]){
+                                                pos[1]=1;
+                                            }else{
+                                                pos[2]=1;
+                                            }
+                                        }
+
+                                        document.getElementById("fe1").value = pos[0];
+                                        document.getElementById("fe2").value = pos[1];
+                                        document.getElementById("fe3").value = pos[2];
+                                        document.getElementById("fer").innerHTML ="";
+                                    }
+                                    function verificarfe(){
+                                        var r=true;
+                                        for(var i=1;i<4;i++){
+                                            
+                                            if(document.getElementById("fe"+i).checked === (document.getElementById("fe"+i).value+""===1+"")){
+                                                r&=true;
+                                            }else{
+                                                r&=false;
+                                            }
+                                        }
+                                        if(r){
+                                             document.getElementById("fer").innerHTML ="Correcto";
+                                        }else{
+                                            document.getElementById("fer").innerHTML ="Incorrecto";
+                                        }
+                                    }
+				</script>
+                        </details>
+			  
+                    </details>
+            <details>
+                <summary>Próximamente</summary>
+                  <h1>Suma y resta de fracciones</h1>
 		  <h1>Multiplicación de fracciones</h1>
 		  <h1>División de fracciones</h1>
 		  <h1>Leyes de los signos para la multiplicación</h1>
 		  <h1>Suma y resta con signo</h1>
+            </details>
+		  
 		  
           </details>
         </article>
