@@ -4,10 +4,7 @@
  * and open the template in the editor.
  */
 const titulo = 'Practicar las tablas'; //Titulo del juego
-const menulabel = [['¿Cuánto falta?(1)','¿Cuánto falta?(2)'],
-    ['Quitar (1)','Quitar (2)'],
-    ['Recta numérica (1)', 'Recta numérica (2)'],
-    ['Restar (1)', 'Restar (2)']]; //Opciones menú
+
 /*
 const menulabel = [['Contar 1-10','contar 11-20'],
     ['¿Qué número es?'],
@@ -33,6 +30,7 @@ class menu extends Phaser.Scene{
     preload(){
         this.load.image('logo','./assets/img/logo.jpeg');
         this.load.css('80s','./src/fuente.css');
+        
     }
     create(){
         this.add.image(205,82,'logo');
@@ -121,6 +119,9 @@ class Tablas extends Phaser.Scene{ //Cuánto Falta
         this.load.audio('correct', './assets/sounds/correct.mp3');
         this.load.audio('wrong', './assets/sounds/wrong.mp3');
         this.load.image('logo','./assets/img/logo.jpeg');
+        this.numeros = [1,2,3,4,5,6,7,8,9,10];
+        this.numeros.sort( () => .5 - Math.random() );
+        this.indicenum=0;
         
     }
     create(){
@@ -141,7 +142,7 @@ class Tablas extends Phaser.Scene{ //Cuánto Falta
         w = this.sound.add('wrong',{loop:false});
         
         this.t = this.tablas[Math.floor(Math.random()*this.tablas.length)];
-        this.x = Math.floor(Math.random()*9+1);
+        this.x = this.numeros[this.indicenum];
         
         this.div = document.createElement('h1');
         this.div.style = 'font-size: 80px; ';
@@ -201,9 +202,14 @@ class Tablas extends Phaser.Scene{ //Cuánto Falta
                 for(var i=0;i<this.respuestas.length;i++){
                     this.r.innerHTML += this.respuestas[i];
                 }
-            
+            if(this.indicenum<9){
+                this.indicenum++;
+            }else{
+                this.indicenum=0;
+                this.numeros.sort( () => .5 - Math.random() );
+            }
             this.t = this.tablas[Math.floor(Math.random()*this.tablas.length)];
-            this.x = Math.floor(Math.random()*9+1);
+            this.x = this.numeros[this.indicenum];
             this.div.innerHTML = this.t+"&times;"+this.x+"=";
             document.getElementById("R").value="";
             this.correcto();
