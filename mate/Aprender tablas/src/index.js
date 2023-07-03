@@ -64,10 +64,16 @@ class menu extends Phaser.Scene{
         this.element.addListener('click');
         this.element.on('click',() => this.opcionPulsada(0));
         
-        
+        this.add.dom(960, 500, this.div);
+        var boton = document.createElement('button');
+        boton.setAttribute('type','button');
+        this.element = this.add.dom(1630, 550, boton,'','Diagnóstico');
+        this.element.addListener('click');
+        this.element.on('click',() => this.opcionPulsada(1));
         
         
         this.input.keyboard.on('keyup-ENTER',() => this.opcionPulsada(0));
+        
         
         //opc[0].once('pointerdown', () => this.opcionPulsada(0));
         //opc[1].once('pointerdown', () => this.opcionPulsada(1));
@@ -104,7 +110,9 @@ class menu extends Phaser.Scene{
             }
             
 	} else {
-            console.log(opcion);
+            if(opcion === 1){
+                this.scene.start('Diag');
+            }
         }
     }
 }
@@ -341,6 +349,242 @@ class Tablas extends Phaser.Scene{ //Cuánto Falta
     }
 }
 
+class Diag extends Phaser.Scene{ //Diagnóstico
+    constructor(){
+        super({key:'Diag'});
+        this.resp;
+        this.respuestas;
+    }
+    
+    preload(){
+        this.load.audio('correct', './assets/sounds/correct.mp3');
+        this.load.audio('wrong', './assets/sounds/wrong.mp3');
+        this.load.image('logo','./assets/img/logo.jpeg');
+        this.tablas = [[2,2],[2,3],[2,4],[2,5],[2,6],[2,7],[2,8],[2,9],
+                        [3,3],[3,4],[3,5],[3,6],[3,7],[3,8],[3,9],
+                        [4,4],[4,5],[4,6],[4,7],[4,8],[4,9],
+                        [5,5],[5,6],[5,7],[5,8],[5,9],
+                        [6,6],[6,7],[6,8],[6,9],
+                        [7,7],[7,8],[7,9],
+                        [8,8],[8,9],
+                        [9,9]];
+        this.tablas.sort( () => .5 - Math.random() );
+        this.aprendiendo = [0,0,0,0,0,0,0,0];
+        console.log(this.tablas);
+        
+        this.indiceaprend=0;
+    }
+    create(){
+        this.add.image(205,82,'logo');
+        
+        this.graph = this.add.graphics();
+        this.graph.fillStyle(0xF1C40F);
+        
+        this.graph.fillRect(1600,50,300,90);
+        this.add.text(1750, 50, 'INICIO', { color: 'black', fontFamily: 'Arial', fontSize: '70px '}).setOrigin(0.5,0);
+        const ini = this.add.zone(1600, 50, 300, 90);
+	ini.setOrigin(0);
+	ini.setInteractive();
+	ini.once('pointerdown', () => this.opcionPulsada('ini'));
+	this.add.graphics().lineStyle(2, 0xff0000).strokeRectShape(ini);
+        
+        c = this.sound.add('correct',{loop:false});
+        w = this.sound.add('wrong',{loop:false});
+        
+        this.t = this.tablas[this.indiceaprend][0];
+        this.x = this.tablas[this.indiceaprend][1];
+        
+        this.div = document.createElement('h1');
+        this.div.style = 'font-size: 80px; ';
+        this.div.innerHTML = this.t+"&times;"+this.x+"=";
+        this.add.dom(960, 200, this.div);
+        
+        var respuesta = document.createElement('input');
+        respuesta.setAttribute('type'  ,'number');
+        respuesta.setAttribute('id','R');
+        respuesta.setAttribute('placeholder','R');
+        respuesta.setAttribute('style','width: 80px');
+        this.res = this.add.dom(1100, 250, respuesta);
+        
+        var boton = document.createElement('button');
+        boton.setAttribute('type','button');
+        this.element = this.add.dom(1630, 250, boton,'','Corregir');
+        this.element.addListener('click');
+        this.element.on('click',() => this.corregir());
+        
+        this.input.keyboard.on('keyup-ENTER',() => this.corregir());
+        
+        var boton = document.createElement('button');
+        boton.setAttribute('type','button');
+        this.element = this.add.dom(1630, 500, boton,'','Ayuda');
+        this.element.addListener('click');
+        this.element.on('click',() => this.Ayuda(this.t,this.x));
+        
+        
+        this.r = document.createElement('h2');
+        this.r.style = 'font-size: 60px; ';
+        this.r.innerHTML = "Respuestas";
+        this.add.dom(960, 300, this.r);
+        
+        this.respuestas = new Array();
+        
+        
+        
+        
+        
+        this.lienzo = this.add.graphics();
+        this.lienzo.fillStyle(0xff0000);
+        this.lienzo.setAlpha(0);
+        this.lienzo.fillRect(0,0,1920,1080);
+        
+        this.lienzo2 = this.add.graphics();
+        this.lienzo2.fillStyle(0x00ff00);
+        this.lienzo2.setAlpha(0);
+        this.lienzo2.fillRect(0,0,1920,1080);
+        
+        this.lienzo2.clear();
+        b=0;
+        this.lienzo3 = this.add.graphics();
+        
+    }
+    
+    corregir(){
+        var resp=document.getElementById("R").value;
+        if(this.indiceaprend<36){
+            if(resp === this.t*this.x+""){
+                this.indiceaprend++;
+                console.log("correcto");
+
+            }else{
+
+                this.aprendiendo[this.tablas[this.indiceaprend][0]-2]++;
+                this.aprendiendo[this.tablas[this.indiceaprend][1]-2]++;
+                this.indiceaprend++;
+                console.log("incorrecto");
+            }
+        }
+        if(this.indiceaprend>=36){
+            var max=0;
+            var practicar;
+            for(var i=0;i<this.aprendiendo.length;i++){
+                if(this.aprendiendo[i]>max){
+                    max=this.aprendiendo[i];
+                }
+            }
+            for(var i=0;i<this.aprendiendo.length;i++){
+                if(this.aprendiendo[i]===max){
+                    practicar=i+2;
+                    break;
+                }
+            }
+            if(max>0){
+                Swal.fire('Diagnóstico listo ¡Llama a tu profesor! ',
+                    'Deberías practicar la tabla del '+practicar,'success');
+            }else{
+                Swal.fire('Diagnóstico listo ¡Llama a tu profesor! ',
+                    'Parece que te sabes todas las tablas ','success');
+            }
+                
+                //this.correcto();
+                
+        }else{
+            this.t = this.tablas[this.indiceaprend][0];
+            this.x = this.tablas[this.indiceaprend][1];
+            this.div.innerHTML = this.t+"&times;"+this.x+"=";
+            document.getElementById("R").value="";
+            console.log(this.tablas[this.indiceaprend]);
+        }
+        
+    }
+    correcto(){
+        b=0.5;
+        c.play();
+    }
+    falso(){
+        a=0.5;
+        w.play();
+        this.cameras.main.shake(200,0.01);
+    }
+    update(time,delta){
+        
+            if(a>0){
+                b=0;
+                a-=0.3*delta/1000;
+                this.lienzo.clear();
+                this.lienzo.setAlpha(a);
+                this.lienzo.fillStyle(0xff0000);
+                this.lienzo.fillRect(0,0,1920,1080);
+                this.lienzo2.clear();
+                this.lienzo2.setAlpha(b);
+                this.lienzo2.fillStyle(0x00ff00);
+                this.lienzo2.fillRect(0,0,1920,1080);
+            }else{
+                a=0;
+
+            }
+            if(b>0){
+                a=0;
+                b-=0.3*delta/1000;
+                this.lienzo.clear();
+                this.lienzo.setAlpha(a);
+                this.lienzo.fillStyle(0xff0000);
+                this.lienzo.fillRect(0,0,1920,1080);
+                this.lienzo2.clear();
+                this.lienzo2.setAlpha(b);
+                this.lienzo2.fillStyle(0x00ff00);
+                this.lienzo2.fillRect(0,0,1920,1080);  
+            }else{
+                b=0;
+
+            }
+        
+        
+    }
+    opcionPulsada(opcion) {
+        rc=0;
+        if(opcion === 'ini'){
+            this.scene.start('menu');
+        } else if(opcion === 'otro'){
+           this.scene.start(this.scene.key);
+        }else{
+            console.log("A dónde voy?");
+        }
+        
+    }
+    Ayuda(t,x){ //t=tabla;  x=número
+        let timerInterval
+        Swal.fire({
+          title: t+'x'+x+"="+(t*x),
+          html: 'Tienes <b></b>.',
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading();
+            const b = Swal.getHtmlContainer().querySelector('b');
+            timerInterval = setInterval(() => {
+              b.textContent = Math.floor(Swal.getTimerLeft()/1000)+1
+            }, 100);
+          },
+          willClose: () => {
+            clearInterval(timerInterval)
+          }
+        }).then((result) => {
+          /* Read more about handling dismissals below */
+          if (result.dismiss === Swal.DismissReason.timer) {
+            //console.log('I was closed by the timer')
+          }
+        });
+        this.indiceaprend=0;
+        this.aprendiendo.sort( () => .5 - Math.random() );
+        this.r.innerHTML = "Respuestas<br>";
+        this.t = this.tablas[Math.floor(Math.random()*this.tablas.length)];
+        this.x = this.aprendiendo[this.indiceaprend];
+        this.div.innerHTML = this.t+"&times;"+this.x+"=";
+        document.getElementById("R").value="";
+        this.respuestas=new Array();
+    }
+}
+
 
 const config = {
   type: Phaser.AUTO,
@@ -351,7 +595,7 @@ const config = {
   dom: {
         createContainer: true
     },
-  scene: [menu, Tablas ],//
+  scene: [menu, Tablas, Diag ],//
   scale: {
       mode: Phaser.Scale.Fit
   },
