@@ -146,7 +146,18 @@ class Tablas extends Phaser.Scene{ //Cuánto Falta
         this.add.image(205,82,'logo');
         
         this.graph = this.add.graphics();
+        
+        this.graph.fillStyle(0xcfcfcf);
+         this.graph.fillRect(500,50,1000,50);
+        
         this.graph.fillStyle(0xF1C40F);
+        this.faltantes = this.add.graphics();
+        this.faltantes.fillStyle(0xF1C40F);
+        
+        this.nivel=document.createElement('h1');
+        this.nivel.style = 'font-size: 40px; ';
+        this.nivel.innerHTML = "Nivel 1";
+        this.add.dom(960, 50, this.nivel);
         
         this.graph.fillRect(1600,50,300,90);
         this.add.text(1750, 50, 'INICIO', { color: 'black', fontFamily: 'Arial', fontSize: '70px '}).setOrigin(0.5,0);
@@ -155,6 +166,7 @@ class Tablas extends Phaser.Scene{ //Cuánto Falta
 	ini.setInteractive();
 	ini.once('pointerdown', () => this.opcionPulsada('ini'));
 	this.add.graphics().lineStyle(2, 0xff0000).strokeRectShape(ini);
+        
         
         c = this.sound.add('correct',{loop:false});
         w = this.sound.add('wrong',{loop:false});
@@ -229,6 +241,7 @@ class Tablas extends Phaser.Scene{ //Cuánto Falta
                         }
                         this.aprendiendo.sort( () => .5 - Math.random() );
                     }
+                    this.faltantes.clear();
                 }
                 //this.indicenum=10;
             if(this.indicenum<10){
@@ -240,13 +253,14 @@ class Tablas extends Phaser.Scene{ //Cuánto Falta
                 for(var i=0;i<this.respuestas.length;i++){
                     this.r.innerHTML += this.respuestas[i];
                 }
-            
+                this.nivel.innerHTML="Nivel "+(this.indicenum+1);
                 this.t = this.tablas[Math.floor(Math.random()*this.tablas.length)];
                 this.x = this.aprendiendo[this.indiceaprend];
                 this.div.innerHTML = this.t+"&times;"+this.x+"=";
                 document.getElementById("R").value="";
                 this.correcto();
                 console.log("correcto");
+                this.faltantes.fillRect(500,50,1000*this.indiceaprend/this.aprendiendo.length,50);
             }else{
                 Swal.fire('Por hoy es suficiente de la tabla del '+this.tablas[0],
                     '¡Llama a tu profesor!','success');
@@ -258,6 +272,7 @@ class Tablas extends Phaser.Scene{ //Cuánto Falta
             this.indiceaprend=0;
             this.falso();
             console.log("incorrecto");
+            this.faltantes.clear();
         }
     }
     correcto(){
@@ -346,6 +361,7 @@ class Tablas extends Phaser.Scene{ //Cuánto Falta
         this.div.innerHTML = this.t+"&times;"+this.x+"=";
         document.getElementById("R").value="";
         this.respuestas=new Array();
+        this.faltantes.clear();
     }
 }
 
